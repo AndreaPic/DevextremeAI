@@ -30,6 +30,7 @@ namespace DevextremeAILibTest
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
                 CreateChatCompletionRequest createCompletionRequest = new CreateChatCompletionRequest();
                 createCompletionRequest.ModelID = modelID;
+                createCompletionRequest.Temperature = 0.9;
 
                 createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
                 {
@@ -38,6 +39,23 @@ namespace DevextremeAILibTest
                 }); 
 
                 var response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
+                Assert.NotNull(response);
+                Assert.NotNull(response.Choices);
+                Assert.True(response.Choices.Count > 0);
+                Assert.NotNull(response.Usage);
+
+
+                createCompletionRequest = new CreateChatCompletionRequest();
+                createCompletionRequest.ModelID = modelID;
+                createCompletionRequest.Temperature = 0.9;
+
+                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                {
+                    Role = ChatCompletionRequestMessageRoleEnum.User,
+                    Content = "I'm getting bored, what can you do for me?"
+                });
+
+                response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
                 Assert.NotNull(response);
                 Assert.NotNull(response.Choices);
                 Assert.True(response.Choices.Count > 0);
