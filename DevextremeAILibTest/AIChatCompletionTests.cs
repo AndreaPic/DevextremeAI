@@ -20,9 +20,9 @@ namespace DevextremeAILibTest
 
         
         [Theory]
-        [InlineData("text-davinci-003")]
+        //[InlineData("text-davinci-003")]
         [InlineData("gpt-3.5-turbo")]
-        public async Task CreateCompletionTest(string modelID)
+        public async Task CreateChatCompletionTest(string modelID)
         {
             
             using (var scope = _factory.Services.CreateScope())
@@ -63,5 +63,50 @@ namespace DevextremeAILibTest
 
             }
         }
+
+        [Theory]
+        [InlineData("gpt-3.5-turbo")]
+        public async Task CreateChatCompletionITATest(string modelID)
+        {
+
+            using (var scope = _factory.Services.CreateScope())
+            {
+                var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
+                CreateChatCompletionRequest createCompletionRequest = new CreateChatCompletionRequest();
+                createCompletionRequest.ModelID = modelID;
+                createCompletionRequest.Temperature = 1.4;
+
+                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                {
+                    Role = ChatCompletionRequestMessageRoleEnum.User,
+                    Content = "Ciao, sai parlare Italiano?"
+                });
+
+                var response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
+                Assert.NotNull(response);
+                Assert.NotNull(response.Choices);
+                Assert.True(response.Choices.Count > 0);
+                Assert.NotNull(response.Usage);
+
+
+                createCompletionRequest = new CreateChatCompletionRequest();
+                createCompletionRequest.ModelID = modelID;
+                createCompletionRequest.Temperature = 1.4;
+
+                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                {
+                    Role = ChatCompletionRequestMessageRoleEnum.User,
+                    Content = "Qual'è la città più bella d'Italia?"
+                });
+
+                response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
+                Assert.NotNull(response);
+                Assert.NotNull(response.Choices);
+                Assert.True(response.Choices.Count > 0);
+                Assert.NotNull(response.Usage);
+
+            }
+        }
+
     }
 }
