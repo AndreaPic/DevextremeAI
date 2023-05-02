@@ -22,6 +22,8 @@ namespace DevextremeAI.Communication
         public Task<CreateCompletionResponse> CreateCompletionAsync(CreateCompletionRequest request);
         public Task<CreateChatCompletionResponse> CreateChatCompletionAsync(CreateChatCompletionRequest request);
         public Task<CreateEditResponse> CreateEditAsync(CreateEditRequest request);
+        public Task<ImagesResponse> CreateImageAsync(CreateImageRequest request);
+
     }
     public sealed class OpenAIAPIClient : IOpenAIAPIClient
     {
@@ -158,6 +160,24 @@ namespace DevextremeAI.Communication
             }
             return ret;
         }
+
+        public async Task<ImagesResponse> CreateImageAsync(CreateImageRequest request)
+        {
+            ImagesResponse? ret = null;
+            HttpClient httpClient = HttpClientFactory.CreateClient();
+            FillBaseAddress(httpClient);
+            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
+
+            var jsonContent = CreateJsonStringContent(request);
+
+            var httpResponse = await httpClient.PostAsync($"images/generations", jsonContent);
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                ret = await httpResponse.Content.ReadFromJsonAsync<ImagesResponse>();
+            }
+            return ret;
+        }
+
 
         private StringContent CreateJsonStringContent(object request)
         {
