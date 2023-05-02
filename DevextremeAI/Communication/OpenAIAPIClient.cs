@@ -161,6 +161,11 @@ namespace DevextremeAI.Communication
             return ret;
         }
 
+        /// <summary>
+        /// Creates an image given a prompt.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public async Task<ImagesResponse> CreateImageAsync(CreateImageRequest request)
         {
             ImagesResponse? ret = null;
