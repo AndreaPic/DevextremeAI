@@ -32,10 +32,44 @@ namespace DevextremeAILibTest
                 request.ResponseFormat = CreateImageRequestResponseFormatEnum.Url;
                 
 
-                var completionResponse = await openAiapiClient.CreateImageAsync(request);
-                Assert.NotNull(completionResponse);
-                Assert.NotNull(completionResponse.Data.FirstOrDefault());
+                var response = await openAiapiClient.CreateImageAsync(request);
+                Assert.NotNull(response);
+                Assert.NotNull(response.Data.FirstOrDefault());
             }
         }
+
+        [Fact]
+        public async Task CreateImageEditTest()
+        {
+            using (var scope = _factory.Services.CreateScope())
+            {
+
+                //var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
+                //CreateImageRequest requestCreateImage = new CreateImageRequest();
+                //requestCreateImage.Prompt = "friendly robot";
+                //requestCreateImage.N = 1;
+                //requestCreateImage.Size = CreateImageRequestSizeEnum._256x256;
+                //requestCreateImage.ResponseFormat = CreateImageRequestResponseFormatEnum.B64Json;
+
+                //var responseCreateImage = await openAiapiClient.CreateImageAsync(requestCreateImage);
+                //Assert.NotNull(responseCreateImage);
+                //Assert.NotNull(responseCreateImage.Data.FirstOrDefault());
+
+
+                var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
+                CreateImageEditRequest requestEditImage = new CreateImageEditRequest();
+                requestEditImage.Image = Resources.Resource.pink_panther;
+                requestEditImage.Prompt = "change ping to black";
+                //requestEditImage.N = 1;
+                requestEditImage.Size = CreateImageRequestSizeEnum._256x256;
+                requestEditImage.ResponseFormat = CreateImageRequestResponseFormatEnum.Url;
+
+
+                var response = await openAiapiClient.CreateImageEditAsync(requestEditImage);
+                Assert.NotNull(response);
+                Assert.NotNull(response.Data.FirstOrDefault());
+            }
+        }
+
     }
 }

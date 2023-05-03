@@ -23,6 +23,7 @@ namespace DevextremeAI.Communication
         public Task<CreateChatCompletionResponse> CreateChatCompletionAsync(CreateChatCompletionRequest request);
         public Task<CreateEditResponse> CreateEditAsync(CreateEditRequest request);
         public Task<ImagesResponse> CreateImageAsync(CreateImageRequest request);
+        public Task<ImagesResponse> CreateImageEditAsync(CreateImageEditRequest request);
 
     }
     public sealed class OpenAIAPIClient : IOpenAIAPIClient
@@ -181,6 +182,75 @@ namespace DevextremeAI.Communication
                 ret = await httpResponse.Content.ReadFromJsonAsync<ImagesResponse>();
             }
             return ret;
+        }
+
+        public async Task<ImagesResponse> CreateImageEditAsync(CreateImageEditRequest request)
+        {
+            ImagesResponse? ret = null;
+            HttpClient httpClient = HttpClientFactory.CreateClient();
+            FillBaseAddress(httpClient);
+            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
+
+            using (var content = new MultipartFormDataContent())
+            {
+                content.Add(new ByteArrayContent(request.Image), "image", "image.png");
+
+                if (request.Mask != null)
+                {
+                    content.Add(new ByteArrayContent(request.Mask), "mask", "mask.png");
+                }
+
+                content.Add(new StringContent(request.Prompt), "prompt");
+
+                if (request.N != null)
+                {
+                    content.Add(new StringContent(request.N.ToString()), "n");
+                }
+
+                if (request.Size != null)
+                {
+                    switch (request.Size.Value)
+                    {
+                        case CreateImageRequestSizeEnum._1024x1024:
+                            content.Add(new StringContent("1024x1024"), "size");
+                            break;
+                        case CreateImageRequestSizeEnum._512x512:
+                            content.Add(new StringContent("512x512"), "size");
+                            break;
+                        case CreateImageRequestSizeEnum._256x256:
+                            content.Add(new StringContent("256x256"), "size");
+                            break;
+                    }
+                }
+
+                if (request.ResponseFormat != null)
+                {
+                    switch (request.ResponseFormat.Value)
+                    {
+                        case CreateImageRequestResponseFormatEnum.B64Json:
+                            content.Add(new StringContent("b64_json"), "response_format");
+                            break;
+                        case CreateImageRequestResponseFormatEnum.Url:
+                            content.Add(new StringContent("url"), "response_format");
+                            break;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(request.User))
+                {
+                    content.Add(new StringContent(request.User), "user");
+                }
+
+                
+
+                var httpResponse = await httpClient.PostAsync($"images/edits", content);
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    ret = await httpResponse.Content.ReadFromJsonAsync<ImagesResponse>();
+                }
+
+                return ret;
+            }
         }
 
 
