@@ -59,9 +59,9 @@ namespace DevextremeAILibTest
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
                 CreateImageEditRequest requestEditImage = new CreateImageEditRequest();
                 requestEditImage.Image = Resources.Resource.pink_panther;
-                requestEditImage.Prompt = "change ping to black";
-                //requestEditImage.N = 1;
-                requestEditImage.Size = CreateImageRequestSizeEnum._256x256;
+                requestEditImage.Prompt = "change pink color to black color";
+                requestEditImage.N = 1;
+                requestEditImage.Size = CreateImageRequestSizeEnum._512x512;
                 requestEditImage.ResponseFormat = CreateImageRequestResponseFormatEnum.Url;
 
 

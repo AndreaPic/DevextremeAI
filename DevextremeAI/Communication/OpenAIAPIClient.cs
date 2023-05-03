@@ -243,7 +243,7 @@ namespace DevextremeAI.Communication
 
                 
 
-                var httpResponse = await httpClient.PostAsync($"images/edits", content);
+                var httpResponse = await httpClient.PostAsync("images/edits", content);
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     ret = await httpResponse.Content.ReadFromJsonAsync<ImagesResponse>();
