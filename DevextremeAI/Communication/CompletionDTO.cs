@@ -23,11 +23,11 @@ namespace DevextremeAI.Communication
         /// Note that<|endoftext|> is the document separator that the model sees during training, so if a prompt is not specified the model will generate as if from the beginning of a new document.
         /// </summary>
         [JsonPropertyName("prompt")]
-        public object? Prompt => prompts.Count switch { 0 => null, 1 => prompts[0], > 1 => prompts, _ => null };
-        private List<string> prompts { get; set; } = new List<string>();
+        public object? Prompt => Prompts.Count switch { 0 => null, 1 => Prompts[0], > 1 => Prompts, _ => null };
+        private List<string> Prompts { get; set; } = new List<string>();
         public void AddCompletionPrompt(string prompt)
         {
-            prompts.Add(prompt);
+            Prompts.Add(prompt);
         }
 
         /// <summary>
