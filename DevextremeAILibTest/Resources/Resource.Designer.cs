@@ -83,6 +83,16 @@ namespace DevextremeAILibTest.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] Test {
+            get {
+                object obj = ResourceManager.GetObject("Test", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] tom_cat {
             get {
                 object obj = ResourceManager.GetObject("tom_cat", resourceCulture);
