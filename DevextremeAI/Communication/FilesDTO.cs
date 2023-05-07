@@ -28,7 +28,7 @@ namespace DevextremeAI.Communication
         public string Purpose { get; set; }
     }
 
-    public class FileListRequest
+    public class FileDataListResponse
     {
         [JsonPropertyName("data")]
         public List<FileData> FileList { get; set; }
