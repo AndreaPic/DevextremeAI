@@ -91,6 +91,17 @@ namespace DevextremeAILibTest.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to { &quot;prompt&quot;: &quot;Hi, what&apos;s your name?&quot;,&quot;completion&quot;: &quot;Hi, my name is Lucy.&quot;}
+        ///{ &quot;prompt&quot;: &quot;How are you?&quot;,&quot;completion&quot;: &quot;So good, thanks.&quot;}
+        ///{ &quot;prompt&quot;: &quot;Where are you form?&quot;,&quot;completion&quot;: &quot;I&apos;m form cloud.&quot;}.
+        /// </summary>
+        internal static string TestFileData {
+            get {
+                return ResourceManager.GetString("TestFileData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] tom_cat {

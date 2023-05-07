@@ -100,13 +100,9 @@ namespace DevextremeAI.Communication
         public string FileId { get; set; }
     }
 
-    public class RetrieveFileContentRequest
+    public class RetrieveFileContentRequest : RetrieveFileDataRequest
     {
-        /// <summary>
-        /// The ID of the file to use for this request
-        /// </summary>
-        [JsonPropertyName("file_id")]
-        public string FileId { get; set; }
+
     }
 
     public class RetrieveFileContentResponse

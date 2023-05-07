@@ -28,7 +28,11 @@ namespace DevextremeAI.Communication
         public Task<CreateEmbeddingResponse> CreateEmbeddingsAsync(CreateEmbeddingsRequest request);
         public Task<ResponseDTO<CreateTranscriptionsResponse>> CreateTranscriptionsAsync(CreateTranscriptionsRequest request);
         public Task<ResponseDTO<CreateTranslationsResponse>> CreateTranslationsAsync(CreateTranslationsRequest request);
-
-
+        public Task<ResponseDTO<FileDataListResponse>> GetFilesDataAsync();
+        public Task<ResponseDTO<FileData>> UploadFileAsync(UploadFileRequest request);
+        public Task<ResponseDTO<FileData>> UploadFineTuningFileAsync(UploadFineTuningFileRequest request);
+        public Task<ResponseDTO<DeleteFileResponse>> DeleteFileAsync(DeleteFileRequest request);
+        public Task<ResponseDTO<FileData>> GetFileDataAsync(RetrieveFileDataRequest request);
+        public Task<ResponseDTO<RetrieveFileContentResponse>> GetFileContentAsync(RetrieveFileContentRequest request);
     }
 }

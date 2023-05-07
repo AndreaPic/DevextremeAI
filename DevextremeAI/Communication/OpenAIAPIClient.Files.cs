@@ -23,7 +23,7 @@ namespace DevextremeAI.Communication
         /// Returns a list of files that belong to the user's organization.
         /// </summary>
         /// <returns></returns>
-        public async Task<ResponseDTO<FileDataListResponse>> GetFilesAsync()
+        public async Task<ResponseDTO<FileDataListResponse>> GetFilesDataAsync()
         {
             ResponseDTO<FileDataListResponse> ret = new ResponseDTO<FileDataListResponse>();
             HttpClient httpClient = HttpClientFactory.CreateClient();
@@ -147,16 +147,40 @@ namespace DevextremeAI.Communication
         /// Returns information about a specific file.
         /// </summary>
         /// <returns></returns>
-        public async Task<ResponseDTO<FileData>> GetFileDataAsync()
+        public async Task<ResponseDTO<FileData>> GetFileDataAsync(RetrieveFileDataRequest request)
         {
             ResponseDTO<FileData> ret = new ResponseDTO<FileData>();
             HttpClient httpClient = HttpClientFactory.CreateClient();
             FillBaseAddress(httpClient);
             FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
-            var httpResponse = await httpClient.GetAsync(filesPath);
+            var httpResponse = await httpClient.GetAsync($"{filesPath}/{request.FileId}");
             if (httpResponse.IsSuccessStatusCode)
             {
                 ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FileData>();
+            }
+            else
+            {
+                ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// Returns the contents of the specified file
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<ResponseDTO<RetrieveFileContentResponse>> GetFileContentAsync(RetrieveFileContentRequest request)
+        {
+            ResponseDTO<RetrieveFileContentResponse> ret = new ResponseDTO<RetrieveFileContentResponse>();
+            HttpClient httpClient = HttpClientFactory.CreateClient();
+            FillBaseAddress(httpClient);
+            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
+            var httpResponse = await httpClient.GetAsync($"{filesPath}/{request.FileId}/content");
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                ret.OpenAIResponse = new RetrieveFileContentResponse();
+                ret.OpenAIResponse.FileContent = await httpResponse.Content.ReadAsByteArrayAsync();
             }
             else
             {
