@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace DevextremeAI.Communication
+namespace DevextremeAI.Communication.DTO
 {
     public class CreateEditRequest
     {

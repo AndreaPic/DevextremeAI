@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace DevextremeAI.Communication
+namespace DevextremeAI.Communication.DTO
 {
     public class CreateEmbeddingsRequest
     {
@@ -37,16 +37,16 @@ namespace DevextremeAI.Communication
 
     public class CreateEmbeddingResponse
     {
-        [JsonPropertyName("object")] 
+        [JsonPropertyName("object")]
         public string? Object { get; set; }
 
-        [JsonPropertyName("model")] 
+        [JsonPropertyName("model")]
         public string? ModelID { get; set; }
 
-        [JsonPropertyName("data")] 
+        [JsonPropertyName("data")]
         public List<CreateEmbeddingResponseDataInner>? Data { get; set; }
 
-        [JsonPropertyName("usage")] 
+        [JsonPropertyName("usage")]
         public CreateEmbeddingResponseUsage? Usage { get; set; }
     }
 

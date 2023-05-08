@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace DevextremeAI.Communication
+namespace DevextremeAI.Communication.DTO
 {
     public class CreateCompletionRequest
     {
@@ -44,7 +44,7 @@ namespace DevextremeAI.Communication
         /// Most models have a context length of 2048 tokens (except for the newest models, which support 4096).
         /// </remarks>
         [JsonPropertyName("max_tokens")]
-        public int? MaxTokens { get ; set; }
+        public int? MaxTokens { get; set; }
 
         /// <summary>
         /// What sampling temperature to use, between 0 and 2.

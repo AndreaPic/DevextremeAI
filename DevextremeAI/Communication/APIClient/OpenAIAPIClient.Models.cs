@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using DevextremeAI.Communication.DTO;
 using DevextremeAI.Settings;
 using Microsoft.AspNetCore.Http;
 
@@ -25,16 +26,20 @@ namespace DevextremeAI.Communication
         /// Lists the currently available models, and provides basic information about each one such as the owner and availability.
         /// </summary>
         /// <returns></returns>
-        public async Task<ListModelsResponse?> GetModelsAsync()
+        public async Task<ResponseDTO<ListModelsResponse>> GetModelsAsync()
         {
-            ListModelsResponse? ret = null;
+            ResponseDTO<ListModelsResponse> ret = new ResponseDTO<ListModelsResponse>();
             HttpClient httpClient = HttpClientFactory.CreateClient();
             FillBaseAddress(httpClient);
             FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
             var httpResponse = await httpClient.GetAsync(modelsPath);
             if (httpResponse.IsSuccessStatusCode)
             {
-                ret = await httpResponse.Content.ReadFromJsonAsync<ListModelsResponse>();
+                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<ListModelsResponse>();
+            }
+            else
+            {
+                ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
             }
             return ret;
         }
@@ -44,16 +49,20 @@ namespace DevextremeAI.Communication
         /// </summary>
         /// <param name="modelID">The ID of the model to use for this request</param>
         /// <returns></returns>
-        public async Task<Model?> GetModelAsync(string modelID)
+        public async Task<ResponseDTO<Model>> GetModelAsync(string modelID)
         {
-            Model? ret = null;
+            ResponseDTO<Model> ret = new ResponseDTO<Model>();
             HttpClient httpClient = HttpClientFactory.CreateClient();
             FillBaseAddress(httpClient);
             FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
             var httpResponse = await httpClient.GetAsync($"models/{modelID}");
             if (httpResponse.IsSuccessStatusCode)
             {
-                ret = await httpResponse.Content.ReadFromJsonAsync<Model>();
+                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<Model>();
+            }
+            else
+            {
+                ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
             }
             return ret;
         }

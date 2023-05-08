@@ -1,4 +1,3 @@
-using DevextremeAI.Communication;
 using DevextremeAI.Settings;
 using DevExtremeToys.JSon;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using Newtonsoft.Json;
+using DevextremeAI.Communication.DTO;
+using DevextremeAI.Communication.APIClient;
 
 namespace DevextremeAILibTest
 {
@@ -39,10 +40,10 @@ namespace DevextremeAILibTest
                 }); 
 
                 var response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
-                Assert.NotNull(response);
-                Assert.NotNull(response.Choices);
-                Assert.True(response.Choices.Count > 0);
-                Assert.NotNull(response.Usage);
+                Assert.NotNull(response?.OpenAIResponse);
+                Assert.NotNull(response?.OpenAIResponse.Choices);
+                Assert.True(response?.OpenAIResponse.Choices.Count > 0);
+                Assert.NotNull(response?.OpenAIResponse.Usage);
 
 
                 createCompletionRequest = new CreateChatCompletionRequest();
@@ -57,9 +58,9 @@ namespace DevextremeAILibTest
 
                 response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
                 Assert.NotNull(response);
-                Assert.NotNull(response.Choices);
-                Assert.True(response.Choices.Count > 0);
-                Assert.NotNull(response.Usage);
+                Assert.NotNull(response?.OpenAIResponse?.Choices);
+                Assert.True(response.OpenAIResponse.Choices.Count > 0);
+                Assert.NotNull(response?.OpenAIResponse?.Usage);
 
             }
         }
@@ -83,10 +84,10 @@ namespace DevextremeAILibTest
                 });
 
                 var response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
-                Assert.NotNull(response);
-                Assert.NotNull(response.Choices);
-                Assert.True(response.Choices.Count > 0);
-                Assert.NotNull(response.Usage);
+                Assert.NotNull(response?.OpenAIResponse);
+                Assert.NotNull(response?.OpenAIResponse?.Choices);
+                Assert.True(response.OpenAIResponse.Choices.Count > 0);
+                Assert.NotNull(response?.OpenAIResponse?.Usage);
 
 
                 createCompletionRequest = new CreateChatCompletionRequest();
@@ -100,10 +101,10 @@ namespace DevextremeAILibTest
                 });
 
                 response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
-                Assert.NotNull(response);
-                Assert.NotNull(response.Choices);
-                Assert.True(response.Choices.Count > 0);
-                Assert.NotNull(response.Usage);
+                Assert.NotNull(response?.OpenAIResponse);
+                Assert.NotNull(response?.OpenAIResponse?.Choices);
+                Assert.True(response.OpenAIResponse.Choices.Count > 0);
+                Assert.NotNull(response?.OpenAIResponse?.Usage);
 
             }
         }

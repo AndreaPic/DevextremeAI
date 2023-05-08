@@ -9,20 +9,21 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using DevextremeAI.Communication.DTO;
 using DevextremeAI.Settings;
 using Microsoft.AspNetCore.Http;
 
-namespace DevextremeAI.Communication
+namespace DevextremeAI.Communication.APIClient
 {
 
     public interface IOpenAIAPIClient
     {
-        public Task<ListModelsResponse?> GetModelsAsync();
-        public Task<Model?> GetModelAsync(string modelID);
-        public Task<CreateCompletionResponse> CreateCompletionAsync(CreateCompletionRequest request);
-        public Task<CreateChatCompletionResponse> CreateChatCompletionAsync(CreateChatCompletionRequest request);
-        public Task<CreateEditResponse> CreateEditAsync(CreateEditRequest request);
-        public Task<ImagesResponse> CreateImageAsync(CreateImageRequest request);
+        public Task<ResponseDTO<ListModelsResponse>> GetModelsAsync();
+        public Task<ResponseDTO<Model>> GetModelAsync(string modelID);
+        public Task<ResponseDTO<CreateCompletionResponse>> CreateCompletionAsync(CreateCompletionRequest request);
+        public Task<ResponseDTO<CreateChatCompletionResponse>> CreateChatCompletionAsync(CreateChatCompletionRequest request);
+        public Task<ResponseDTO<CreateEditResponse>> CreateEditAsync(CreateEditRequest request);
+        public Task<ResponseDTO<ImagesResponse>> CreateImageAsync(CreateImageRequest request);
         public Task<ResponseDTO<ImagesResponse>> CreateImageEditAsync(CreateImageEditRequest request);
         public Task<ResponseDTO<ImagesResponse>> CreateImageVariationsAsync(CreateImageVariationsRequest request);
         public Task<CreateEmbeddingResponse> CreateEmbeddingsAsync(CreateEmbeddingsRequest request);
@@ -34,5 +35,7 @@ namespace DevextremeAI.Communication
         public Task<ResponseDTO<DeleteFileResponse>> DeleteFileAsync(DeleteFileRequest request);
         public Task<ResponseDTO<FileData>> GetFileDataAsync(RetrieveFileDataRequest request);
         public Task<ResponseDTO<RetrieveFileContentResponse>> GetFileContentAsync(RetrieveFileContentRequest request);
+        public Task<ResponseDTO<CreateFineTuneResponse>> CreateFineTuneAsync(CreateFineTuneRequest request);
+
     }
 }

@@ -1,4 +1,3 @@
-using DevextremeAI.Communication;
 using DevextremeAI.Settings;
 using DevExtremeToys.JSon;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using Newtonsoft.Json;
+using DevextremeAI.Communication.DTO;
+using DevextremeAI.Communication.APIClient;
 
 namespace DevextremeAILibTest
 {
@@ -47,10 +48,10 @@ namespace DevextremeAILibTest
                 });
 
                 var completionResponse = await openAiapiClient.CreateCompletionAsync(createCompletionRequest);
-                Assert.NotNull(completionResponse);
-                Assert.NotNull(completionResponse.Choices);
-                Assert.True(completionResponse.Choices.Count > 0);
-                Assert.NotNull(completionResponse.Usage);
+                Assert.NotNull(completionResponse?.OpenAIResponse);
+                Assert.NotNull(completionResponse?.OpenAIResponse?.Choices);
+                Assert.True(completionResponse.OpenAIResponse.Choices.Count > 0);
+                Assert.NotNull(completionResponse?.OpenAIResponse?.Usage);
 
             }
         }

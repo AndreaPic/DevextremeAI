@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace DevextremeAI.Communication
+namespace DevextremeAI.Communication.DTO
 {
     public class Model
     {
@@ -40,7 +40,7 @@ namespace DevextremeAI.Communication
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
-        
+
         [JsonPropertyName("object")]
         public string Object { get; set; }
 

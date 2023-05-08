@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using DevextremeAI.Utils;
 
-namespace DevextremeAI.Communication
+namespace DevextremeAI.Communication.DTO
 {
     public class CreateChatCompletionRequest
     {
@@ -137,12 +137,12 @@ namespace DevextremeAI.Communication
     }
 
     [JsonConverter(typeof(JsonStringEnumConverterEx<ChatCompletionRequestMessageRoleEnum>))]
-    public enum ChatCompletionRequestMessageRoleEnum 
+    public enum ChatCompletionRequestMessageRoleEnum
     {
-        [EnumMember( Value = "system")]
-        System = 0, 
+        [EnumMember(Value = "system")]
+        System = 0,
         [EnumMember(Value = "user")]
-        User = 1, 
+        User = 1,
         [EnumMember(Value = "assistant")]
         Assistant = 2
     }
@@ -198,8 +198,8 @@ namespace DevextremeAI.Communication
     }
 
     [JsonConverter(typeof(JsonStringEnumConverterEx<ChatCompletionResponseMessageRoleEnum>))]
-    
-    public enum ChatCompletionResponseMessageRoleEnum 
+
+    public enum ChatCompletionResponseMessageRoleEnum
     {
         [EnumMember(Value = "system")]
         System = 0,
@@ -208,6 +208,6 @@ namespace DevextremeAI.Communication
         [EnumMember(Value = "assistant")]
         Assistant = 2
     }
-    
+
 }
 

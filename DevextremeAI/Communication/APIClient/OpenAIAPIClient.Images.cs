@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using DevextremeAI.Communication.DTO;
 using DevextremeAI.Settings;
 using Microsoft.AspNetCore.Http;
 
@@ -22,9 +23,9 @@ namespace DevextremeAI.Communication
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ImagesResponse> CreateImageAsync(CreateImageRequest request)
+        public async Task<ResponseDTO<ImagesResponse>> CreateImageAsync(CreateImageRequest request)
         {
-            ImagesResponse? ret = null;
+            ResponseDTO<ImagesResponse> ret = new ResponseDTO<ImagesResponse>();
             HttpClient httpClient = HttpClientFactory.CreateClient();
             FillBaseAddress(httpClient);
             FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
@@ -34,8 +35,13 @@ namespace DevextremeAI.Communication
             var httpResponse = await httpClient.PostAsync($"images/generations", jsonContent);
             if (httpResponse.IsSuccessStatusCode)
             {
-                ret = await httpResponse.Content.ReadFromJsonAsync<ImagesResponse>();
+                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<ImagesResponse>();
             }
+            else
+            {
+                ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+            }
+
             return ret;
         }
 

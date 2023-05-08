@@ -1,4 +1,3 @@
-using DevextremeAI.Communication;
 using DevextremeAI.Settings;
 using DevExtremeToys.JSon;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using Newtonsoft.Json;
+using DevextremeAI.Communication.DTO;
+using DevextremeAI.Communication.APIClient;
 
 namespace DevextremeAILibTest
 {

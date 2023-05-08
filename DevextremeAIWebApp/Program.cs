@@ -1,5 +1,6 @@
 
 using DevextremeAI.Communication;
+using DevextremeAI.Communication.APIClient;
 using DevextremeAI.Settings;
 
 namespace DevextremeAIWebApp

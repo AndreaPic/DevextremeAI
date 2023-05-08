@@ -4,11 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Numerics;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using DevextremeAI.Communication.DTO;
 using DevextremeAI.Settings;
 using Microsoft.AspNetCore.Http;
 
@@ -18,26 +21,32 @@ namespace DevextremeAI.Communication
     partial class OpenAIAPIClient 
     {
         /// <summary>
-        /// Given a prompt and an instruction, the model will return an edited version of the prompt.
-        /// Creates a new edit for the provided input, instruction, and parameters.
+        /// Creates a job that fine-tunes a specified model from a given dataset.
+        /// Response includes details of the enqueued job including job status and the name of the fine-tuned models once complete.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<CreateEditResponse> CreateEditAsync(CreateEditRequest request)
+        public async Task<ResponseDTO<CreateFineTuneResponse>> CreateFineTuneAsync(CreateFineTuneRequest request)
         {
-            CreateEditResponse? ret = null;
+            ResponseDTO<CreateFineTuneResponse> ret = new ResponseDTO<CreateFineTuneResponse>(); 
             HttpClient httpClient = HttpClientFactory.CreateClient();
             FillBaseAddress(httpClient);
             FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
             var jsonContent = CreateJsonStringContent(request);
 
-            var httpResponse = await httpClient.PostAsync($"edits", jsonContent);
+            var httpResponse = await httpClient.PostAsync($"fine-tunes", jsonContent);
             if (httpResponse.IsSuccessStatusCode)
             {
-                ret = await httpResponse.Content.ReadFromJsonAsync<CreateEditResponse>();
+                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<CreateFineTuneResponse>();
+            }
+            else
+            {
+                ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
             }
             return ret;
         }
+
+
     }
 }

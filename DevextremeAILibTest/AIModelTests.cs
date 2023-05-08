@@ -1,4 +1,4 @@
-using DevextremeAI.Communication;
+using DevextremeAI.Communication.APIClient;
 using DevextremeAI.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,12 +21,12 @@ namespace DevextremeAILibTest
             {
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
                 var models = await openAiapiClient.GetModelsAsync();
-                Assert.NotNull(models);
-                Assert.True(models.Data.Count > 0);
-                var model = await openAiapiClient.GetModelAsync(models.Data[0].Id);
-                Assert.NotNull(model);
-                Assert.NotNull(model.Permissions);
-                Assert.True(model.Permissions.Count > 0);
+                Assert.NotNull(models?.OpenAIResponse?.Data);
+                Assert.True(models?.OpenAIResponse.Data.Count > 0);
+                var model = await openAiapiClient.GetModelAsync(models.OpenAIResponse.Data[0].Id);
+                Assert.NotNull(model?.OpenAIResponse);
+                Assert.NotNull(model?.OpenAIResponse?.Permissions);
+                Assert.True(model.OpenAIResponse.Permissions.Count > 0);
             }
         }
     }

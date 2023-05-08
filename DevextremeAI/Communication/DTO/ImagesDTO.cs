@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace DevextremeAI.Communication
+namespace DevextremeAI.Communication.DTO
 {
     public class CreateImageRequest
     {
@@ -44,7 +44,7 @@ namespace DevextremeAI.Communication
     }
 
     [JsonConverter(typeof(JsonStringEnumConverterEx<CreateImageRequestSizeEnum>))]
-    public enum CreateImageRequestSizeEnum 
+    public enum CreateImageRequestSizeEnum
     {
         [EnumMember(Value = "256x256")]
         _256x256 = 0,

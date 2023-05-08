@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace DevextremeAI.Communication
+namespace DevextremeAI.Communication.DTO
 {
     public class FileData
     {
@@ -56,7 +56,7 @@ namespace DevextremeAI.Communication
         /// Each line must be a JSON record with "prompt" and "completion" fields representing your training examples.
         /// Allows us to validate the format of the uploaded file.
         /// </summary>
-        [JsonPropertyName("purpose")] 
+        [JsonPropertyName("purpose")]
         public string Purpose => "fine-tune";
     }
 

@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using DevextremeAI.Communication.DTO;
 using DevextremeAI.Settings;
 using Microsoft.AspNetCore.Http;
 
@@ -17,28 +18,33 @@ namespace DevextremeAI.Communication
 
     partial class OpenAIAPIClient 
     {
-
         /// <summary>
-        /// Creates a model response for the given chat conversation.
+        /// Creates a completion for the provided prompt and parameters.
+        /// Given a prompt, the model will return one or more predicted completions, and can also return the probabilities of alternative tokens at each position.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<CreateChatCompletionResponse> CreateChatCompletionAsync(CreateChatCompletionRequest request)
+        public async Task<ResponseDTO<CreateCompletionResponse>> CreateCompletionAsync(CreateCompletionRequest request)
         {
-            CreateChatCompletionResponse? ret = null;
+            ResponseDTO<CreateCompletionResponse> ret = new ResponseDTO<CreateCompletionResponse>();
             HttpClient httpClient = HttpClientFactory.CreateClient();
             FillBaseAddress(httpClient);
             FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
             var jsonContent = CreateJsonStringContent(request);
 
-            var httpResponse = await httpClient.PostAsync($"chat/completions", jsonContent);
+            var httpResponse = await httpClient.PostAsync($"completions", jsonContent);
             if (httpResponse.IsSuccessStatusCode)
             {
-                ret = await httpResponse.Content.ReadFromJsonAsync<CreateChatCompletionResponse>();
+                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<CreateCompletionResponse>();
+            }
+            else
+            {
+                ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
             }
             return ret;
         }
+
 
     }
 }

@@ -1,4 +1,3 @@
-using DevextremeAI.Communication;
 using DevextremeAI.Settings;
 using DevExtremeToys.JSon;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using Newtonsoft.Json;
+using DevextremeAI.Communication.DTO;
+using DevextremeAI.Communication.APIClient;
 
 namespace DevextremeAILibTest
 {
@@ -33,8 +34,8 @@ namespace DevextremeAILibTest
                 
 
                 var response = await openAiapiClient.CreateImageAsync(request);
-                Assert.NotNull(response);
-                Assert.NotNull(response.Data.FirstOrDefault());
+                Assert.NotNull(response?.OpenAIResponse?.Data);
+                Assert.NotNull(response?.OpenAIResponse.Data.FirstOrDefault());
             }
         }
 
@@ -52,8 +53,8 @@ namespace DevextremeAILibTest
 
 
                 var response = await openAiapiClient.CreateImageAsync(request);
-                Assert.NotNull(response);
-                Assert.NotNull(response.Data.FirstOrDefault());
+                Assert.NotNull(response?.OpenAIResponse?.Data);
+                Assert.NotNull(response.OpenAIResponse.Data.FirstOrDefault());
                 //File.WriteAllBytes(@"D:\Temp\aifile.png", response.Data.FirstOrDefault().B64Json);
             }
         }

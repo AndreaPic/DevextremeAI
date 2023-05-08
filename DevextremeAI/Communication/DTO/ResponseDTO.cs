@@ -5,10 +5,10 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace DevextremeAI.Communication
+namespace DevextremeAI.Communication.DTO
 {
     public class ResponseDTO<T>
-        where T: class,new()
+        where T : class, new()
     {
         public T? OpenAIResponse { get; set; }
         public ErrorResponse? Error { get; set; }
@@ -37,7 +37,7 @@ namespace DevextremeAI.Communication
     {
         [JsonPropertyName("code")]
         public string? Code { get; set; }
-        
+
         [JsonPropertyName("message")]
         public string? Message { get; set; }
 
