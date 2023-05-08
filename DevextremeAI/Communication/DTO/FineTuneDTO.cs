@@ -126,7 +126,7 @@ namespace DevextremeAI.Communication.DTO
         public string? Suffix { get; set; }
     }
 
-    public class CreateFineTuneResponse
+    public class FineTuneData
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
@@ -197,6 +197,43 @@ namespace DevextremeAI.Communication.DTO
 
         [JsonPropertyName("prompt_loss_weight")]
         public double PromptLossWeight { get; set; }
+
+    }
+
+    public class GetFineTuneListResponse
+    {
+        [JsonPropertyName("object")]
+        public string Object { get; set; }
+
+        [JsonPropertyName("data")]
+        public List<FineTuneData> Data { get; set; }
+    }
+
+    public class FineTuneRequest
+    {
+        [JsonPropertyName("fine_tune_id")]
+        public string FineTuneId { get; set; }
+    }
+
+    public class GetFineTuneEventListResponse
+    {
+        [JsonPropertyName("object")]
+        public string Object { get; set; }
+
+        [JsonPropertyName("data")]
+        public List<Event> Data { get; set; }
+    }
+
+    public class DeleteFineTuneModelResponse
+    {
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        [JsonPropertyName("object")]
+        public string Object { get; set; }
+
+        [JsonPropertyName("deleted")]
+        public bool Deleted { get; set; }
 
     }
 

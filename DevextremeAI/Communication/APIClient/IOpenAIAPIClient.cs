@@ -35,7 +35,13 @@ namespace DevextremeAI.Communication.APIClient
         public Task<ResponseDTO<DeleteFileResponse>> DeleteFileAsync(DeleteFileRequest request);
         public Task<ResponseDTO<FileData>> GetFileDataAsync(RetrieveFileDataRequest request);
         public Task<ResponseDTO<RetrieveFileContentResponse>> GetFileContentAsync(RetrieveFileContentRequest request);
-        public Task<ResponseDTO<CreateFineTuneResponse>> CreateFineTuneAsync(CreateFineTuneRequest request);
+        public Task<ResponseDTO<FineTuneData>> CreateFineTuneJobAsync(CreateFineTuneRequest request);
+        public Task<ResponseDTO<GetFineTuneListResponse>> GetFineTuneJobListAsync(CreateFineTuneRequest request);
+        public Task<ResponseDTO<FineTuneData>> GetFineTuneJobDataAsync(FineTuneRequest request);
+        public Task<ResponseDTO<FineTuneData>> CancelFineTuneJobAsync(FineTuneRequest request);
+        public Task<ResponseDTO<GetFineTuneEventListResponse>> GetFineTuneEventListAsync(FineTuneRequest request);
+        public IAsyncEnumerable<Event> GetFineTuneEventStreamAsync(FineTuneRequest request);
+        public Task<ResponseDTO<DeleteFineTuneModelResponse>> DeleteFineTuneModelAsync(FineTuneRequest request);
 
     }
 }
