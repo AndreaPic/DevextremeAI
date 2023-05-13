@@ -4,16 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
-using DevextremeAI.Communication.DTO;
-using DevextremeAI.Settings;
-using Microsoft.AspNetCore.Http;
+using DevExtremeAI.OpenAIDTO;
 
-namespace DevextremeAI.Communication
+namespace DevExtremeAI.OpenAIClient
 {
 
     partial class OpenAIAPIClient
@@ -23,7 +16,7 @@ namespace DevextremeAI.Communication
         /// <summary>
         /// Returns a list of files that belong to the user's organization.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<FileDataListResponse>> GetFilesDataAsync()
         {
             ResponseDTO<FileDataListResponse> ret = new ResponseDTO<FileDataListResponse>();
@@ -47,8 +40,8 @@ namespace DevextremeAI.Communication
         /// Currently, the size of all the files uploaded by one organization can be up to 1 GB.
         /// Please contact us if you need to increase the storage limit.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">DTO with request specs.</param>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<FileData>> UploadFileAsync(UploadFileRequest request)
         {
             ResponseDTO<FileData> ret = new ResponseDTO<FileData>();
@@ -86,8 +79,8 @@ namespace DevextremeAI.Communication
         /// Currently, the size of all the files uploaded by one organization can be up to 1 GB.
         /// Please contact us if you need to increase the storage limit.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">DTO with request specs.</param>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<FileData>> UploadFineTuningFileAsync(UploadFineTuningFileRequest request)
         {
             ResponseDTO<FileData> ret = new ResponseDTO<FileData>();
@@ -120,8 +113,8 @@ namespace DevextremeAI.Communication
         /// <summary>
         /// Delete a file.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">DTO with request specs.</param>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<DeleteFileResponse>> DeleteFileAsync(DeleteFileRequest request)
         {
             ResponseDTO<DeleteFileResponse> ret = new ResponseDTO<DeleteFileResponse>();
@@ -147,7 +140,7 @@ namespace DevextremeAI.Communication
         /// <summary>
         /// Returns information about a specific file.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<FileData>> GetFileDataAsync(RetrieveFileDataRequest request)
         {
             ResponseDTO<FileData> ret = new ResponseDTO<FileData>();
@@ -169,8 +162,8 @@ namespace DevextremeAI.Communication
         /// <summary>
         /// Returns the contents of the specified file
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">DTO with request specs.</param>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<RetrieveFileContentResponse>> GetFileContentAsync(RetrieveFileContentRequest request)
         {
             ResponseDTO<RetrieveFileContentResponse> ret = new ResponseDTO<RetrieveFileContentResponse>();

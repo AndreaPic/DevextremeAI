@@ -4,25 +4,17 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
-using DevextremeAI.Communication.DTO;
-using DevextremeAI.Settings;
-using Microsoft.AspNetCore.Http;
+using DevExtremeAI.OpenAIDTO;
 
-namespace DevextremeAI.Communication
+namespace DevExtremeAI.OpenAIClient
 {
-
     partial class OpenAIAPIClient 
     {
         /// <summary>
         /// Creates an image given a prompt.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">DTO with request specs.</param>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<ImagesResponse>> CreateImageAsync(CreateImageRequest request)
         {
             ResponseDTO<ImagesResponse> ret = new ResponseDTO<ImagesResponse>();
@@ -48,8 +40,8 @@ namespace DevextremeAI.Communication
         /// <summary>
         /// Creates an edited or extended image given an original image and a prompt.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">DTO with request specs.</param>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<ImagesResponse>> CreateImageEditAsync(CreateImageEditRequest request)
         {
             ResponseDTO<ImagesResponse> ret = new ResponseDTO<ImagesResponse>();
@@ -126,8 +118,8 @@ namespace DevextremeAI.Communication
         /// <summary>
         /// Creates a variation of a given image. (BETA)
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">DTO with request specs.</param>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<ImagesResponse>> CreateImageVariationsAsync(CreateImageVariationsRequest request)
         {
             ResponseDTO<ImagesResponse> ret = new ResponseDTO<ImagesResponse>();

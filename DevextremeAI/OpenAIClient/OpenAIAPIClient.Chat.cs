@@ -1,19 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
-using DevextremeAI.Communication.DTO;
-using DevextremeAI.Settings;
-using Microsoft.AspNetCore.Http;
+using DevExtremeAI.OpenAIDTO;
 
-namespace DevextremeAI.Communication
+namespace DevExtremeAI.OpenAIClient
 {
 
     partial class OpenAIAPIClient 
@@ -22,8 +13,8 @@ namespace DevextremeAI.Communication
         /// <summary>
         /// Creates a model response for the given chat conversation.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">DTO with request specs.</param>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<CreateChatCompletionResponse>> CreateChatCompletionAsync(CreateChatCompletionRequest request)
         {
             ResponseDTO<CreateChatCompletionResponse> ret = new ResponseDTO<CreateChatCompletionResponse>();

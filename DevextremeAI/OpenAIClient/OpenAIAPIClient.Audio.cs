@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
-using DevextremeAI.Communication.DTO;
-using DevextremeAI.Settings;
-using Microsoft.AspNetCore.Http;
+using DevExtremeAI.OpenAIDTO;
 
-namespace DevextremeAI.Communication
+
+namespace DevExtremeAI.OpenAIClient
 {
 
     partial class OpenAIAPIClient 
@@ -22,8 +14,8 @@ namespace DevextremeAI.Communication
         /// <summary>
         /// Transcribes audio into the input language.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">DTO with request specs.</param>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<CreateTranscriptionsResponse>> CreateTranscriptionsAsync(CreateTranscriptionsRequest request)
         {
             ResponseDTO<CreateTranscriptionsResponse> ret = new ResponseDTO<CreateTranscriptionsResponse>();
@@ -91,8 +83,8 @@ namespace DevextremeAI.Communication
         /// <summary>
         /// Translates audio into into English.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">DTO with request specs.</param>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<CreateTranslationsResponse>> CreateTranslationsAsync(CreateTranslationsRequest request)
         {
             ResponseDTO<CreateTranslationsResponse> ret = new ResponseDTO<CreateTranslationsResponse>();

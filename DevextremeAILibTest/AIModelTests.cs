@@ -1,5 +1,6 @@
-using DevextremeAI.Communication.APIClient;
-using DevextremeAI.Settings;
+using DevExtremeAI.OpenAIDTO;
+using DevExtremeAI.OpenAIClient;
+using DevExtremeAI.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

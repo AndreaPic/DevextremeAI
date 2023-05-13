@@ -8,9 +8,9 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using DevextremeAI.Utils;
+using DevExtremeAI.Utils;
 
-namespace DevextremeAI.Communication.DTO
+namespace DevExtremeAI.OpenAIDTO
 {
     public class CreateChatCompletionRequest
     {

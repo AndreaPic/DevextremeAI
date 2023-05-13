@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
-using DevextremeAI.Communication.APIClient;
-using DevextremeAI.Settings;
-using Microsoft.AspNetCore.Http;
+using DevExtremeAI.OpenAIDTO;
+using DevExtremeAI.Settings;
 
-namespace DevextremeAI.Communication
+namespace DevExtremeAI.OpenAIClient
 {
 
     public sealed partial class OpenAIAPIClient : IOpenAIAPIClient
@@ -39,13 +35,8 @@ namespace DevextremeAI.Communication
         public static OpenAIAPIClient CreateDefault() => new();
         private OpenAIAPIClient()
         {
-
+            
         }
-
-
-
-
-
 
         private StringContent CreateJsonStringContent(object request)
         {

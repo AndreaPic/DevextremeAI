@@ -1,7 +1,7 @@
 
-using DevextremeAI.Communication;
-using DevextremeAI.Communication.APIClient;
-using DevextremeAI.Settings;
+using DevExtremeAI.OpenAIDTO;
+using DevExtremeAI.OpenAIClient;
+using DevExtremeAI.Settings;
 
 namespace DevextremeAIWebApp
 {

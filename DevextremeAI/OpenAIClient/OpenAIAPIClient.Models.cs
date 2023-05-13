@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
-using DevextremeAI.Communication.DTO;
-using DevextremeAI.Settings;
-using Microsoft.AspNetCore.Http;
+using DevExtremeAI.OpenAIDTO;
 
-namespace DevextremeAI.Communication
+namespace DevExtremeAI.OpenAIClient
 {
 
     partial class OpenAIAPIClient 
@@ -25,7 +17,7 @@ namespace DevextremeAI.Communication
         /// You can refer to the Models documentation to understand what models are available and the differences between them.
         /// Lists the currently available models, and provides basic information about each one such as the owner and availability.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<ListModelsResponse>> GetModelsAsync()
         {
             ResponseDTO<ListModelsResponse> ret = new ResponseDTO<ListModelsResponse>();
@@ -48,7 +40,7 @@ namespace DevextremeAI.Communication
         /// Retrieves a model instance, providing basic information about the model such as the owner and permissioning.
         /// </summary>
         /// <param name="modelID">The ID of the model to use for this request</param>
-        /// <returns></returns>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<Model>> GetModelAsync(string modelID)
         {
             ResponseDTO<Model> ret = new ResponseDTO<Model>();

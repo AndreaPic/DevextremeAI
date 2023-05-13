@@ -13,7 +13,7 @@ using System.Xml.Linq;
 using static System.Formats.Asn1.AsnWriter;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace DevextremeAI.Communication.DTO
+namespace DevExtremeAI.OpenAIDTO
 {
     public class CreateFineTuneRequest
     {
@@ -147,7 +147,7 @@ namespace DevextremeAI.Communication.DTO
         public string FineTunedModel { get; set; }
 
         [JsonPropertyName("hyperparams")]
-        public List<HyperParam>? HyperParams { get; set; }
+        public HyperParam? HyperParams { get; set; }
 
         [JsonPropertyName("organization_id")]
         public string OrganizationId { get; set; }
@@ -177,26 +177,26 @@ namespace DevextremeAI.Communication.DTO
         public long CreatedAt { get; set; }
 
         [JsonPropertyName("level")]
-        public long Level { get; set; }
+        public string Level { get; set; }
 
         [JsonPropertyName("message")]
-        public long Message { get; set; }
+        public string Message { get; set; }
 
     }
 
     public class HyperParam
     {
         [JsonPropertyName("batch_size")]
-        public int BatchSize { get; set; }
+        public int? BatchSize { get; set; }
 
         [JsonPropertyName("learning_rate_multiplier")]
-        public double LearningRateMultiplier { get; set; }
+        public double? LearningRateMultiplier { get; set; }
 
         [JsonPropertyName("n_epochs")]
-        public int NEpochs { get; set; }
+        public int? NEpochs { get; set; }
 
         [JsonPropertyName("prompt_loss_weight")]
-        public double PromptLossWeight { get; set; }
+        public double? PromptLossWeight { get; set; }
 
     }
 

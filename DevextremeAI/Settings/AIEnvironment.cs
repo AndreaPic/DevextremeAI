@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace DevextremeAI.Settings
+namespace DevExtremeAI.Settings
 {
     public interface IAIEnvironment
     {
@@ -15,7 +15,13 @@ namespace DevextremeAI.Settings
         public string GetApiKey();
     }
 
-    public class AIEnvironment : IAIEnvironment
+    public abstract class BaseAIEnvironment: IAIEnvironment
+    {
+        public abstract string? GetOrganization();
+        public abstract string? GetApiKey();
+    }
+
+    public class AIEnvironment : BaseAIEnvironment
     {
         private IConfiguration CurrentConfiguration { get; set; }
         public AIEnvironment(IConfiguration configuration)
@@ -24,12 +30,12 @@ namespace DevextremeAI.Settings
 
         }
 
-        public string? GetOrganization()
+        public override string? GetOrganization()
         {
             return CurrentConfiguration.GetValue<string>("OPENAI-ORGANIZATION");
         }
 
-        public string? GetApiKey()
+        public override string? GetApiKey()
         {
             return CurrentConfiguration.GetValue<string>("OPENAI_API_KEY");
         }

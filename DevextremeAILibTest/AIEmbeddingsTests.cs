@@ -1,12 +1,12 @@
-using DevextremeAI.Settings;
+using DevExtremeAI.Settings;
 using DevExtremeToys.JSon;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using Newtonsoft.Json;
-using DevextremeAI.Communication.DTO;
-using DevextremeAI.Communication.APIClient;
+using DevExtremeAI.OpenAIDTO;
+using DevExtremeAI.OpenAIClient;
 
 namespace DevextremeAILibTest
 {
@@ -32,10 +32,10 @@ namespace DevextremeAILibTest
                 request.AddInput("The food was delicious and the waiter very kind");
 
                 var completionResponse = await openAiapiClient.CreateEmbeddingsAsync(request);
-                Assert.NotNull(completionResponse);
-                Assert.NotNull(completionResponse.Data);
-                Assert.NotNull(completionResponse.Object);
-                Assert.NotNull(completionResponse.Usage);
+                Assert.False(completionResponse.HasError);
+                Assert.NotNull(completionResponse.OpenAIResponse.Data);
+                Assert.NotNull(completionResponse.OpenAIResponse.Object);
+                Assert.NotNull(completionResponse.OpenAIResponse.Usage);
             }
         }
     }

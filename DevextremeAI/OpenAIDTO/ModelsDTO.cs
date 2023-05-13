@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace DevextremeAI.Communication.DTO
+namespace DevExtremeAI.OpenAIDTO
 {
     public class Model
     {

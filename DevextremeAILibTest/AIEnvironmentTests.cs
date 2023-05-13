@@ -1,4 +1,4 @@
-using DevextremeAI.Settings;
+using DevExtremeAI.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

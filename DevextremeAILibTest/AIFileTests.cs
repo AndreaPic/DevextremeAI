@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Text;
-using DevextremeAI.Settings;
+using DevExtremeAI.Settings;
 using DevExtremeToys.JSon;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,8 +8,9 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using DevExtremeToys.Serialization;
 using Newtonsoft.Json;
-using DevextremeAI.Communication.DTO;
-using DevextremeAI.Communication.APIClient;
+using DevExtremeAI.OpenAIDTO;
+using DevExtremeAI.OpenAIClient;
+
 
 namespace DevextremeAILibTest
 {
@@ -25,7 +26,7 @@ namespace DevextremeAILibTest
         private const string fileDataTestName = "TestFile.jsonl";
 
         [Fact]
-        public async Task FileNOTuningTest()
+        public async Task FileTest()
         {
 
             using (var scope = _factory.Services.CreateScope())
@@ -71,12 +72,11 @@ namespace DevextremeAILibTest
 
                 Assert.False(fileDataResponse.HasError);
 
-                //var fileContentResponse = await openAiapiClient.GetFileContentAsync(new RetrieveFileContentRequest()
-                //{
-                //    FileId = fileDataResponse.OpenAIResponse.FileId
-                //});
-                //Assert.False(fileContentResponse.HasError);
-                //Assert.NotNull(fileContentResponse.OpenAIResponse.FileContent);
+                var fileContentResponse = await openAiapiClient.GetFileContentAsync(new RetrieveFileContentRequest()
+                {
+                    FileId = fileDataResponse.OpenAIResponse.FileId
+                });
+                Assert.True(fileContentResponse.HasError);
 
                 deleteResponse = await openAiapiClient.DeleteFileAsync(new DeleteFileRequest() { FileId = fileDataResponse.OpenAIResponse.FileId });
                 Assert.False(deleteResponse.HasError);
