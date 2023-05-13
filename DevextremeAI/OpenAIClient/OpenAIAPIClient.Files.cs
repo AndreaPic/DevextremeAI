@@ -20,19 +20,29 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<FileDataListResponse>> GetFilesDataAsync()
         {
             ResponseDTO<FileDataListResponse> ret = new ResponseDTO<FileDataListResponse>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
-            var httpResponse = await httpClient.GetAsync(filesPath);
-            if (httpResponse.IsSuccessStatusCode)
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
             {
-                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FileDataListResponse>();
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
+                var httpResponse = await httpClient.GetAsync(filesPath);
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FileDataListResponse>();
+                }
+                else
+                {
+                    ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
+                }
+                return ret;
             }
-            else
+            finally
             {
-                ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
             }
-            return ret;
         }
 
         /// <summary>
@@ -45,32 +55,42 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<FileData>> UploadFileAsync(UploadFileRequest request)
         {
             ResponseDTO<FileData> ret = new ResponseDTO<FileData>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
-
-            using (var content = new MultipartFormDataContent())
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
             {
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-                content.Add(new ByteArrayContent(request.File), "file", request.FileName); //TODO: add enum for file type
-
-                if (!string.IsNullOrEmpty(request.Purpose))
+                using (var content = new MultipartFormDataContent())
                 {
-                    content.Add(new StringContent(request.Purpose), "purpose");
+
+                    content.Add(new ByteArrayContent(request.File), "file", request.FileName); //TODO: add enum for file type
+
+                    if (!string.IsNullOrEmpty(request.Purpose))
+                    {
+                        content.Add(new StringContent(request.Purpose), "purpose");
+                    }
+
+
+                    var httpResponse = await httpClient.PostAsync(filesPath, content);
+                    if (httpResponse.IsSuccessStatusCode)
+                    {
+                        ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FileData>();
+                    }
+                    else
+                    {
+                        ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
+                    }
+
+                    return ret;
                 }
-
-
-                var httpResponse = await httpClient.PostAsync(filesPath, content);
-                if (httpResponse.IsSuccessStatusCode)
+            }
+            finally
+            {
+                if (doDispose)
                 {
-                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FileData>();
+                    httpClient.Dispose();
                 }
-                else
-                {
-                    ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
-                }
-
-                return ret;
             }
         }
 
@@ -84,29 +104,39 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<FileData>> UploadFineTuningFileAsync(UploadFineTuningFileRequest request)
         {
             ResponseDTO<FileData> ret = new ResponseDTO<FileData>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
-
-            using (var content = new MultipartFormDataContent())
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
             {
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-                content.Add(new ByteArrayContent(request.File), "file", request.FileName); //TODO: add enum for file type
-
-                content.Add(new StringContent(request.Purpose), "purpose");
-
-
-                var httpResponse = await httpClient.PostAsync(filesPath, content);
-                if (httpResponse.IsSuccessStatusCode)
+                using (var content = new MultipartFormDataContent())
                 {
-                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FileData>();
-                }
-                else
-                {
-                    ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
-                }
 
-                return ret;
+                    content.Add(new ByteArrayContent(request.File), "file", request.FileName); //TODO: add enum for file type
+
+                    content.Add(new StringContent(request.Purpose), "purpose");
+
+
+                    var httpResponse = await httpClient.PostAsync(filesPath, content);
+                    if (httpResponse.IsSuccessStatusCode)
+                    {
+                        ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FileData>();
+                    }
+                    else
+                    {
+                        ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
+                    }
+
+                    return ret;
+                }
+            }
+            finally
+            {
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
             }
         }
 
@@ -118,23 +148,33 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<DeleteFileResponse>> DeleteFileAsync(DeleteFileRequest request)
         {
             ResponseDTO<DeleteFileResponse> ret = new ResponseDTO<DeleteFileResponse>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
-
-            var httpResponse = await httpClient.DeleteAsync($"{filesPath}/{request.FileId}");
-
-
-            if (httpResponse.IsSuccessStatusCode)
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
             {
-                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<DeleteFileResponse>();
-            }
-            else
-            {
-                ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
-            }
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-            return ret;
+                var httpResponse = await httpClient.DeleteAsync($"{filesPath}/{request.FileId}");
+
+
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<DeleteFileResponse>();
+                }
+                else
+                {
+                    ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
+                }
+
+                return ret;
+            }
+            finally
+            {
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
+            }
         }
 
         /// <summary>
@@ -144,19 +184,29 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<FileData>> GetFileDataAsync(RetrieveFileDataRequest request)
         {
             ResponseDTO<FileData> ret = new ResponseDTO<FileData>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
-            var httpResponse = await httpClient.GetAsync($"{filesPath}/{request.FileId}");
-            if (httpResponse.IsSuccessStatusCode)
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
             {
-                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FileData>();
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
+                var httpResponse = await httpClient.GetAsync($"{filesPath}/{request.FileId}");
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FileData>();
+                }
+                else
+                {
+                    ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
+                }
+                return ret;
             }
-            else
+            finally
             {
-                ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
             }
-            return ret;
         }
 
         /// <summary>
@@ -167,20 +217,30 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<RetrieveFileContentResponse>> GetFileContentAsync(RetrieveFileContentRequest request)
         {
             ResponseDTO<RetrieveFileContentResponse> ret = new ResponseDTO<RetrieveFileContentResponse>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
-            var httpResponse = await httpClient.GetAsync($"{filesPath}/{request.FileId}/content");
-            if (httpResponse.IsSuccessStatusCode)
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
             {
-                ret.OpenAIResponse = new RetrieveFileContentResponse();
-                ret.OpenAIResponse.FileContent = await httpResponse.Content.ReadAsByteArrayAsync();
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
+                var httpResponse = await httpClient.GetAsync($"{filesPath}/{request.FileId}/content");
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    ret.OpenAIResponse = new RetrieveFileContentResponse();
+                    ret.OpenAIResponse.FileContent = await httpResponse.Content.ReadAsByteArrayAsync();
+                }
+                else
+                {
+                    ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
+                }
+                return ret;
             }
-            else
+            finally
             {
-                ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
             }
-            return ret;
         }
 
     }

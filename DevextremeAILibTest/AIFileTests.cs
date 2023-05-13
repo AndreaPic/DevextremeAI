@@ -28,7 +28,6 @@ namespace DevextremeAILibTest
         [Fact]
         public async Task FileTest()
         {
-
             using (var scope = _factory.Services.CreateScope())
             {
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
@@ -45,9 +44,6 @@ namespace DevextremeAILibTest
                     deleteResponse = await openAiapiClient.DeleteFileAsync(new DeleteFileRequest() { FileId = testFileData.FileId });
                     Assert.False(deleteResponse.HasError);
                 }
-
-                var x = Resources.Resource.TestFileData.ToUTF8ByteArray();
-                var y = Encoding.UTF8.GetBytes(Resources.Resource.TestFileData);
 
                 var uploadResponse = await openAiapiClient.UploadFileAsync(new UploadFileRequest()
                     {
@@ -78,9 +74,13 @@ namespace DevextremeAILibTest
                 });
                 Assert.True(fileContentResponse.HasError);
 
+                Task.Delay(3000);
+
                 deleteResponse = await openAiapiClient.DeleteFileAsync(new DeleteFileRequest() { FileId = fileDataResponse.OpenAIResponse.FileId });
                 Assert.False(deleteResponse.HasError);
 
+                TestUtility testUtility = new TestUtility(_factory);
+                await testUtility.ClearAllTestFiles();
 
             }
         }

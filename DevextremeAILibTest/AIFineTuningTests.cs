@@ -23,12 +23,11 @@ namespace DevextremeAILibTest
             _factory = factory;
         }
 
-        private const string fineTuningDataFleName = "Trivia-Tune.json"; 
-        
+        private const string fineTuningDataFleName = "Test-Trivia-Tune.json";
+
         [Fact]
         public async Task FileTuningWithCancelTest()
         {
-
             using (var scope = _factory.Services.CreateScope())
             {
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
@@ -86,7 +85,6 @@ namespace DevextremeAILibTest
         [Fact]
         public async Task FileTuningWithDeleteTest()
         {
-
             using (var scope = _factory.Services.CreateScope())
             {
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
@@ -118,7 +116,7 @@ namespace DevextremeAILibTest
                 var createFineTuneJobResponse = await openAiapiClient.CreateFineTuneJobAsync(new CreateFineTuneRequest()
                 {
                     TrainingFile = uploadResponse.OpenAIResponse.FileId,
-                    Suffix = "andrea-dev-italy-trivia-tune-2",
+                    Suffix = "andrea-dev-italy-trivia-tune",
                 });
                 Assert.False(createFineTuneJobResponse.HasError);
 
@@ -138,19 +136,11 @@ namespace DevextremeAILibTest
                 var fineTuneData = await openAiapiClient.GetFineTuneJobDataAsync(new FineTuneRequest() { FineTuneId = createFineTuneJobResponse.OpenAIResponse.Id });
                 Assert.False(fineTuneData.HasError);
 
-                //CreateCompletionRequest createCompletionRequest = new CreateCompletionRequest();
-                //createCompletionRequest.Model = fineTuneData.OpenAIResponse.FineTunedModel;
-                //createCompletionRequest.MaxTokens = 200;
-                //createCompletionRequest.Temperature = 0;
-
-                //createCompletionRequest.AddCompletionPrompt("What is measured in \"Mickeys\"?");
-
-                //var completionResponse = await openAiapiClient.CreateCompletionAsync(createCompletionRequest);
-                //Assert.False(completionResponse.HasError);
-
                 var removed = await openAiapiClient.DeleteFineTuneModelAsync(new FineTuneRequest() { FineTuneId = fineTuneData.OpenAIResponse.FineTunedModel });
                 Assert.False(removed.HasError);
 
+                TestUtility testUtility = new TestUtility(_factory);
+                await testUtility.ClearAllTestJobsAndModels();
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Json;
 using DevExtremeAI.OpenAIDTO;
 
@@ -11,6 +12,7 @@ namespace DevExtremeAI.OpenAIClient
     partial class OpenAIAPIClient 
     {
 
+
         /// <summary>
         /// Transcribes audio into the input language.
         /// </summary>
@@ -19,64 +21,73 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<CreateTranscriptionsResponse>> CreateTranscriptionsAsync(CreateTranscriptionsRequest request)
         {
             ResponseDTO<CreateTranscriptionsResponse> ret = new ResponseDTO<CreateTranscriptionsResponse>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
-
-            using (var content = new MultipartFormDataContent())
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
             {
-                content.Add(new StringContent(request.Model), "model");
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-                content.Add(new ByteArrayContent(request.File), "file", "audio.mp3"); //TODO: add enum for file type
-
-                if (!string.IsNullOrEmpty(request.Prompt))
+                using (var content = new MultipartFormDataContent())
                 {
-                    content.Add(new StringContent(request.Prompt), "prompt");
-                }
+                    content.Add(new StringContent(request.Model), "model");
 
-                if (request.ResponseFormat != null)
-                {
-                    switch (request.ResponseFormat.Value)
+                    content.Add(new ByteArrayContent(request.File), "file", "audio.mp3"); //TODO: add enum for file type
+
+                    if (!string.IsNullOrEmpty(request.Prompt))
                     {
-                        case CreateTranscriptionsRequestEnum.Json:
-                            content.Add(new StringContent("json"), "response_format");
-                            break;
-                        case CreateTranscriptionsRequestEnum.Text:
-                            content.Add(new StringContent("text"), "response_format");
-                            break;
-                        case CreateTranscriptionsRequestEnum.Srt:
-                            content.Add(new StringContent("srt"), "response_format");
-                            break;
-                        case CreateTranscriptionsRequestEnum.VerboseJson:
-                            content.Add(new StringContent("verbose_json"), "response_format");
-                            break;
-                        case CreateTranscriptionsRequestEnum.Vtt:
-                            content.Add(new StringContent("vtt"), "response_format");
-                            break;
+                        content.Add(new StringContent(request.Prompt), "prompt");
                     }
-                }
 
-                if (request.Temperature!=null)
-                {
-                    content.Add(new StringContent(request.Temperature.ToString()), "temperature");
-                }
+                    if (request.ResponseFormat != null)
+                    {
+                        switch (request.ResponseFormat.Value)
+                        {
+                            case CreateTranscriptionsRequestEnum.Json:
+                                content.Add(new StringContent("json"), "response_format");
+                                break;
+                            case CreateTranscriptionsRequestEnum.Text:
+                                content.Add(new StringContent("text"), "response_format");
+                                break;
+                            case CreateTranscriptionsRequestEnum.Srt:
+                                content.Add(new StringContent("srt"), "response_format");
+                                break;
+                            case CreateTranscriptionsRequestEnum.VerboseJson:
+                                content.Add(new StringContent("verbose_json"), "response_format");
+                                break;
+                            case CreateTranscriptionsRequestEnum.Vtt:
+                                content.Add(new StringContent("vtt"), "response_format");
+                                break;
+                        }
+                    }
 
-                if (!string.IsNullOrEmpty(request.Language))
-                {
-                    content.Add(new StringContent(request.Language), "language");
-                }
+                    if (request.Temperature!=null)
+                    {
+                        content.Add(new StringContent(request.Temperature.ToString()), "temperature");
+                    }
 
-                var httpResponse = await httpClient.PostAsync("audio/transcriptions", content);
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<CreateTranscriptionsResponse>();
-                }
-                else
-                {
-                    ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
-                }
+                    if (!string.IsNullOrEmpty(request.Language))
+                    {
+                        content.Add(new StringContent(request.Language), "language");
+                    }
 
-                return ret;
+                    var httpResponse = await httpClient.PostAsync("audio/transcriptions", content);
+                    if (httpResponse.IsSuccessStatusCode)
+                    {
+                        ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<CreateTranscriptionsResponse>();
+                    }
+                    else
+                    {
+                        ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
+                    }
+                    return ret;
+                }
+            }
+            finally
+            {
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
             }
         }
 
@@ -88,60 +99,70 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<CreateTranslationsResponse>> CreateTranslationsAsync(CreateTranslationsRequest request)
         {
             ResponseDTO<CreateTranslationsResponse> ret = new ResponseDTO<CreateTranslationsResponse>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
-
-            using (var content = new MultipartFormDataContent())
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
             {
-                content.Add(new StringContent(request.Model), "model");
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-                content.Add(new ByteArrayContent(request.File), "file", "audio.mp3"); //TODO: add enum for file type
-
-                if (!string.IsNullOrEmpty(request.Prompt))
+                using (var content = new MultipartFormDataContent())
                 {
-                    content.Add(new StringContent(request.Prompt), "prompt");
-                }
+                    content.Add(new StringContent(request.Model), "model");
 
-                if (request.ResponseFormat != null)
-                {
-                    switch (request.ResponseFormat.Value)
+                    content.Add(new ByteArrayContent(request.File), "file", "audio.mp3"); //TODO: add enum for file type
+
+                    if (!string.IsNullOrEmpty(request.Prompt))
                     {
-                        case CreateTranscriptionsRequestEnum.Json:
-                            content.Add(new StringContent("json"), "response_format");
-                            break;
-                        case CreateTranscriptionsRequestEnum.Text:
-                            content.Add(new StringContent("text"), "response_format");
-                            break;
-                        case CreateTranscriptionsRequestEnum.Srt:
-                            content.Add(new StringContent("srt"), "response_format");
-                            break;
-                        case CreateTranscriptionsRequestEnum.VerboseJson:
-                            content.Add(new StringContent("verbose_json"), "response_format");
-                            break;
-                        case CreateTranscriptionsRequestEnum.Vtt:
-                            content.Add(new StringContent("vtt"), "response_format");
-                            break;
+                        content.Add(new StringContent(request.Prompt), "prompt");
                     }
-                }
 
-                if (request.Temperature != null)
+                    if (request.ResponseFormat != null)
+                    {
+                        switch (request.ResponseFormat.Value)
+                        {
+                            case CreateTranscriptionsRequestEnum.Json:
+                                content.Add(new StringContent("json"), "response_format");
+                                break;
+                            case CreateTranscriptionsRequestEnum.Text:
+                                content.Add(new StringContent("text"), "response_format");
+                                break;
+                            case CreateTranscriptionsRequestEnum.Srt:
+                                content.Add(new StringContent("srt"), "response_format");
+                                break;
+                            case CreateTranscriptionsRequestEnum.VerboseJson:
+                                content.Add(new StringContent("verbose_json"), "response_format");
+                                break;
+                            case CreateTranscriptionsRequestEnum.Vtt:
+                                content.Add(new StringContent("vtt"), "response_format");
+                                break;
+                        }
+                    }
+
+                    if (request.Temperature != null)
+                    {
+                        content.Add(new StringContent(request.Temperature.ToString()), "temperature");
+                    }
+
+
+                    var httpResponse = await httpClient.PostAsync("audio/translations", content);
+                    if (httpResponse.IsSuccessStatusCode)
+                    {
+                        ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<CreateTranslationsResponse>();
+                    }
+                    else
+                    {
+                        ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
+                    }
+
+                    return ret;
+                }
+            }
+            finally
+            {
+                if (doDispose)
                 {
-                    content.Add(new StringContent(request.Temperature.ToString()), "temperature");
+                    httpClient.Dispose();
                 }
-
-
-                var httpResponse = await httpClient.PostAsync("audio/translations", content);
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<CreateTranslationsResponse>();
-                }
-                else
-                {
-                    ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
-                }
-
-                return ret;
             }
         }
     }

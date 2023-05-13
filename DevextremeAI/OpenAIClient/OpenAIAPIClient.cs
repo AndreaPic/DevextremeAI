@@ -67,5 +67,22 @@ namespace DevExtremeAI.OpenAIClient
                 headers.Add("OpenAI-Organization", orgHeader);
             }
         }
+
+        internal static string HttpClientName = "DevextremeAI";
+        private HttpClient CreateHttpClient(out bool doDispose)
+        {
+            HttpClient httpClient = null;
+            if (HttpClientFactory != null)
+            {
+                httpClient = HttpClientFactory.CreateClient(HttpClientName);
+                doDispose = false;
+            }
+            else
+            {
+                httpClient = new HttpClient();
+                doDispose = true;
+            }
+            return httpClient;
+        }
     }
 }

@@ -148,51 +148,61 @@ namespace DevExtremeAI.OpenAIClient
         /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async IAsyncEnumerable<Event> GetFineTuneEventStreamAsync(FineTuneRequest request)
         {
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
-
-            var httpResponse = await httpClient.GetAsync($"fine-tunes/{request.FineTuneId}/events?stream=true");
-            if (httpResponse.IsSuccessStatusCode)
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
             {
-                await using var stream = await httpResponse.Content.ReadAsStreamAsync();
-                using var reader = new StreamReader(stream);
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-                bool stop = false;
-                do
+                var httpResponse = await httpClient.GetAsync($"fine-tunes/{request.FineTuneId}/events?stream=true");
+                if (httpResponse.IsSuccessStatusCode)
                 {
-                    var line = await reader.ReadLineAsync();
-                    if (string.IsNullOrWhiteSpace(line))
+                    await using var stream = await httpResponse.Content.ReadAsStreamAsync();
+                    using var reader = new StreamReader(stream);
+
+                    bool stop = false;
+                    do
                     {
-                        stop = true;
-                    }
-                    else
-                    {
-                        if (line.StartsWith(streamLineBegin))
+                        var line = await reader.ReadLineAsync();
+                        if (string.IsNullOrWhiteSpace(line))
                         {
-                            line = line.Substring(streamLineBegin.Length);
-                            if (line != streamDoneLine)
-                            {
-                                yield return JsonSerializer.Deserialize<Event>(line);
-                                stop = false;
-                            }
-                            else
-                            {
-                                stop = true;
-                            }
+                            stop = true;
                         }
                         else
                         {
-                            //TODO: what is this?
-                            stop = false;
+                            if (line.StartsWith(streamLineBegin))
+                            {
+                                line = line.Substring(streamLineBegin.Length);
+                                if (line != streamDoneLine)
+                                {
+                                    yield return JsonSerializer.Deserialize<Event>(line);
+                                    stop = false;
+                                }
+                                else
+                                {
+                                    stop = true;
+                                }
+                            }
+                            else
+                            {
+                                //TODO: what is this?
+                                stop = false;
+                            }
                         }
-                    }
-                } while (!stop);
+                    } while (!stop);
+                }
+                else
+                {
+                    ErrorResponse error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                    //TODO: notify the error in safe way
+                }
             }
-            else
+            finally
             {
-                ErrorResponse error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
-                //TODO: notify the error in safe way
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
             }
         }
 
@@ -204,20 +214,30 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<DeleteFineTuneModelResponse>> DeleteFineTuneModelAsync(FineTuneRequest request)
         {
             ResponseDTO<DeleteFineTuneModelResponse> ret = new ResponseDTO<DeleteFineTuneModelResponse>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
+            {
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-            var httpResponse = await httpClient.DeleteAsync($"models/{request.FineTuneId}");
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<DeleteFineTuneModelResponse>();
+                var httpResponse = await httpClient.DeleteAsync($"models/{request.FineTuneId}");
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<DeleteFineTuneModelResponse>();
+                }
+                else
+                {
+                    ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                }
+                return ret;
             }
-            else
+            finally
             {
-                ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
             }
-            return ret;
         }
     }
 }

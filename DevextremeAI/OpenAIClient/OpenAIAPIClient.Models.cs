@@ -21,19 +21,29 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<ListModelsResponse>> GetModelsAsync()
         {
             ResponseDTO<ListModelsResponse> ret = new ResponseDTO<ListModelsResponse>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
-            var httpResponse = await httpClient.GetAsync(modelsPath);
-            if (httpResponse.IsSuccessStatusCode)
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
             {
-                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<ListModelsResponse>();
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
+                var httpResponse = await httpClient.GetAsync(modelsPath);
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<ListModelsResponse>();
+                }
+                else
+                {
+                    ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                }
+                return ret;
             }
-            else
+            finally
             {
-                ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
             }
-            return ret;
         }
 
         /// <summary>
@@ -44,19 +54,29 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<Model>> GetModelAsync(string modelID)
         {
             ResponseDTO<Model> ret = new ResponseDTO<Model>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
-            var httpResponse = await httpClient.GetAsync($"models/{modelID}");
-            if (httpResponse.IsSuccessStatusCode)
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
             {
-                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<Model>();
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
+                var httpResponse = await httpClient.GetAsync($"models/{modelID}");
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<Model>();
+                }
+                else
+                {
+                    ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                }
+                return ret;
             }
-            else
+            finally
             {
-                ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
             }
-            return ret;
         }
 
 

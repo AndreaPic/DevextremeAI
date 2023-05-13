@@ -14,6 +14,7 @@ namespace DevextremeAIWebApp
 
             // Add services to the container.
 
+            //builder.Services.AddHttpClient("DevextremeAI");
             builder.Services.AddHttpClient();
             builder.Services.AddSingleton<IAIEnvironment, AIEnvironment>();
             builder.Services.AddTransient<IOpenAIAPIClient, OpenAIAPIClient>();

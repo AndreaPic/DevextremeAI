@@ -18,24 +18,33 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<CreateEmbeddingResponse>> CreateEmbeddingsAsync(CreateEmbeddingsRequest request)
         {
             ResponseDTO<CreateEmbeddingResponse> ret = new ResponseDTO<CreateEmbeddingResponse>();
-            
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-            var jsonContent = CreateJsonStringContent(request);
-
-            var httpResponse = await httpClient.PostAsync($"embeddings", jsonContent);
-            if (httpResponse.IsSuccessStatusCode)
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
             {
-                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<CreateEmbeddingResponse>();
-            }
-            else
-            {
-                ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
-            }
-            return ret;
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
+                var jsonContent = CreateJsonStringContent(request);
+
+                var httpResponse = await httpClient.PostAsync($"embeddings", jsonContent);
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<CreateEmbeddingResponse>();
+                }
+                else
+                {
+                    ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                }
+                return ret;
+            }
+            finally
+            {
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
+            }
         }
 
     }

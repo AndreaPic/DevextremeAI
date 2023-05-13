@@ -18,23 +18,33 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<CreateChatCompletionResponse>> CreateChatCompletionAsync(CreateChatCompletionRequest request)
         {
             ResponseDTO<CreateChatCompletionResponse> ret = new ResponseDTO<CreateChatCompletionResponse>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
-
-            var jsonContent = CreateJsonStringContent(request);
-
-            var httpResponse = await httpClient.PostAsync($"chat/completions", jsonContent);
-            if (httpResponse.IsSuccessStatusCode)
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
             {
-                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<CreateChatCompletionResponse>();
-            }
-            else
-            {
-                ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
-            }
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-            return ret;
+                var jsonContent = CreateJsonStringContent(request);
+
+                var httpResponse = await httpClient.PostAsync($"chat/completions", jsonContent);
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<CreateChatCompletionResponse>();
+                }
+                else
+                {
+                    ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                }
+
+                return ret;
+            }
+            finally
+            {
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
+            }
         }
 
     }
