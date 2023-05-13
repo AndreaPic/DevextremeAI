@@ -164,7 +164,7 @@ namespace DevExtremeAI.OpenAIClient
                     var line = await reader.ReadLineAsync();
                     if (string.IsNullOrWhiteSpace(line))
                     {
-                        stop = false;
+                        stop = true;
                     }
                     else
                     {

@@ -118,7 +118,7 @@ namespace DevextremeAILibTest
                 var createFineTuneJobResponse = await openAiapiClient.CreateFineTuneJobAsync(new CreateFineTuneRequest()
                 {
                     TrainingFile = uploadResponse.OpenAIResponse.FileId,
-                    Suffix = "andrea-dev-italy-trivia-tune",
+                    Suffix = "andrea-dev-italy-trivia-tune-2",
                 });
                 Assert.False(createFineTuneJobResponse.HasError);
 

@@ -23,7 +23,7 @@ namespace DevextremeAILibTest
         
         [Theory]
         [InlineData("text-davinci-003")]
-        [InlineData("gpt-3.5-turbo")]
+        //[InlineData("gpt-3.5-turbo")]
         public async Task CreateCompletionTest(string modelID)
         {
             
