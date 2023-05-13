@@ -28,7 +28,7 @@ namespace DevextremeAILibTest
             {
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
                 CreateTranscriptionsRequest request = new CreateTranscriptionsRequest();
-                request.ModelID = modelID;
+                request.Model = modelID;
                 request.File = Resources.Resource.Test;
                 request.Language = "it";
 
@@ -48,7 +48,7 @@ namespace DevextremeAILibTest
             {
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
                 CreateTranslationsRequest request = new CreateTranslationsRequest();
-                request.ModelID = modelID;
+                request.Model = modelID;
                 request.File = Resources.Resource.Test;
 
                 var response = await openAiapiClient.CreateTranslationsAsync(request);

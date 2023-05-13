@@ -19,7 +19,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// ID of the model to use. Currently, only `gpt-3.5-turbo` and `gpt-3.5-turbo-0301` are supported.
         /// </summary>
         [JsonPropertyName("model")]
-        public string ModelID { get; set; }
+        public string Model { get; set; }
 
         /// <summary>
         /// A list of messages describing the conversation so far.

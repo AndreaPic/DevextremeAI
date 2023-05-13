@@ -46,7 +46,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// The default is "curie"
         /// </summary>
         [JsonPropertyName("model")]
-        public string? ModelId { get; set; }
+        public string? Model { get; set; }
 
         /// <summary>
         /// The number of epochs to train the model for.
@@ -135,7 +135,7 @@ namespace DevExtremeAI.OpenAIDTO
         public string Object { get; set; }
 
         [JsonPropertyName("model")]
-        public string ModelId { get; set; }
+        public string Model { get; set; }
 
         [JsonPropertyName("created_at")]
         public long CreatedAt { get; set; }

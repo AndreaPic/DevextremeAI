@@ -30,7 +30,7 @@ namespace DevextremeAILibTest
             {
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
                 CreateChatCompletionRequest createCompletionRequest = new CreateChatCompletionRequest();
-                createCompletionRequest.ModelID = modelID;
+                createCompletionRequest.Model = modelID;
                 createCompletionRequest.Temperature = 0.9;
 
                 createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
@@ -47,7 +47,7 @@ namespace DevextremeAILibTest
 
 
                 createCompletionRequest = new CreateChatCompletionRequest();
-                createCompletionRequest.ModelID = modelID;
+                createCompletionRequest.Model = modelID;
                 createCompletionRequest.Temperature = 0.9;
 
                 createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
@@ -74,7 +74,7 @@ namespace DevextremeAILibTest
             {
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
                 CreateChatCompletionRequest createCompletionRequest = new CreateChatCompletionRequest();
-                createCompletionRequest.ModelID = modelID;
+                createCompletionRequest.Model = modelID;
                 createCompletionRequest.Temperature = 1.4;
 
                 createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
@@ -91,7 +91,7 @@ namespace DevextremeAILibTest
 
 
                 createCompletionRequest = new CreateChatCompletionRequest();
-                createCompletionRequest.ModelID = modelID;
+                createCompletionRequest.Model = modelID;
                 createCompletionRequest.Temperature = 1.4;
 
                 createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()

@@ -28,7 +28,7 @@ namespace DevextremeAILibTest
             {
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
                 CreateEditRequest request = new CreateEditRequest();
-                request.ModelID = modelID;
+                request.Model = modelID;
                 request.Input = "What day of the wek is it?";
                 request.Instruction = "Fix the spelling mistakes";
 
@@ -47,7 +47,7 @@ namespace DevextremeAILibTest
             {
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
                 CreateEditRequest request = new CreateEditRequest();
-                request.ModelID = modelID;
+                request.Model = modelID;
                 request.Input = "2 + 2 = 5";
                 request.Instruction = "Fix the wrong result";
 

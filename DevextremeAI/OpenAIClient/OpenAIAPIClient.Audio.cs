@@ -25,7 +25,7 @@ namespace DevExtremeAI.OpenAIClient
 
             using (var content = new MultipartFormDataContent())
             {
-                content.Add(new StringContent(request.ModelID), "model");
+                content.Add(new StringContent(request.Model), "model");
 
                 content.Add(new ByteArrayContent(request.File), "file", "audio.mp3"); //TODO: add enum for file type
 
@@ -94,7 +94,7 @@ namespace DevExtremeAI.OpenAIClient
 
             using (var content = new MultipartFormDataContent())
             {
-                content.Add(new StringContent(request.ModelID), "model");
+                content.Add(new StringContent(request.Model), "model");
 
                 content.Add(new ByteArrayContent(request.File), "file", "audio.mp3"); //TODO: add enum for file type
 

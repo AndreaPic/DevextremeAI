@@ -16,7 +16,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// You can use the List models API to see all of your available models, or see our Model overview for descriptions of them.
         /// </summary>
         [JsonPropertyName("model")]
-        public string ModelID { get; set; }
+        public string Model { get; set; }
 
         /// <summary>
         /// The prompt(s) to generate completions for, encoded as a string, array of strings, array of tokens, or array of token arrays.

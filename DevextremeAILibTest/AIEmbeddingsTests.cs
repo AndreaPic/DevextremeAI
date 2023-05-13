@@ -28,7 +28,7 @@ namespace DevextremeAILibTest
             {
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
                 CreateEmbeddingsRequest request = new CreateEmbeddingsRequest();
-                request.ModelID = modelID;
+                request.Model = modelID;
                 request.AddInput("The food was delicious and the waiter very kind");
 
                 var completionResponse = await openAiapiClient.CreateEmbeddingsAsync(request);

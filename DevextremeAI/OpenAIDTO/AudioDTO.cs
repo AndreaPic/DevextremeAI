@@ -21,7 +21,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// ID of the model to use. Only whisper-1 is currently available.
         /// </summary>
         [JsonPropertyName("model")]
-        public string ModelID { get; set; }
+        public string Model { get; set; }
 
         /// <summary>
         /// An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.
@@ -87,7 +87,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// ID of the model to use. Only whisper-1 is currently available.
         /// </summary>
         [JsonPropertyName("model")]
-        public string ModelID { get; set; }
+        public string Model { get; set; }
 
         /// <summary>
         /// An optional text to guide the model's style or continue a previous audio segment. The prompt should be in English.

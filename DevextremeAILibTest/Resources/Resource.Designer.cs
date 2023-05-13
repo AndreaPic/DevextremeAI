@@ -91,9 +91,9 @@ namespace DevextremeAILibTest.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to { &quot;prompt&quot;: &quot;Hi, what&apos;s your name?&quot;,&quot;completion&quot;: &quot;Hi, my name is Lucy.&quot;}
-        ///{ &quot;prompt&quot;: &quot;How are you?&quot;,&quot;completion&quot;: &quot;So good, thanks.&quot;}
-        ///{ &quot;prompt&quot;: &quot;Where are you form?&quot;,&quot;completion&quot;: &quot;I&apos;m form cloud.&quot;}.
+        ///   Looks up a localized string similar to { &quot;prompt&quot;: &quot;Hi, what&apos;s your name?\n\n###\n\n&quot;,&quot;completion&quot;: &quot; Hi, my name is Lucy.###&quot;}
+        ///{ &quot;prompt&quot;: &quot;How are you?\n\n###\n\n&quot;,&quot;completion&quot;: &quot; So good, thanks.###&quot;}
+        ///{ &quot;prompt&quot;: &quot;Where are you form?\n\n###\n\n&quot;,&quot;completion&quot;: &quot; I&apos;m form cloud.###&quot;}.
         /// </summary>
         internal static string TestFileData {
             get {
@@ -108,6 +108,22 @@ namespace DevextremeAILibTest.Resources {
             get {
                 object obj = ResourceManager.GetObject("tom_cat", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;prompt&quot;: &quot;What does “www” stand for in a website browser?\n\n###\n\n&quot;,
+        ///  &quot;completion&quot;: &quot; World Wide Web###&quot;
+        ///}
+        ///{ &quot;prompt&quot;: &quot;How long is an Olympic swimming pool (in meters)?\n\n###\n\n&quot;,&quot;completion&quot;: &quot; 50 meters###&quot;}
+        ///{ &quot;prompt&quot;: &quot;What countries made up the original Axis powers in World War II?\n\n###\n\n&quot;,&quot;completion&quot;: &quot; Germany, Italy, and Japan###&quot;}
+        ///{ &quot;prompt&quot;: &quot;Which country do cities of Perth, Adelade &amp; Brisbane belong to?\n\n###\n\n&quot;,&quot;completion&quot;: &quot; Australia###&quot;}
+        ///{ &quot;prompt&quot;: &quot;What geometric [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Trivia_Tune {
+            get {
+                return ResourceManager.GetString("Trivia_Tune", resourceCulture);
             }
         }
     }

@@ -14,7 +14,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// You can use the `text-davinci-edit-001` or `code-davinci-edit-001` model with this endpoint.
         /// </summary>
         [JsonPropertyName("model")]
-        public string ModelID { get; set; }
+        public string Model { get; set; }
 
         /// <summary>
         /// The input text to use as a starting point for the edit.

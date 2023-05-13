@@ -33,8 +33,10 @@ namespace DevExtremeAI.OpenAIDTO
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
+
         [JsonPropertyName("model")]
         public string Model { get; set; }
+
         [JsonPropertyName("results")]
         public List<ModerationCategories> Results { get; set; }
     }

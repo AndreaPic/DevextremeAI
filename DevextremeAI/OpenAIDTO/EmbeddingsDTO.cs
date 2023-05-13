@@ -13,7 +13,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// ID of the model to use. You can use the List models API to see all of your available models, or see our Model overview for descriptions of them.
         /// </summary>
         [JsonPropertyName("model")]
-        public string ModelID { get; set; }
+        public string Model { get; set; }
 
         /// <summary>
         /// Input text to get embeddings for, encoded as a string or array of tokens.

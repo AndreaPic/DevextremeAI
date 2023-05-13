@@ -135,6 +135,9 @@ namespace DevExtremeAI.OpenAIClient
             return ret;
         }
 
+        const string streamLineBegin = "data: ";
+        private const string streamDoneLine = "[DONE]";
+
         /// <summary>
         /// Get fine-grained status updates for a fine-tune job.
         /// Whether to stream events for the fine-tune job.
@@ -163,14 +166,26 @@ namespace DevExtremeAI.OpenAIClient
                     {
                         stop = false;
                     }
-                    else if (line != "[DONE]")
-                    {
-                        yield return JsonSerializer.Deserialize<Event>(line);
-                        stop = false;
-                    }
                     else
                     {
-                        stop = true;
+                        if (line.StartsWith(streamLineBegin))
+                        {
+                            line = line.Substring(streamLineBegin.Length);
+                            if (line != streamDoneLine)
+                            {
+                                yield return JsonSerializer.Deserialize<Event>(line);
+                                stop = false;
+                            }
+                            else
+                            {
+                                stop = true;
+                            }
+                        }
+                        else
+                        {
+                            //TODO: what is this?
+                            stop = false;
+                        }
                     }
                 } while (!stop);
             }

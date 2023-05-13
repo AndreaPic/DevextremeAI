@@ -31,7 +31,7 @@ namespace DevextremeAILibTest
             {
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
                 CreateCompletionRequest createCompletionRequest = new CreateCompletionRequest();
-                createCompletionRequest.ModelID = modelID;
+                createCompletionRequest.Model = modelID;
                 createCompletionRequest.MaxTokens = 7;
                 createCompletionRequest.Temperature = 0;
                 //createCompletionRequest.TopP = 1;
