@@ -59,11 +59,11 @@ namespace DevExtremeAI.AspNet
         /// <param name="organization">OpenAI organization name</param>
         /// <param name="apiKey">OpenAI api key value</param>
         /// <returns></returns>
-        public static IServiceCollection AddDevextremeAI(this IServiceCollection services, string organization, string apiKey)
+        public static IServiceCollection AddDevextremeAI(this IServiceCollection services, string apiKey, string? organization)
         {
 
             services.AddHttpClient("DevextremeAI");
-            services.AddSingleton<IAIEnvironment>( s => new OpenAIEnvironmentData(organization,apiKey));
+            services.AddSingleton<IAIEnvironment>( s => new OpenAIEnvironmentData(apiKey, organization));
             services.AddTransient<IOpenAIAPIClient, OpenAIAPIClient>();
 
             return services;

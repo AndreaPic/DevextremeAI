@@ -45,7 +45,7 @@ namespace DevExtremeAI.Settings
     {
         private string _organization;
         private string _apiKey;
-        public OpenAIEnvironmentData(string organization, string apiKey)
+        public OpenAIEnvironmentData(string apiKey, string? organization)
         {
             _organization = organization;
             _apiKey = apiKey;

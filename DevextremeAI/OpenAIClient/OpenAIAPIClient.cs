@@ -34,7 +34,7 @@ namespace DevExtremeAI.OpenAIClient
 
         internal OpenAIAPIClient(IAIEnvironment environment)
         {
-
+            CurrentEnvironment = environment;
         }
 
         private StringContent CreateJsonStringContent(object request)

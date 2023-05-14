@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevextremeAILibTest", "Deve
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevextremeAIWebApp", "DevextremeAIWebApp\DevextremeAIWebApp.csproj", "{F686A555-CC74-4F55-836D-5988E0C315CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevextremeAIConsoleApp", "DevextremeAIConsoleApp\DevextremeAIConsoleApp.csproj", "{E989040E-A232-49E8-B0FB-4CF617280BDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F686A555-CC74-4F55-836D-5988E0C315CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F686A555-CC74-4F55-836D-5988E0C315CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F686A555-CC74-4F55-836D-5988E0C315CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E989040E-A232-49E8-B0FB-4CF617280BDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E989040E-A232-49E8-B0FB-4CF617280BDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E989040E-A232-49E8-B0FB-4CF617280BDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E989040E-A232-49E8-B0FB-4CF617280BDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
