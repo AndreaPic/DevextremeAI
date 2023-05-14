@@ -1,4 +1,5 @@
 
+using DevExtremeAI.AspNet;
 using DevExtremeAI.OpenAIDTO;
 using DevExtremeAI.OpenAIClient;
 using DevExtremeAI.Settings;
@@ -11,13 +12,8 @@ namespace DevextremeAIWebApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
-
             // Add services to the container.
-
-            //builder.Services.AddHttpClient("DevextremeAI");
-            builder.Services.AddHttpClient();
-            builder.Services.AddSingleton<IAIEnvironment, AIEnvironment>();
-            builder.Services.AddTransient<IOpenAIAPIClient, OpenAIAPIClient>();
+            builder.Services.AddDevextremeAI();
 
 
             builder.Services.AddControllers();
