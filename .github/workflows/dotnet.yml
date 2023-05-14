@@ -21,7 +21,7 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.5
     
     - name: Restore dependencies
-      run: dotnet restore    
+      run: dotnet restore -p:RestoreUseSkipNonexistentTargets=false
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
