@@ -112,14 +112,11 @@ namespace DevextremeAILibTest.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {
-        ///  &quot;prompt&quot;: &quot;What does “www” stand for in a website browser?\n\n###\n\n&quot;,
-        ///  &quot;completion&quot;: &quot; World Wide Web###&quot;
-        ///}
+        ///   Looks up a localized string similar to { &quot;prompt&quot;: &quot;What does \&quot;www\&quot; stand for in a website browser?\n\n###\n\n&quot;,&quot;completion&quot;: &quot; World Wide Web###&quot;}
         ///{ &quot;prompt&quot;: &quot;How long is an Olympic swimming pool (in meters)?\n\n###\n\n&quot;,&quot;completion&quot;: &quot; 50 meters###&quot;}
         ///{ &quot;prompt&quot;: &quot;What countries made up the original Axis powers in World War II?\n\n###\n\n&quot;,&quot;completion&quot;: &quot; Germany, Italy, and Japan###&quot;}
         ///{ &quot;prompt&quot;: &quot;Which country do cities of Perth, Adelade &amp; Brisbane belong to?\n\n###\n\n&quot;,&quot;completion&quot;: &quot; Australia###&quot;}
-        ///{ &quot;prompt&quot;: &quot;What geometric [rest of string was truncated]&quot;;.
+        ///{ &quot;prompt&quot;: &quot;What geometric shape  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Trivia_Tune {
             get {
