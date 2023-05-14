@@ -9,10 +9,6 @@
 		<Version>$(VersionPrefix)$(VersionSuffix)</Version>
 		<VersionPrefix>0.0.9</VersionPrefix>
 		<VersionSuffix></VersionSuffix>
-		<PackageId>DevextremeAI</PackageId>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Authors>Andrea Piccioni</Authors>
-		<Company>Studio Progettazione Software (Andrea-Dev-Italy)</Company>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
