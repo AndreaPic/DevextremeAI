@@ -32,7 +32,10 @@ namespace DevextremeAILibTest
                 request.Input = "What day of the wek is it?";
                 request.Instruction = "Fix the spelling mistakes";
 
+                await Task.Delay(22000);
+
                 var completionResponse = await openAiapiClient.CreateEditAsync(request);
+                Assert.False(completionResponse.HasError,completionResponse?.ErrorResponse?.Error?.Message);
                 Assert.NotNull(completionResponse?.OpenAIResponse);
                 Assert.NotNull(completionResponse?.OpenAIResponse?.Choices);
                 Assert.True(completionResponse?.OpenAIResponse.Choices.Count > 0);
@@ -51,6 +54,7 @@ namespace DevextremeAILibTest
                 request.Input = "2 + 2 = 5";
                 request.Instruction = "Fix the wrong result";
 
+                await Task.Delay(22000);
                 var completionResponse = await openAiapiClient.CreateEditAsync(request);
                 Assert.NotNull(completionResponse?.OpenAIResponse);
                 Assert.NotNull(completionResponse?.OpenAIResponse.Choices);

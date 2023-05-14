@@ -77,7 +77,7 @@ namespace DevExtremeAI.OpenAIClient
                     }
                     else
                     {
-                        ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
+                        ret.ErrorResponse = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
                     }
                     return ret;
                 }
@@ -151,7 +151,7 @@ namespace DevExtremeAI.OpenAIClient
                     }
                     else
                     {
-                        ret.Error = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
+                        ret.ErrorResponse = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>();
                     }
 
                     return ret;

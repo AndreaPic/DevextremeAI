@@ -38,9 +38,11 @@ namespace DevextremeAILibTest
                 {
                     Role = ChatCompletionMessageRoleEnum.User,
                     Content = "Hi there!"
-                }); 
+                });
+                await Task.Delay(22000);
 
                 var response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
+                Assert.False(response.HasError,response?.ErrorResponse?.Error?.Message);
                 Assert.NotNull(response?.OpenAIResponse);
                 Assert.NotNull(response?.OpenAIResponse.Choices);
                 Assert.True(response?.OpenAIResponse.Choices.Count > 0);
@@ -56,6 +58,8 @@ namespace DevextremeAILibTest
                     Role = ChatCompletionMessageRoleEnum.User,
                     Content = "I'm getting bored, what can you do for me?"
                 });
+
+                await Task.Delay(22000);
 
                 response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
                 Assert.NotNull(response);
@@ -105,6 +109,7 @@ namespace DevextremeAILibTest
                     Content = "Qual'è la capitale d'Italia?"
                 });
 
+                await Task.Delay(22000);
                 response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
                 Assert.NotNull(response?.OpenAIResponse);
                 Assert.NotNull(response?.OpenAIResponse?.Choices);
@@ -125,6 +130,7 @@ namespace DevextremeAILibTest
                     Content = "Quali cose potrei visitare li?"
                 });
 
+                await Task.Delay(22000);
                 response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
                 Assert.NotNull(response?.OpenAIResponse);
                 Assert.NotNull(response?.OpenAIResponse?.Choices);

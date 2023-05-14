@@ -74,10 +74,10 @@ namespace DevextremeAILibTest
                 });
                 Assert.True(fileContentResponse.HasError);
 
-                Task.Delay(3000);
+                await Task.Delay(22000);
 
                 deleteResponse = await openAiapiClient.DeleteFileAsync(new DeleteFileRequest() { FileId = fileDataResponse.OpenAIResponse.FileId });
-                Assert.False(deleteResponse.HasError);
+                Assert.False(deleteResponse.HasError,deleteResponse?.ErrorResponse?.Error?.Message);
 
                 TestUtility testUtility = new TestUtility(_factory);
                 await testUtility.ClearAllTestFiles();

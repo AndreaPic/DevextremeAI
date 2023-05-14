@@ -11,9 +11,9 @@ namespace DevExtremeAI.OpenAIDTO
         where T : class, new()
     {
         public T? OpenAIResponse { get; set; }
-        public ErrorResponse? Error { get; set; }
+        public ErrorResponse? ErrorResponse { get; set; }
 
-        public bool HasError => Error != null;
+        public bool HasError => ErrorResponse != null;
     }
 
     public class ErrorResponse
