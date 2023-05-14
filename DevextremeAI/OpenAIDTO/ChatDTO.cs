@@ -119,7 +119,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// </summary>
         [JsonPropertyName("role")]
 
-        public ChatCompletionRequestMessageRoleEnum Role { get; set; }
+        public ChatCompletionMessageRoleEnum Role { get; set; }
 
         /// <summary>
         /// The contents of the message.
@@ -136,8 +136,8 @@ namespace DevExtremeAI.OpenAIDTO
 
     }
 
-    [JsonConverter(typeof(JsonStringEnumConverterEx<ChatCompletionRequestMessageRoleEnum>))]
-    public enum ChatCompletionRequestMessageRoleEnum
+    [JsonConverter(typeof(JsonStringEnumConverterEx<ChatCompletionMessageRoleEnum>))]
+    public enum ChatCompletionMessageRoleEnum
     {
         [EnumMember(Value = "system")]
         System = 0,
@@ -188,7 +188,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// The role of the author of this message.
         /// </summary>
         [JsonPropertyName("role")]
-        public ChatCompletionResponseMessageRoleEnum Role { get; set; }
+        public ChatCompletionMessageRoleEnum Role { get; set; }
 
         /// <summary>
         /// The contents of the message
@@ -197,17 +197,17 @@ namespace DevExtremeAI.OpenAIDTO
         public string Content { get; set; }
     }
 
-    [JsonConverter(typeof(JsonStringEnumConverterEx<ChatCompletionResponseMessageRoleEnum>))]
+    //[JsonConverter(typeof(JsonStringEnumConverterEx<ChatCompletionResponseMessageRoleEnum>))]
 
-    public enum ChatCompletionResponseMessageRoleEnum
-    {
-        [EnumMember(Value = "system")]
-        System = 0,
-        [EnumMember(Value = "user")]
-        User = 1,
-        [EnumMember(Value = "assistant")]
-        Assistant = 2
-    }
+    //public enum ChatCompletionResponseMessageRoleEnum
+    //{
+    //    [EnumMember(Value = "system")]
+    //    System = 0,
+    //    [EnumMember(Value = "user")]
+    //    User = 1,
+    //    [EnumMember(Value = "assistant")]
+    //    Assistant = 2
+    //}
 
 }
 

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using DevExtremeAI.Settings;
 using DevExtremeToys.JSon;
 using Microsoft.Extensions.Configuration;
@@ -35,7 +36,7 @@ namespace DevextremeAILibTest
 
                 createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
                 {
-                    Role = ChatCompletionRequestMessageRoleEnum.User,
+                    Role = ChatCompletionMessageRoleEnum.User,
                     Content = "Hi there!"
                 }); 
 
@@ -52,7 +53,7 @@ namespace DevextremeAILibTest
 
                 createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
                 {
-                    Role = ChatCompletionRequestMessageRoleEnum.User,
+                    Role = ChatCompletionMessageRoleEnum.User,
                     Content = "I'm getting bored, what can you do for me?"
                 });
 
@@ -79,7 +80,7 @@ namespace DevextremeAILibTest
 
                 createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
                 {
-                    Role = ChatCompletionRequestMessageRoleEnum.User,
+                    Role = ChatCompletionMessageRoleEnum.User,
                     Content = "Ciao, sai parlare Italiano?"
                 });
 
@@ -88,16 +89,20 @@ namespace DevextremeAILibTest
                 Assert.NotNull(response?.OpenAIResponse?.Choices);
                 Assert.True(response.OpenAIResponse.Choices.Count > 0);
                 Assert.NotNull(response?.OpenAIResponse?.Usage);
-
-
-                createCompletionRequest = new CreateChatCompletionRequest();
-                createCompletionRequest.Model = modelID;
-                createCompletionRequest.Temperature = 1.4;
+                
+                Debug.WriteLine(response.OpenAIResponse.Choices[0].Message.Content);
 
                 createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
                 {
-                    Role = ChatCompletionRequestMessageRoleEnum.User,
-                    Content = "Qual'è la città più bella d'Italia?"
+                    Role = response.OpenAIResponse.Choices[0].Message.Role,
+                    Content = response.OpenAIResponse.Choices[0].Message.Content
+                });
+
+
+                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                {
+                    Role = ChatCompletionMessageRoleEnum.User,
+                    Content = "Qual'è la capitale d'Italia?"
                 });
 
                 response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
@@ -105,6 +110,28 @@ namespace DevextremeAILibTest
                 Assert.NotNull(response?.OpenAIResponse?.Choices);
                 Assert.True(response.OpenAIResponse.Choices.Count > 0);
                 Assert.NotNull(response?.OpenAIResponse?.Usage);
+
+                Debug.WriteLine(response.OpenAIResponse.Choices[0].Message.Content);
+
+                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                {
+                    Role = response.OpenAIResponse.Choices[0].Message.Role,
+                    Content = response.OpenAIResponse.Choices[0].Message.Content
+                });
+
+                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                {
+                    Role = ChatCompletionMessageRoleEnum.User,
+                    Content = "Quali cose potrei visitare li?"
+                });
+
+                response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
+                Assert.NotNull(response?.OpenAIResponse);
+                Assert.NotNull(response?.OpenAIResponse?.Choices);
+                Assert.True(response.OpenAIResponse.Choices.Count > 0);
+                Assert.NotNull(response?.OpenAIResponse?.Usage);
+                Debug.WriteLine(response.OpenAIResponse.Choices[0].Message.Content);
+
 
             }
         }
