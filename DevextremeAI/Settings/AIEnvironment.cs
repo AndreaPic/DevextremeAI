@@ -41,4 +41,24 @@ namespace DevExtremeAI.Settings
         }
     }
 
+    public class OpenAIEnvironmentData : BaseAIEnvironment
+    {
+        private string _organization;
+        private string _apiKey;
+        public OpenAIEnvironmentData(string organization, string apiKey)
+        {
+            _organization = organization;
+            _apiKey = apiKey;
+        }
+        public override string? GetOrganization()
+        {
+            return _organization;
+        }
+
+        public override string? GetApiKey()
+        {
+            return _apiKey;
+        }
+    }
+
 }
