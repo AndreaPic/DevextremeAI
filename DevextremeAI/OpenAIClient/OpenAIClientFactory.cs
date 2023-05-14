@@ -11,7 +11,7 @@ namespace DevExtremeAI.OpenAIClient
 {
     public class OpenAIClientFactory
     {
-        public OpenAIAPIClient CreateInstance()
+        public static OpenAIAPIClient CreateInstance()
         {
             IConfiguration config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
@@ -21,10 +21,10 @@ namespace DevExtremeAI.OpenAIClient
             AIEnvironment openAiEnvironment = new AIEnvironment(config);
             return new(openAiEnvironment);
         }
-        public OpenAIAPIClient CreateInstance(string organizationName, string apiKey) =>
+        public static OpenAIAPIClient CreateInstance(string organizationName, string apiKey) =>
             new(new OpenAIEnvironmentData(organizationName, apiKey));
 
-        public OpenAIAPIClient CreateInstance(IAIEnvironment openAiEnvironment) => new(openAiEnvironment);
+        public static OpenAIAPIClient CreateInstance(IAIEnvironment openAiEnvironment) => new(openAiEnvironment);
 
     }
 }
