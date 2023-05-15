@@ -32,7 +32,7 @@ namespace DevextremeAILibTest
                 request.AddInput("The food was delicious and the waiter very kind");
 
                 var completionResponse = await openAiapiClient.CreateEmbeddingsAsync(request);
-                Assert.False(completionResponse.HasError);
+                Assert.False(completionResponse.HasError,completionResponse?.ErrorResponse?.Error?.Message);
                 Assert.NotNull(completionResponse.OpenAIResponse.Data);
                 Assert.NotNull(completionResponse.OpenAIResponse.Object);
                 Assert.NotNull(completionResponse.OpenAIResponse.Usage);
