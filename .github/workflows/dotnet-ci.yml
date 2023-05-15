@@ -24,13 +24,13 @@ jobs:
           6.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
     - uses: microsoft/variable-substitution@v1 
       with:
         files: '**/appsettings.json'
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         OPENAI_ORGANIZATION: ${{ secrets.OPENAI_ORGANIZATION }}
+    - name: Build
+      run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
