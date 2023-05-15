@@ -35,7 +35,7 @@ namespace DevextremeAILibTest
                 var response = await openAiapiClient.CreateTranscriptionsAsync(request);
                 Assert.NotNull(response);
                 Assert.False(response.HasError,response?.ErrorResponse?.Error?.Message);
-                Assert.NotNull(response.OpenAIResponse.Text);
+                Assert.NotNull(response?.OpenAIResponse?.Text);
                 Assert.Equal(response.OpenAIResponse.Text,"1 2 3 prova");
             }
         }
