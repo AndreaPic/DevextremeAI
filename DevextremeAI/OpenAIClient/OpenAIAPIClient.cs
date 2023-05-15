@@ -60,7 +60,7 @@ namespace DevExtremeAI.OpenAIClient
         {
             //JwtBearerDefaults.AuthenticationScheme
             headers.Authorization = new AuthenticationHeaderValue("Bearer", ComposeAuthHeader());
-            var orgHeader = GetOrganizationHeader();
+            string? orgHeader = GetOrganizationHeader();
             if (!string.IsNullOrEmpty(orgHeader))
             {
                 headers.Add("OpenAI-Organization", orgHeader);

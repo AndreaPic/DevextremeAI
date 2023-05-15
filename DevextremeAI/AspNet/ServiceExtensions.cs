@@ -17,7 +17,7 @@ namespace DevExtremeAI.AspNet
         /// Don't push to appsettings.json or appsettings.Development.json with values to git!!! 
         /// the key for the settings are:
         /// OPENAI_API_KEY for apiKey
-        /// OPENAI_ORGANIZATION for organization
+        /// OPENAI_ORGANIZATION for organization id
         /// </summary>
         /// <param name="services">asp.net core service to extend</param>
         /// <returns>configured service</returns>
@@ -33,11 +33,11 @@ namespace DevExtremeAI.AspNet
 
         /// <summary>
         /// With this extension you have to implement IAIEnvironment interface.
-        /// Its instance will be used as singleton and must return apikey value and optionally organization name.
+        /// Its instance will be used as singleton and must return apikey value and optionally organization id.
         /// Don't push to appsettings.json or appsettings.Development.json with values to git!!! 
         /// It's your choice what use to store the apikey but pleas don't push in git!!!
         /// </summary>
-        /// <typeparam name="TEnvironment">Object that return apikey and organization name</typeparam>
+        /// <typeparam name="TEnvironment">Object that return apikey and organization id</typeparam>
         /// <param name="services">asp.net core service to extend</param>
         /// <returns>configured service</returns>
         public static IServiceCollection AddDevextremeAI<TEnvironment>(this IServiceCollection services)
@@ -56,7 +56,7 @@ namespace DevExtremeAI.AspNet
         /// It's your choice what use to store the apikey but pleas don't push in git!!!
         /// </summary>
         /// <param name="services">service to extend</param>
-        /// <param name="organization">OpenAI organization name</param>
+        /// <param name="organization">OpenAI organization id</param>
         /// <param name="apiKey">OpenAI api key value</param>
         /// <returns></returns>
         public static IServiceCollection AddDevextremeAI(this IServiceCollection services, string apiKey, string? organization)
