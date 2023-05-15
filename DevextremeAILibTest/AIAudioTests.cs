@@ -19,7 +19,6 @@ namespace DevextremeAILibTest
             _factory = factory;
         }
 
-        
         [Theory]
         [InlineData("whisper-1")]
         public async Task CreateTranscriptionsTest(string modelID)
