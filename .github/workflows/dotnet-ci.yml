@@ -16,12 +16,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: microsoft/variable-substitution@v1 
-      with:
-        files: '**/appsettings.json'
-      env:
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        OPENAI_ORGANIZATION: ${{ secrets.OPENAI_ORGANIZATION }}
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
@@ -32,5 +26,11 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+    - uses: microsoft/variable-substitution@v1 
+      with:
+        files: '**/appsettings.json'
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        OPENAI_ORGANIZATION: ${{ secrets.OPENAI_ORGANIZATION }}
     - name: Test
       run: dotnet test --no-build --verbosity normal
