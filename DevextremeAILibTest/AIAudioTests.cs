@@ -34,7 +34,7 @@ namespace DevextremeAILibTest
 
                 var response = await openAiapiClient.CreateTranscriptionsAsync(request);
                 Assert.NotNull(response);
-                Assert.False(response.HasError);
+                Assert.False(response.HasError,response?.ErrorResponse?.Error?.Message);
                 Assert.NotNull(response.OpenAIResponse.Text);
                 Assert.Equal(response.OpenAIResponse.Text,"1 2 3 prova");
             }
@@ -53,7 +53,7 @@ namespace DevextremeAILibTest
 
                 var response = await openAiapiClient.CreateTranslationsAsync(request);
                 Assert.NotNull(response);
-                Assert.False(response.HasError);
+                Assert.False(response.HasError, response?.ErrorResponse?.Error?.Message);
                 Assert.NotNull(response.OpenAIResponse.Text);
                 Assert.Equal(response.OpenAIResponse.Text, "1, 2, 3, try!");
             }
