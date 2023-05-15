@@ -89,6 +89,7 @@ namespace DevextremeAILibTest
                 });
 
                 var response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
+                Assert.False(response.HasError,response?.ErrorResponse?.Error?.Message);
                 Assert.NotNull(response?.OpenAIResponse);
                 Assert.NotNull(response?.OpenAIResponse?.Choices);
                 Assert.True(response.OpenAIResponse.Choices.Count > 0);

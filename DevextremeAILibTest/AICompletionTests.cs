@@ -49,6 +49,7 @@ namespace DevextremeAILibTest
                 });
 
                 var completionResponse = await openAiapiClient.CreateCompletionAsync(createCompletionRequest);
+                Assert.False(completionResponse.HasError, completionResponse?.ErrorResponse?.Error?.Message);
                 Assert.NotNull(completionResponse?.OpenAIResponse);
                 Assert.NotNull(completionResponse?.OpenAIResponse?.Choices);
                 Assert.True(completionResponse.OpenAIResponse.Choices.Count > 0);
