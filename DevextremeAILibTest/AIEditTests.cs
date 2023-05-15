@@ -56,6 +56,7 @@ namespace DevextremeAILibTest
 
                 await Task.Delay(22000);
                 var completionResponse = await openAiapiClient.CreateEditAsync(request);
+                Assert.False(completionResponse.HasError, completionResponse?.ErrorResponse?.Error?.Message);
                 Assert.NotNull(completionResponse?.OpenAIResponse);
                 Assert.NotNull(completionResponse?.OpenAIResponse.Choices);
                 Assert.True(completionResponse?.OpenAIResponse.Choices.Count > 0);
