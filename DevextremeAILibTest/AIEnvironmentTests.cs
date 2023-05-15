@@ -21,6 +21,9 @@ namespace DevextremeAILibTest
                 var env = scope.ServiceProvider.GetService<IAIEnvironment>();
                 var key = env.GetApiKey();
                 Assert.NotNull(key);
+                var org = env.GetOrganization();
+                Assert.NotNull(org);
+                Assert.True(org == "Devextreme");
             }
         }
     }
