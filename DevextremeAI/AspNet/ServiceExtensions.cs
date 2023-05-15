@@ -17,7 +17,7 @@ namespace DevExtremeAI.AspNet
         /// Don't push to appsettings.json or appsettings.Development.json with values to git!!! 
         /// the key for the settings are:
         /// OPENAI_API_KEY for apiKey
-        /// OPENAI-ORGANIZATION for organization
+        /// OPENAI_ORGANIZATION for organization
         /// </summary>
         /// <param name="services">asp.net core service to extend</param>
         /// <returns>configured service</returns>

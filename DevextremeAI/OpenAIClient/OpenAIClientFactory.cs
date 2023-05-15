@@ -13,7 +13,7 @@ namespace DevExtremeAI.OpenAIClient
     {
         /// <summary>
         /// Create a new instance of OpeAI API Client and read api key and organization name in appsettings.json or appsettings.Development.json.
-        /// In appsettings the keys to use are: "OPENAI_API_KEY" and "OPENAI-ORGANIZATION".
+        /// In appsettings the keys to use are: "OPENAI_API_KEY" and "OPENAI_ORGANIZATION".
         /// Please do not push appsettings.Development.json to git and don't hardcode the apikey and organization name and also don't push them to git!!!
         /// </summary>
         /// <returns>

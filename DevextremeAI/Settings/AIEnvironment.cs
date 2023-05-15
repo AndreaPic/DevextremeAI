@@ -32,7 +32,7 @@ namespace DevExtremeAI.Settings
 
         public override string? GetOrganization()
         {
-            return CurrentConfiguration.GetValue<string>("OPENAI-ORGANIZATION");
+            return CurrentConfiguration.GetValue<string>("OPENAI_ORGANIZATION");
         }
 
         public override string? GetApiKey()
