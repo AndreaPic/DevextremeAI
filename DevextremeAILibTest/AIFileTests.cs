@@ -34,7 +34,7 @@ namespace DevextremeAILibTest
 
                 var fileDataList = await openAiapiClient.GetFilesDataAsync();
 
-                Assert.False(fileDataList.HasError);
+                Assert.False(fileDataList.HasError,fileDataList?.ErrorResponse?.Error?.Message);
 
                 var testFileData = fileDataList.OpenAIResponse.FileList.FirstOrDefault(f => f.FileName == fileDataTestName);
 
