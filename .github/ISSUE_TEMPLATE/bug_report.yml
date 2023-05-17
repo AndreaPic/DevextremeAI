@@ -30,27 +30,27 @@ body:
     attributes:
       label: Code snippets
       description: If applicable, add code snippets to help explain your problem.
-      render: chsarp
+      render: JavaScript
     validations:
       required: false
   - type: input
     id: os
     attributes:
       label: OS
-      placeholder: ubuntu-linux
+      placeholder: macOS
     validations:
       required: true
   - type: input
     id: language-version
     attributes:
-      label: .net
-      placeholder: 6.0
+      label: Node version
+      placeholder: Node v16.14.2
     validations:
       required: true
   - type: input
     id: lib-version
     attributes:
       label: Library version
-      placeholder: DevextremeAI v1.0.0
+      placeholder: openai v3.0.1
     validations:
       required: true
