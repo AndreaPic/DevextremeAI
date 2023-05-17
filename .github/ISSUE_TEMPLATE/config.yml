@@ -1,0 +1,7 @@
+blank_issues_enabled: false
+contact_links:
+  - name: DevextremeAI support
+    url: https://www.devextreme.net/
+    about: |
+      Please only file issues here that you believe represent actual bugs or feature requests for the DevextremeAI library.     
+      If you're having general trouble with this library, please contact me on twitter @PiccioniAndrea.
