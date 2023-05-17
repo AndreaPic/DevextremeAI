@@ -1,8 +1,5 @@
 
 using DevExtremeAI.AspNet;
-using DevExtremeAI.OpenAIDTO;
-using DevExtremeAI.OpenAIClient;
-using DevExtremeAI.Settings;
 
 namespace DevextremeAIWebApp
 {

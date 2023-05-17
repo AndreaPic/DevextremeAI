@@ -21,10 +21,10 @@ namespace DevExtremeAI.AspNet
         /// </summary>
         /// <param name="services">asp.net core service to extend</param>
         /// <returns>configured service</returns>
-        public static IServiceCollection AddDevextremeAI(this IServiceCollection services)
+        public static IServiceCollection AddDevExtremeAI(this IServiceCollection services)
         {
 
-            services.AddHttpClient("DevextremeAI");
+            services.AddHttpClient(OpenAIAPIClient.HttpClientName);
             services.AddSingleton<IAIEnvironment, AIEnvironment>();
             services.AddTransient<IOpenAIAPIClient, OpenAIAPIClient>();
 
@@ -44,7 +44,7 @@ namespace DevExtremeAI.AspNet
             where  TEnvironment : class, IAIEnvironment, new()
         {
 
-            services.AddHttpClient("DevextremeAI");
+            services.AddHttpClient(OpenAIAPIClient.HttpClientName);
             services.AddSingleton<IAIEnvironment, TEnvironment>();
             services.AddTransient<IOpenAIAPIClient, OpenAIAPIClient>();
 
@@ -62,7 +62,7 @@ namespace DevExtremeAI.AspNet
         public static IServiceCollection AddDevextremeAI(this IServiceCollection services, string apiKey, string? organization)
         {
 
-            services.AddHttpClient("DevextremeAI");
+            services.AddHttpClient(OpenAIAPIClient.HttpClientName);
             services.AddSingleton<IAIEnvironment>( s => new OpenAIEnvironmentData(apiKey, organization));
             services.AddTransient<IOpenAIAPIClient, OpenAIAPIClient>();
 
