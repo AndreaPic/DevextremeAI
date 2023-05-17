@@ -10,7 +10,7 @@ namespace DevextremeAIWebApp
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddDevextremeAI();
+            builder.Services.AddDevExtremeAI();
 
 
             builder.Services.AddControllers();
