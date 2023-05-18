@@ -13,7 +13,7 @@
 
 
     <ItemGroup>
-    <ProjectReference Include="..\DevextremeAI\DevextremeAI.csproj" />
+    <ProjectReference Include="..\DevextremeAI\DevExtremeAI.csproj" />
   </ItemGroup>
 
     <ItemGroup>
