@@ -80,7 +80,7 @@ an example of use of IOpenAIAPIClient in controller or apicontroller could be:
 ```
 
 **Note**
-You can find the complete documentation of api and DTO in intellisence, examples below or [OpenAI official API Reference](https://platform.openai.com/docs/api-reference) because are the same.
+You can find the complete documentation of api and DTO in intellisense, examples below or [OpenAI official API Reference](https://platform.openai.com/docs/api-reference) because are the same.
 
 ## Using outside asp.net core
 
@@ -95,5 +95,70 @@ In Program.cs ad this using:
 using DevExtremeAI.OpenAIClient;
 ```
 
-This using allow you to use the `OpenAIClientFactory`
+Now you you can use the `OpenAIClientFactory`
 
+Inside your Library or Main method of the console application you can create an instace of `IOpenAIAPIClient` like in this example:
+
+```csharp
+    internal class Program
+    {
+        static async Task Main(string[] args)
+        {
+            var openAIClient = OpenAIClientFactory.CreateInstance(); //create an instance o IOpenAIAPIClient
+
+            CreateChatCompletionRequest createCompletionRequest = new CreateChatCompletionRequest();
+            createCompletionRequest.Model = "gpt-3.5-turbo";
+            createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+            {
+                Role = ChatCompletionMessageRoleEnum.User,
+                Content = "Hello!",
+            });
+
+            var response = await openAIClient.CreateChatCompletionAsync(createCompletionRequest);
+
+            Console.WriteLine(response.OpenAIResponse.Choices[0].Message.Content);
+        }
+    }
+```
+
+The factory method (`CreateInstance`) in above example use the overload without arguments, this overload look for apikeyvalue and organization ind in appsettings.json or appsettings.Development.json.
+
+You can use the overload that require an instance of `DevExtremeAI.Settings.IAIEnvironment` implemented by yourself so you can read apikey value and organization id from where you want.
+
+Also you can use the overload that reqire apikey value and organization id as arguments (but pleas don't hardcode them in source code).
+
+However don't hardcode apikey and organization id in any file (source code or appsettings files), don't push into source repository the appsettings.Development.json and use GitHub Action Secrets.
+
+## Request and Response Object Model
+
+### Request
+
+Every methods of `DevExtremeAI.OpenAIClient.IOpenAIAPIClient` are the same of OpenAI, so you can use the  
+[official OpenAI  API Reference](https://platform.openai.com/docs/api-reference).
+Request DTO objects are described also with standard .net documentation so you can use intellisese.
+Every methods of `IOpenAIAPIClient` are present in the xUnit integration tests therefore you can look at them there (DevextremeAILibTest directory).
+
+### Response
+
+Every response is of `DevExtremeAI.OpenAIDTO.ResponseDTO<T>` type.
+This type has three properties:
+
+- `ErrorResponse` that contains the error details returned by OpenAI API in case of problem.
+- `HasError` that is true if an error happened otherwise is false.
+- `OpenAIResponse` that is the same of the OpenAI response.
+  - Every DTO has the standard .net documentation so you can find documentation in intellisense and because are the same of OpenAI you can find documentation in the [official OpenAI  API Reference](https://platform.openai.com/docs/api-reference) also you can look at the integration tests in DevextremeAILibTest directory.
+
+## API Types
+
+Are covered all OpenAI API types:
+
+- Models
+- Completions
+- Chat
+- Edits
+- Imnages
+- Embeddings
+- Audio
+- Files
+- Fine-tunes
+- Moderations
