@@ -364,3 +364,6 @@ FodyWeavers.xsd
 /DevextremeAILibTest/appsettings.Development.json
 /DevextremeAIWebApp/appsettings.Development.json
 /DevextremeAIConsoleApp/appsettings.Development.json
+/DevExtremeAIConsoleAppX/appsettings.Development.json
+/DevExtremeAILibTestX/appsettings.Development.json
+/DevExtremeAIWebAppX/appsettings.Development.json
