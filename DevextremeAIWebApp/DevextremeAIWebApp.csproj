@@ -22,7 +22,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-    <ProjectReference Include="..\DevextremeAI\DevExtremeAI.csproj" />
+    <ProjectReference Include="..\DevextremeAI\DevExtremeAII.csproj" />
   </ItemGroup>
 
 </Project>
