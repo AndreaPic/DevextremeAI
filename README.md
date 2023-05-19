@@ -9,6 +9,13 @@ It's also easy to use  in libraries without dependency injection (see samples be
 
 *Please note that this is **unofficial** OpenAPI library* (It's not mantained by OpenAI Company).
 
+## Build Status
+
+| Build | Status | Current Version |
+| ------ | ------ | ------ |
+| CI | [![BUILD-TEST](https://github.com/AndreaPic/DevextremeAI/actions/workflows/dotnet-ci.yml/badge.svg?branch=master)](https://github.com/AndreaPic/DevextremeAI/actions/workflows/dotnet-ci.yml) | N/A
+| Packages | [![NUGET-PUBLISH-RELEASE](https://github.com/AndreaPic/DevExtremeAI/actions/workflows/dotnet-ci-cd.yml/badge.svg)](https://github.com/AndreaPic/DevExtremeAI/actions/workflows/dotnet-ci-cd.yml) | ![NuGet](https://img.shields.io/nuget/v/DevExtremeAI)
+
 ## How to use
 
 To use this library you need OpenAI api key (and optionally organization id).
