@@ -4,22 +4,24 @@
 		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<Title>DevExtremeAI full and complete implementation of all OpenAI's APIs</Title>
+		<Title>DevExtremeAI is a full and complete implementation of all OpenAI's APIs</Title>
 		<Authors>Andrea Piccioni</Authors>
 		<Company>Andrea-Dev-Italy Studio Progettazione Software</Company>
-		<PackageProjectUrl>https://www.DevExtreme.net</PackageProjectUrl>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageProjectUrl>https://www.devextreme.net</PackageProjectUrl>
+		<PackageReadmeFile>NUGET.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/AndreaPic/DevExtremeAI</RepositoryUrl>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Version>$(VersionPrefix)$(VersionSuffix)</Version>
 		<VersionPrefix>0.9.0</VersionPrefix>
 		<VersionSuffix>beta</VersionSuffix>
-		<PackageTags>openai;dotnet;aspnet;csharp</PackageTags>
+		<PackageTags>openai;dotnet;aspnet;csharp;gpt-4;gpt-3.5-turbo;davinci;DALL·E;Whisper;fine-tunes</PackageTags>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<FileVersion>1.0.0.0</FileVersion>
 		<RepositoryType>git</RepositoryType>
-		<Description>This library is full compliant to openAI specs and also implement openAI error response. It's very easy to use with asp.net core, has full support to dependency injection and It's also easy to use in libraries without dependency injection.</Description>
+		<Description>This library is full compliant to openAI specs and also implement openAI error response. It's very easy to use with asp.net core, has full support to dependency injection and also it's very easy to use in libraries without dependency injection.</Description>
 		<PackageIcon></PackageIcon>
+		<Copyright></Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
@@ -41,7 +43,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="..\README.md">
+	  <None Include="..\NUGET.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
