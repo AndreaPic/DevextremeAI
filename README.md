@@ -1,8 +1,8 @@
-# DevextremeAI
+# DevExtremeAI
 
 ## Overview
 
-DevextremeAI is a library with full and complete implementation of all OpenAI's APIs.
+DevExtremeAI is a library with full and complete implementation of all OpenAI's APIs.
 This library is fully compliant to openAI specs and also implement openAI error response.
 It's very easy to use with asp.net core and has full support to dependency injection (with a single line of code as asp.net standard pattern).
 It's also easy to use  in libraries without dependency injection (see samples below).
@@ -36,7 +36,7 @@ using DevExtremeAI.AspNet;
 ```
 
 This using allow you to use the asp.net service extension.
-With the webapplication builder now you can use the `AddDevextremeAI()` method that register all that you need with dependency injection.
+With the webapplication builder now you can use the `AddDevExtremeAI()` method that register all that you need with dependency injection.
 
 ```csharp
   var builder = WebApplication.CreateBuilder(args);
@@ -45,11 +45,11 @@ With the webapplication builder now you can use the `AddDevextremeAI()` method t
   builder.Services.AddDevExtremeAI();
 ```
 
-This `AddDevextremeAI()` overload looks for the apikey in appsettings.json or appsettings.Development.json so you can avoid to hardcode them in source code. I suggest you to use GitHub Action Secrets.
+This `AddDevExtremeAI()` overload looks for the apikey in appsettings.json or appsettings.Development.json so you can avoid to hardcode them in source code. I suggest you to use GitHub Action Secrets.
 
-If you prefer you can use the overload `AddDevextremeAI<TEnvironment>` that require an object type that implement the `DevExtremeAI.Settings.IAIEnvironment` interface so you can read apikey or organization id from where you want. (Your implementation of `IAIEnvironment` will be used in singleton way).
+If you prefer you can use the overload `AddDevExtremeAI<TEnvironment>` that require an object type that implement the `DevExtremeAI.Settings.IAIEnvironment` interface so you can read apikey or organization id from where you want. (Your implementation of `IAIEnvironment` will be used in singleton way).
 
-Finally you can use the overload `AddDevextremeAI(string apiKey, string? organization)` and pass apikey and organization id values but please read them from where you want but don't hardcode in any source code.
+Finally you can use the overload `AddDevExtremeAI(string apiKey, string? organization)` and pass apikey and organization id values but please read them from where you want but don't hardcode in any source code.
 
 That's all! From now you can use OpenAI in your asp.net project via Dependency Injection.
 
@@ -136,7 +136,7 @@ However don't hardcode apikey and organization id in any file (source code or ap
 Every methods of `DevExtremeAI.OpenAIClient.IOpenAIAPIClient` are the same of OpenAI, so you can use the  
 [official OpenAI  API Reference](https://platform.openai.com/docs/api-reference).
 Request DTO objects are described also with standard .net documentation so you can use intellisese.
-Every methods of `IOpenAIAPIClient` are present in the xUnit integration tests therefore you can look at them there (DevextremeAILibTest directory).
+Every methods of `IOpenAIAPIClient` are present in the xUnit integration tests therefore you can look at them there (DevExtremeAILibTest directory).
 
 ### Response
 
@@ -146,7 +146,7 @@ This type has three properties:
 - `ErrorResponse` that contains the error details returned by OpenAI API in case of problem.
 - `HasError` that is true if an error happened otherwise is false.
 - `OpenAIResponse` that is the same of the OpenAI response.
-  - Every DTO has the standard .net documentation so you can find documentation in intellisense and because are the same of OpenAI you can find documentation in the [official OpenAI  API Reference](https://platform.openai.com/docs/api-reference) also you can look at the integration tests in DevextremeAILibTest directory.
+  - Every DTO has the standard .net documentation so you can find documentation in intellisense and because are the same of OpenAI you can find documentation in the [official OpenAI  API Reference](https://platform.openai.com/docs/api-reference) also you can look at the integration tests in DevExtremeAILibTest directory.
 
 ## API Types
 
