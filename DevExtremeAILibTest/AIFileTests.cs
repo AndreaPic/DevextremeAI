@@ -64,7 +64,7 @@ namespace DevExtremeAILibTest
                 {
                     FileId = fileDataResponse.OpenAIResponse.FileId
                 });
-                Assert.True(fileContentResponse.HasError);
+                Assert.False(fileContentResponse.HasError, fileContentResponse?.ErrorResponse?.Error?.Message);
 
                 await Task.Delay(22000);
 
