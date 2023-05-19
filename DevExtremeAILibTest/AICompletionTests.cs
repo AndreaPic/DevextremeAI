@@ -1,10 +1,4 @@
-using DevExtremeAI.Settings;
-using DevExtremeToys.JSon;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using Newtonsoft.Json;
 using DevExtremeAI.OpenAIDTO;
 using DevExtremeAI.OpenAIClient;
 
@@ -34,19 +28,10 @@ namespace DevExtremeAILibTest
                 createCompletionRequest.Model = modelID;
                 createCompletionRequest.MaxTokens = 7;
                 createCompletionRequest.Temperature = 0;
-                //createCompletionRequest.TopP = 1;
-                //createCompletionRequest.N = 1;
                 createCompletionRequest.Stream = false;
                 createCompletionRequest.LogProbs = null;
-                //createCompletionRequest.Stop = "\n";
-
 
                 createCompletionRequest.AddCompletionPrompt("Say this is a test");
-
-                var json = createCompletionRequest.ToJSon(new JsonSerializerSettings()
-                {
-                    NullValueHandling = NullValueHandling.Ignore
-                });
 
                 var completionResponse = await openAiapiClient.CreateCompletionAsync(createCompletionRequest);
                 Assert.False(completionResponse.HasError, completionResponse?.ErrorResponse?.Error?.Message);
