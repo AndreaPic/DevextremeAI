@@ -16,7 +16,7 @@ To obtain the api key you have to register your account to openai.com.
 After registered go to your OpenAI Account and search 'View API keys', in this page you can create your apikey.
 From your account page you can find the Settings page where is placed your organization ID.
 
-You can use this library via nuget package: "bla bla bla"
+You can use this library via [nuget package DevExtremeAI](https://www.nuget.org/packages/DevExtremeAI/)
 
 **Important**
 Note that this library support dot net IConfiguration and dependency injection so it can read apikey and organization from them instead of hard coding in source code. (Please don't hard code apikey and organization id in source code and don't push them to git or any source repository).
@@ -28,8 +28,8 @@ This library also implement OpenAI error codes that aren't documented in OpenAI'
 
 ## asp.net core using examples
 
-Install nuget package "bla bla bla"
-In Program.cs ad this using:
+Install [nuget package DevExtremeAI](https://www.nuget.org/packages/DevExtremeAI/)
+In Program.cs add this using:
 
 ```csharp
 using DevExtremeAI.AspNet;
