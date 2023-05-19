@@ -1,4 +1,3 @@
-
 using DevExtremeAI.AspNet;
 
 namespace DevExtremeAIWebApp

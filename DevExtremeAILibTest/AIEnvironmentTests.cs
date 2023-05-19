@@ -1,5 +1,4 @@
 using DevExtremeAI.Settings;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DevExtremeAILibTest
