@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using DevExtremeAI.OpenAIDTO;
 using DevExtremeAI.OpenAIClient;
 
-namespace DevextremeAILibTest
+namespace DevExtremeAILibTest
 {
     public class AIChatCompletionTests : IClassFixture<TestApplication>
     {

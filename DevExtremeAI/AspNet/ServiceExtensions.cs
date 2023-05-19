@@ -40,7 +40,7 @@ namespace DevExtremeAI.AspNet
         /// <typeparam name="TEnvironment">Object that return apikey and organization id</typeparam>
         /// <param name="services">asp.net core service to extend</param>
         /// <returns>configured service</returns>
-        public static IServiceCollection AddDevextremeAI<TEnvironment>(this IServiceCollection services)
+        public static IServiceCollection AddDevExtremeAI<TEnvironment>(this IServiceCollection services)
             where  TEnvironment : class, IAIEnvironment, new()
         {
 
@@ -59,7 +59,7 @@ namespace DevExtremeAI.AspNet
         /// <param name="organization">OpenAI organization id</param>
         /// <param name="apiKey">OpenAI api key value</param>
         /// <returns></returns>
-        public static IServiceCollection AddDevextremeAI(this IServiceCollection services, string apiKey, string? organization)
+        public static IServiceCollection AddDevExtremeAI(this IServiceCollection services, string apiKey, string? organization)
         {
 
             services.AddHttpClient(OpenAIAPIClient.HttpClientName);

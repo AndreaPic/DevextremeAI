@@ -12,7 +12,7 @@ using DevExtremeAI.OpenAIDTO;
 using DevExtremeAI.OpenAIClient;
 
 
-namespace DevextremeAILibTest
+namespace DevExtremeAILibTest
 {
     public class AIFileTests : IClassFixture<TestApplication>
     {

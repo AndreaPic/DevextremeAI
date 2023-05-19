@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DevextremeAILibTest
+namespace DevExtremeAILibTest
 {
     internal class TestUtility
     {

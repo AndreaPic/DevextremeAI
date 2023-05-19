@@ -13,7 +13,7 @@ using DevExtremeToys.Serialization;
 using System.Text;
 using DevExtremeToys.Strings;
 
-namespace DevextremeAILibTest
+namespace DevExtremeAILibTest
 {
     public class AIFineTuningTests : IClassFixture<TestApplication>
     {

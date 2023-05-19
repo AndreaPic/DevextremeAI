@@ -67,7 +67,7 @@ namespace DevExtremeAI.OpenAIClient
             }
         }
 
-        internal static string HttpClientName = "DevextremeAI";
+        internal static string HttpClientName = "DevExtremeAI";
         private HttpClient CreateHttpClient(out bool doDispose)
         {
             HttpClient httpClient = null;

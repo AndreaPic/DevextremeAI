@@ -4,7 +4,7 @@ using DevExtremeAI.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DevextremeAILibTest
+namespace DevExtremeAILibTest
 {
     public class AIModelTests : IClassFixture<TestApplication>
     {

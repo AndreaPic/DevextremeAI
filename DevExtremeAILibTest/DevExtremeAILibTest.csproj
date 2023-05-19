@@ -19,7 +19,7 @@
     </ItemGroup>
     
   <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-    <PackageReference Include="DevextremeToys" Version="2.0.0" />
+    <PackageReference Include="DevExtremeToys" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.5" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
     <PackageReference Include="xunit" Version="2.4.2" />
@@ -33,7 +33,7 @@
     </PackageReference>
   </ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-		<PackageReference Include="DevextremeToys" Version="2.0.0" />
+		<PackageReference Include="DevExtremeToys" Version="2.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
 		<PackageReference Include="xunit" Version="2.4.2" />
@@ -48,8 +48,8 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DevextremeAIWebApp\DevExtremeAIWebAppX.csproj" />
-    <ProjectReference Include="..\DevextremeAI\DevExtremeAI.csproj" />
+    <ProjectReference Include="..\DevExtremeAIWebApp\DevExtremeAIWebApp.csproj" />
+    <ProjectReference Include="..\DevExtremeAI\DevExtremeAI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

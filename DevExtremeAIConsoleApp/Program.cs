@@ -2,7 +2,7 @@
 using DevExtremeAI.OpenAIDTO;
 using System.Diagnostics;
 
-namespace DevextremeAIConsoleApp
+namespace DevExtremeAIConsoleApp
 {
     internal class Program
     {

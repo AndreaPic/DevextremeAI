@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace DevextremeAIWebApp.Controllers
+namespace DevExtremeAIWebApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]

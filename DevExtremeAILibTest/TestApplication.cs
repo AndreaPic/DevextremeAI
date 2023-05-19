@@ -17,9 +17,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.IO;
 
-namespace DevextremeAILibTest
+namespace DevExtremeAILibTest
 {
-    public class TestApplication : WebApplicationFactory<DevextremeAIWebApp.Program>
+    public class TestApplication : WebApplicationFactory<DevExtremeAIWebApp.Program>
     {
     }
 }

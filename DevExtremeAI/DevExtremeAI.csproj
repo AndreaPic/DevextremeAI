@@ -7,9 +7,9 @@
 		<Title>DevExtremeAI full and complete implementation of all OpenAI's APIs</Title>
 		<Authors>Andrea Piccioni</Authors>
 		<Company>Andrea-Dev-Italy Studio Progettazione Software</Company>
-		<PackageProjectUrl>https://www.devextreme.net</PackageProjectUrl>
+		<PackageProjectUrl>https://www.DevExtreme.net</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<RepositoryUrl>https://github.com/AndreaPic/DevextremeAI</RepositoryUrl>
+		<RepositoryUrl>https://github.com/AndreaPic/DevExtremeAI</RepositoryUrl>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Version>$(VersionPrefix)$(VersionSuffix)</Version>
 		<VersionPrefix>0.9.0</VersionPrefix>

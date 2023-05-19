@@ -1,7 +1,7 @@
 
 using DevExtremeAI.AspNet;
 
-namespace DevextremeAIWebApp
+namespace DevExtremeAIWebApp
 {
     public class Program
     {

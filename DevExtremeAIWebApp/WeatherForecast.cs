@@ -1,4 +1,4 @@
-namespace DevextremeAIWebApp
+namespace DevExtremeAIWebApp
 {
     public class WeatherForecast
     {
