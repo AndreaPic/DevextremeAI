@@ -361,6 +361,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/DevextremeAILibTest/appsettings.Development.json
-/DevextremeAIWebApp/appsettings.Development.json
-/DevextremeAIConsoleApp/appsettings.Development.json
+*.Development.json
