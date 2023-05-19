@@ -49,7 +49,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DevextremeAIWebApp\DevextremeAIWebApp.csproj" />
-    <ProjectReference Include="..\DevextremeAI\DevExtremeAII.csproj" />
+    <ProjectReference Include="..\DevextremeAI\DevExtremeAI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
