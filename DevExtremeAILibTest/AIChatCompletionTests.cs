@@ -1,11 +1,5 @@
 using System.Diagnostics;
-using DevExtremeAI.Settings;
-using DevExtremeToys.JSon;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using Newtonsoft.Json;
 using DevExtremeAI.OpenAIDTO;
 using DevExtremeAI.OpenAIClient;
 
