@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevExtremeAI", "DevextremeAI\DevExtremeAI.csproj", "{A9BD28F7-E188-444B-BB1D-95578C6F8704}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevExtremeAI", "DevExtremeAIX\DevExtremeAI.csproj", "{A9BD28F7-E188-444B-BB1D-95578C6F8704}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevextremeAILibTest", "DevextremeAILibTest\DevextremeAILibTest.csproj", "{BD1CEEDE-5FEE-4D74-A5D5-6A8F11A3A285}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevExtremeAILibTestX", "DevExtremeAILibTestX\DevExtremeAILibTestX.csproj", "{BD1CEEDE-5FEE-4D74-A5D5-6A8F11A3A285}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevextremeAIWebApp", "DevextremeAIWebApp\DevextremeAIWebApp.csproj", "{F686A555-CC74-4F55-836D-5988E0C315CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevExtremeAIWebAppX", "DevExtremeAIWebAppX\DevExtremeAIWebAppX.csproj", "{F686A555-CC74-4F55-836D-5988E0C315CF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevextremeAIConsoleApp", "DevextremeAIConsoleApp\DevextremeAIConsoleApp.csproj", "{E989040E-A232-49E8-B0FB-4CF617280BDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevExtremeAIConsoleAppX", "DevExtremeAIConsoleAppX\DevExtremeAIConsoleAppX.csproj", "{E989040E-A232-49E8-B0FB-4CF617280BDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
