@@ -13,7 +13,7 @@ jobs:
 
     env:
       BUILD_CONFIG: 'Release'
-      SOLUTION: 'DevextremeToys.sln'
+      SOLUTION: 'DevExtremeAI.sln'
 
     runs-on: ubuntu-latest
 
