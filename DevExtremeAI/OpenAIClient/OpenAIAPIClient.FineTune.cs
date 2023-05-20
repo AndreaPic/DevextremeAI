@@ -135,8 +135,6 @@ namespace DevExtremeAI.OpenAIClient
             return ret;
         }
 
-        const string streamLineBegin = "data: ";
-        private const string streamDoneLine = "[DONE]";
 
         /// <summary>
         /// Get fine-grained status updates for a fine-tune job.
@@ -166,7 +164,7 @@ namespace DevExtremeAI.OpenAIClient
                         var line = await reader.ReadLineAsync();
                         if (string.IsNullOrWhiteSpace(line))
                         {
-                            stop = true;
+                            stop = false;
                         }
                         else
                         {

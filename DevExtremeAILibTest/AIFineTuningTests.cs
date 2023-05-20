@@ -80,7 +80,7 @@ namespace DevExtremeAILibTest
             }
         }
 
-        //[Fact]
+        [Fact]
         public async Task FileTuningWithDeleteTest()
         {
             using (var scope = _factory.Services.CreateScope())
@@ -132,8 +132,13 @@ namespace DevExtremeAILibTest
                     {
                         Assert.NotNull(eventData.Object);
                         Debug.WriteLine(eventData.Message);
+                        break;
                     }
-                }catch{}
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
 
                 var eventsData = await openAiapiClient.GetFineTuneEventListAsync(new FineTuneRequest() { FineTuneId = createFineTuneJobResponse.OpenAIResponse.Id });
                 Assert.False(eventsData.HasError);
@@ -141,7 +146,7 @@ namespace DevExtremeAILibTest
                 var fineTuneData = await openAiapiClient.GetFineTuneJobDataAsync(new FineTuneRequest() { FineTuneId = createFineTuneJobResponse.OpenAIResponse.Id });
                 Assert.False(fineTuneData.HasError);
 
-                await Task.Delay(30000);
+                await Task.Delay(45000);
 
                 if (!string.IsNullOrEmpty(fineTuneData?.OpenAIResponse?.FineTunedModel))
                 {
