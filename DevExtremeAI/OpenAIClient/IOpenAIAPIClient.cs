@@ -26,13 +26,33 @@ namespace DevExtremeAI.OpenAIClient
         /// </summary>
         /// <param name="request">DTO with request specs.</param>
         /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
+        /// <remarks>With this method the Stream property of CreateChatCompletionRequest is forced false</remarks>
         public Task<ResponseDTO<CreateCompletionResponse>> CreateCompletionAsync(CreateCompletionRequest request);
+
+        /// <summary>
+        /// Creates a completion for the provided prompt and parameters in stream way.
+        /// Given a prompt, the model will return one or more predicted completions, and can also return the probabilities of alternative tokens at each position.
+        /// </summary>
+        /// <param name="request">DTO with request specs.</param>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
+        /// <remarks>With this method the Stream property of CreateChatCompletionRequest is forced true</remarks>
+        public IAsyncEnumerable<ResponseDTO<CreateCompletionResponse>> CreateCompletionStreamAsync(
+            CreateCompletionRequest request);
         /// <summary>
         /// Creates a model response for the given chat conversation.
         /// </summary>
         /// <param name="request">DTO with request specs.</param>
         /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
+        /// <remarks>With this method the Stream property of CreateChatCompletionRequest is forced false</remarks>
         public Task<ResponseDTO<CreateChatCompletionResponse>> CreateChatCompletionAsync(CreateChatCompletionRequest request);
+        /// <summary>
+        /// Creates a model response for the given chat conversation in stream way.
+        /// </summary>
+        /// <param name="request">DTO with request specs.</param>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
+        /// <remarks>With this method the Stream property of CreateChatCompletionRequest is forced true</remarks>
+        public IAsyncEnumerable<ResponseDTO<CreateChatCompletionResponse>> CreateChatCompletionStreamAsync(
+            CreateChatCompletionRequest request);
         /// <summary>
         /// Given a prompt and an instruction, the model will return an edited version of the prompt.
         /// Creates a new edit for the provided input, instruction, and parameters.

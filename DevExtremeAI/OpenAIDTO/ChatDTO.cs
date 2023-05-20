@@ -28,6 +28,11 @@ namespace DevExtremeAI.OpenAIDTO
         [JsonPropertyName("messages")]
         public List<ChatCompletionRequestMessage> Messages { get; private set; } = new List<ChatCompletionRequestMessage>();
 
+        public void AddMessage(ChatCompletionRequestMessage message)
+        {
+            Messages.Add(message);
+        }
+
         /// <summary>
         /// What sampling temperature to use, between 0 and 2.
         /// Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.  We generally recommend altering this or `top_p` but not both.
@@ -64,6 +69,13 @@ namespace DevExtremeAI.OpenAIDTO
 
         private List<string> stops { get; set; } = new List<string>();
 
+        /// <summary>
+        /// Add a sequence where the API will stop generating further tokens.
+        /// </summary>
+        /// <param name="stop">sequence where the API will stop generating further tokens</param>
+        /// <remarks>
+        /// Are allowed up to 4 sequence.
+        /// </remarks>
         public void AddStop(string stop)
         {
             stops.Add(stop);
@@ -175,7 +187,11 @@ namespace DevExtremeAI.OpenAIDTO
         [JsonPropertyName("index")]
         public double? Index { get; set; }
 
+        [JsonPropertyName("message")]
         public ChatCompletionResponseMessage? Message { get; set; }
+
+        [JsonPropertyName("delta")]
+        public ChatCompletionResponseMessage? Delta { get; set; }
 
 
         [JsonPropertyName("finish_reason")]
