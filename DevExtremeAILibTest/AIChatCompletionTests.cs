@@ -14,7 +14,49 @@ namespace DevExtremeAILibTest
             _factory = factory;
         }
 
-        
+
+        [Theory]
+        //[InlineData("text-davinci-003")]
+        [InlineData("gpt-3.5-turbo")]
+        public async Task CreateChatCompletionStreamTest(string modelID)
+        {
+
+            using (var scope = _factory.Services.CreateScope())
+            {
+                var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
+                CreateChatCompletionRequest createCompletionRequest = new CreateChatCompletionRequest();
+                createCompletionRequest.Model = modelID;
+                createCompletionRequest.Temperature = 0.9;
+
+                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                {
+                    Role = ChatCompletionMessageRoleEnum.User,
+                    Content = "I'm getting bored, what can you do for me?"
+                });
+                await Task.Delay(22000);
+
+                try
+                {
+                    await foreach (var response in openAiapiClient.CreateChatCompletionStreamAsync(
+                                       createCompletionRequest))
+                    {
+                        Assert.False(response.HasError, response?.ErrorResponse?.Error?.Message);
+                        Assert.NotNull(response?.OpenAIResponse);
+                        Assert.NotNull(response?.OpenAIResponse.Choices);
+                        Assert.True(response?.OpenAIResponse.Choices.Count > 0);
+                        Debug.WriteLine(response?.OpenAIResponse?.Choices[0]?.Delta?.Content);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false,ex.Message);
+                }
+
+            }
+        }
+
+
         [Theory]
         //[InlineData("text-davinci-003")]
         [InlineData("gpt-3.5-turbo")]
@@ -63,6 +105,8 @@ namespace DevExtremeAILibTest
 
             }
         }
+
+
 
         [Theory]
         [InlineData("gpt-3.5-turbo")]

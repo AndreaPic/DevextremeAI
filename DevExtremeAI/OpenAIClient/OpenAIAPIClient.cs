@@ -15,6 +15,9 @@ namespace DevExtremeAI.OpenAIClient
     public sealed partial class OpenAIAPIClient : IOpenAIAPIClient
     {
 
+        private const string streamLineBegin = "data: ";
+        private const string streamDoneLine = "[DONE]";
+
         private readonly JsonSerializerOptions _jsonSerializerOptions = new()
         {
             //PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
