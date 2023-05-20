@@ -52,7 +52,7 @@ jobs:
       run: dotnet build $SOLUTION --configuration $BUILD_CONFIG /p:Platform="Any CPU" -p:Version=$BUILD_VERSION --no-restore
 
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test $SOLUTION --no-build --configuration $BUILD_CONFIG /p:Platform="Any CPU" --verbosity normal
 
     - name: Publish
       if: startsWith(github.ref, 'refs/tags/')
