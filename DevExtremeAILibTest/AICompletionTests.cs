@@ -21,7 +21,8 @@ namespace DevExtremeAILibTest
         //[InlineData("gpt-3.5-turbo")]
         public async Task CreateCompletionTest(string modelID)
         {
-            
+
+            await Task.Delay(22000);
             using (var scope = _factory.Services.CreateScope())
             {
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
@@ -50,6 +51,7 @@ namespace DevExtremeAILibTest
         public async Task CreateCompletionStreamTest(string modelID)
         {
 
+            await Task.Delay(22000);
             using (var scope = _factory.Services.CreateScope())
             {
                 var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
