@@ -90,20 +90,30 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<FineTuneData>> GetFineTuneJobDataAsync(FineTuneRequest request)
         {
             ResponseDTO<FineTuneData> ret = new ResponseDTO<FineTuneData>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
+            {
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-            var httpResponse = await httpClient.GetAsync($"fine-tunes/{request.FineTuneId}");
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FineTuneData>();
+                var httpResponse = await httpClient.GetAsync($"fine-tunes/{request.FineTuneId}");
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FineTuneData>();
+                }
+                else
+                {
+                    ret.ErrorResponse = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                }
+                return ret;
             }
-            else
+            finally
             {
-                ret.ErrorResponse = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
             }
-            return ret;
         }
 
         /// <summary>
@@ -114,20 +124,30 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<FineTuneData>> CancelFineTuneJobAsync(FineTuneRequest request)
         {
             ResponseDTO<FineTuneData> ret = new ResponseDTO<FineTuneData>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
+            {
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-            var httpResponse = await httpClient.PostAsync($"fine-tunes/{request.FineTuneId}/cancel",null);
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FineTuneData>();
+                var httpResponse = await httpClient.PostAsync($"fine-tunes/{request.FineTuneId}/cancel",null);
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FineTuneData>();
+                }
+                else
+                {
+                    ret.ErrorResponse = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                }
+                return ret;
             }
-            else
+            finally
             {
-                ret.ErrorResponse = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
             }
-            return ret;
         }
 
         /// <summary>
@@ -139,20 +159,30 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<GetFineTuneEventListResponse>> GetFineTuneEventListAsync(FineTuneRequest request)
         {
             ResponseDTO<GetFineTuneEventListResponse> ret = new ResponseDTO<GetFineTuneEventListResponse>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
+            {
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-            var httpResponse = await httpClient.GetAsync($"fine-tunes/{request.FineTuneId}/events");
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<GetFineTuneEventListResponse>();
+                var httpResponse = await httpClient.GetAsync($"fine-tunes/{request.FineTuneId}/events");
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<GetFineTuneEventListResponse>();
+                }
+                else
+                {
+                    ret.ErrorResponse = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                }
+                return ret;
             }
-            else
+            finally
             {
-                ret.ErrorResponse = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
             }
-            return ret;
         }
 
 
