@@ -19,23 +19,33 @@ namespace DevExtremeAI.OpenAIClient
         /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<FineTuneData>> CreateFineTuneJobAsync(CreateFineTuneRequest request)
         {
-            ResponseDTO<FineTuneData> ret = new ResponseDTO<FineTuneData>(); 
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
-
-            var jsonContent = CreateJsonStringContent(request);
-
-            var httpResponse = await httpClient.PostAsync($"fine-tunes", jsonContent);
-            if (httpResponse.IsSuccessStatusCode)
+            ResponseDTO<FineTuneData> ret = new ResponseDTO<FineTuneData>();
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
             {
-                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FineTuneData>();
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
+
+                var jsonContent = CreateJsonStringContent(request);
+
+                var httpResponse = await httpClient.PostAsync($"fine-tunes", jsonContent);
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FineTuneData>();
+                }
+                else
+                {
+                    ret.ErrorResponse = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                }
+                return ret;
             }
-            else
+            finally
             {
-                ret.ErrorResponse = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
             }
-            return ret;
         }
 
         /// <summary>
@@ -46,20 +56,30 @@ namespace DevExtremeAI.OpenAIClient
         public async Task<ResponseDTO<GetFineTuneListResponse>> GetFineTuneJobListAsync()
         {
             ResponseDTO<GetFineTuneListResponse> ret = new ResponseDTO<GetFineTuneListResponse>();
-            HttpClient httpClient = HttpClientFactory.CreateClient();
-            FillBaseAddress(httpClient);
-            FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
+            HttpClient httpClient = CreateHttpClient(out bool doDispose);
+            try
+            {
+                FillBaseAddress(httpClient);
+                FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-            var httpResponse = await httpClient.GetAsync($"fine-tunes");
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<GetFineTuneListResponse>();
+                var httpResponse = await httpClient.GetAsync($"fine-tunes");
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<GetFineTuneListResponse>();
+                }
+                else
+                {
+                    ret.ErrorResponse = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                }
+                return ret;
             }
-            else
+            finally
             {
-                ret.ErrorResponse = await httpResponse.Content.ReadFromJsonAsync<ErrorResponse>() ?? ErrorResponse.CreateDefaultErrorResponse();
+                if (doDispose)
+                {
+                    httpClient.Dispose();
+                }
             }
-            return ret;
         }
 
         /// <summary>
