@@ -33,7 +33,7 @@ Note that this library support dot net IConfiguration and dependency injection s
 This library fully adhere to OpenAI specs and its object model is the same of OpenAI (with dotnet peculiarities).
 This library also implement OpenAI error codes that aren't documented in OpenAI's APIs Reference.
 
-## asp.net core using examples
+### Asp.net core using examples
 
 Install [nuget package DevExtremeAI](https://www.nuget.org/packages/DevExtremeAI/)
 In Program.cs add this using:
@@ -45,6 +45,8 @@ using DevExtremeAI.AspNet;
 This using allow you to use the asp.net service extension.
 With the webapplication builder now you can use the `AddDevExtremeAI()` method that register all that you need with dependency injection.
 
+### Using web application settings
+
 ```csharp
   var builder = WebApplication.CreateBuilder(args);
 
@@ -54,13 +56,37 @@ With the webapplication builder now you can use the `AddDevExtremeAI()` method t
 
 This `AddDevExtremeAI()` overload looks for the apikey in appsettings.json or appsettings.Development.json so you can avoid to hardcode them in source code. I suggest you to use GitHub Action Secrets.
 
-If you prefer you can use the overload `AddDevExtremeAI<TEnvironment>` that require an object type that implement the `DevExtremeAI.Settings.IAIEnvironment` interface so you can read apikey or organization id from where you want. (Your implementation of `IAIEnvironment` will be used in singleton way).
+### Using environment variables
 
-Finally you can use the overload `AddDevExtremeAI(string apiKey, string? organization)` and pass apikey and organization id values but please read them from where you want but don't hardcode in any source code.
+```csharp
+  var builder = WebApplication.CreateBuilder(args);
+
+  // Add services to the container.
+  builder.Services.AddDevExtremeAI<DevExtremeAI.Settings.CurrentEnvironmentData>();
+```
+
+In this way api key and organization id are readed from environment variables named OPENAI_ORGANIZATION and OPENAI_API_KEY.
+
+### Using your implementation
+
+```csharp
+  var builder = WebApplication.CreateBuilder(args);
+
+  // Add services to the container.
+  builder.Services.AddDevExtremeAI<MyEnvironmentReader>();
+```
+
+In the above example you can use the overload `AddDevExtremeAI<TEnvironment>` that require an object type that implement the `DevExtremeAI.Settings.IAIEnvironment` interface so you can read apikey or organization id from where you want. (Your implementation of `IAIEnvironment` will be used in singleton way).
+
+### Explicit arguments
+
+Finally you can use the overload `AddDevExtremeAI(string apiKey, string? organization)` and pass apikey and organization id values readed from where you want (please read them from where you want but don't hardcode in any source code).
 
 That's all! From now you can use OpenAI in your asp.net project via Dependency Injection.
 
-Now you can declare the constructor of your controller with `DevExtremeAI.OpenAIClient.IOpenAIAPIClient` argument like this:
+### Your api
+
+Now you can declare the constructor of your controller & friends with `DevExtremeAI.OpenAIClient.IOpenAIAPIClient` argument like this:
 
 ```csharp
   private DevExtremeAI.OpenAIClient.IOpenAIAPIClient _openAIApiClient;
@@ -89,11 +115,12 @@ an example of use of IOpenAIAPIClient in controller or apicontroller could be:
 **Note**
 You can find the complete documentation of api and DTO in intellisense, examples below or [OpenAI official API Reference](https://platform.openai.com/docs/api-reference) because are the same.
 
-## Using outside asp.net core
+## Using outside asp.net core (as library or console application)
 
 If you use outside asp.net core or without HostBuilder or Dependency Injection like in Console Application or dotnet library you can use Factory methods.
 
-In this scenario you need the same package form nuget 'bla bla bla'
+In this scenario you need the same package [nuget package DevExtremeAI](https://www.nuget.org/packages/DevExtremeAI/)
+
 After installing this package you can use the DevExtremeAI Library.
 
 In Program.cs ad this using:
@@ -105,6 +132,8 @@ using DevExtremeAI.OpenAIClient;
 Now you you can use the `OpenAIClientFactory`
 
 Inside your Library or Main method of the console application you can create an instace of `IOpenAIAPIClient` like in this example:
+
+### Using appsettings.json or appsettings.Development.json
 
 ```csharp
     internal class Program
@@ -129,8 +158,29 @@ Inside your Library or Main method of the console application you can create an 
 ```
 
 The factory method (`CreateInstance`) in above example use the overload without arguments, this overload look for apikeyvalue and organization ind in appsettings.json or appsettings.Development.json.
+The appsettings key names must be OPENAI_API_KEY and OPENAI_ORGANIZATION.
+
+### Using current environment variables
+
+```csharp
+  var openAIClient = OpenAIClientFactory.CreateInstance<CurrentEnvironmentData>(); //create an instance o IOpenAIAPIClient  
+```
+
+```csharp
+  var openAIClient = OpenAIClientFactory.CreateInstance(new CurrentEnvironmentData()); //create an instance o IOpenAIAPIClient  
+```
+
+In this way api key and organization id are readed from environment variables named OPENAI_ORGANIZATION and OPENAI_API_KEY.
+
+### Using your own implementation
+
+```csharp
+  var openAIClient = OpenAIClientFactory.CreateInstance<MyEnvironmentValueReader>(); //create an instance o IOpenAIAPIClient  
+```
 
 You can use the overload that require an instance of `DevExtremeAI.Settings.IAIEnvironment` implemented by yourself so you can read apikey value and organization id from where you want.
+
+### Pass explicit arguments
 
 Also you can use the overload that reqire apikey value and organization id as arguments (but pleas don't hardcode them in source code).
 
@@ -163,9 +213,14 @@ Are covered all OpenAI API types:
 - Completions
 - Chat
 - Edits
-- Imnages
+- Images
 - Embeddings
 - Audio
 - Files
 - Fine-tunes
 - Moderations
+
+## Examples
+
+You can find the examples of every api in test unit project.
+If you want, you can contribute extending this readme file with examples ;)
