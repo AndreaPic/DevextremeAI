@@ -51,5 +51,16 @@ namespace DevExtremeAI.OpenAIClient
         /// </returns>
         public static OpenAIAPIClient CreateInstance(IAIEnvironment openAiEnvironment) => new(openAiEnvironment);
 
+        /// <summary>
+        /// This method return a new instance of OpenAIAPIClient using the apikey and organization id that you provide through process Environment.
+        /// The Environment variables name must be: OPENAI_ORGANIZATION for organization id and OPENAI_API_KEY for the openai API Key
+        /// Please don't hardcode the apikey and organization id and also don't push them to git!!!
+        /// </summary>
+        /// <returns>
+        /// A new instance of OpenAIAPIClient
+        /// </returns>
+        public static OpenAIAPIClient CreateInstance<TEnv>()
+            where TEnv : class, IAIEnvironment, new()
+                => new(new TEnv());
     }
 }
