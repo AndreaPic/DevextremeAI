@@ -92,7 +92,22 @@ namespace DevExtremeAI.OpenAIDTO
         /// Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
         /// </summary>
         [JsonPropertyName("stop")]
-        public string? Stop { get; set; }
+        public object? Stop => stops.Count switch { 0 => null, 1 => stops[0], > 1 => stops, _ => null };
+
+        private List<string> stops { get; set; } = new List<string>();
+
+        /// <summary>
+        /// Add a sequence where the API will stop generating further tokens.
+        /// </summary>
+        /// <param name="stop">sequence where the API will stop generating further tokens</param>
+        /// <remarks>
+        /// Are allowed up to 4 sequence.
+        /// </remarks>
+        public void AddStop(string stop)
+        {
+            stops.Add(stop);
+        }
+
 
         /// <summary>
         /// Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model\'s likelihood to talk about new topics.  [See more information about frequency and presence penalties.](/docs/api-reference/parameter-details) 
