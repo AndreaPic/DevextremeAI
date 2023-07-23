@@ -71,6 +71,29 @@ namespace DevExtremeAILibTest.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to [
+        ///    {
+        ///        &quot;name&quot;: &quot;get_current_weather&quot;,
+        ///        &quot;description&quot;: &quot;Get the current weather&quot;,
+        ///        &quot;parameters&quot;: {
+        ///            &quot;type&quot;: &quot;object&quot;,
+        ///            &quot;properties&quot;: {
+        ///                &quot;location&quot;: {
+        ///                    &quot;type&quot;: &quot;string&quot;,
+        ///                    &quot;description&quot;: &quot;The city and state, e.g. San Francisco, CA&quot;,
+        ///                },
+        ///                &quot;format&quot;: {
+        ///                    &quot;type&quot;: &quot;string&quot;,
+        ///                    &quot;enum&quot;: [&quot;celsius&quot;, &quot;fahrenheit&quot;],
+        ///                    &quot;descripti [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string FunctionsDefinition {
+            get {
+                return ResourceManager.GetString("FunctionsDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] pink_panther {

@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using DevExtremeAI.Utils;
+using System.Text.Json.Nodes;
 
 namespace DevExtremeAI.OpenAIDTO
 {
@@ -39,33 +40,34 @@ namespace DevExtremeAI.OpenAIDTO
         /// A list of functions the model may generate JSON inputs for.
         /// </summary>
         [JsonPropertyName("functions")]
-        public List<ChatCompletionfunction> Functions
-        {
-            get
-            {
-                if (functions != null && functions.Count() == 0)
-                {
-                    return null;
-                }
-                return functions;
-            }
-            set
-            {
-                functions = value;
-            }
-        }
+        public JsonNode Functions { get; set; }
+        //public List<ChatCompletionfunction> Functions
+        //{
+        //    get
+        //    {
+        //        if (functions != null && functions.Count() == 0)
+        //        {
+        //            return null;
+        //        }
+        //        return functions;
+        //    }
+        //    set
+        //    {
+        //        functions = value;
+        //    }
+        //}
 
-        public void AddFunction(ChatCompletionfunction function)
-        {
-            if (function != null)
-            {
-                if (functions == null)
-                {
-                    functions = new List<ChatCompletionfunction>();
-                }
-                functions.Add(function);
-            }
-        }
+        //public void AddFunction(ChatCompletionfunction function)
+        //{
+        //    if (function != null)
+        //    {
+        //        if (functions == null)
+        //        {
+        //            functions = new List<ChatCompletionfunction>();
+        //        }
+        //        functions.Add(function);
+        //    }
+        //}
 
         /// <summary>
         /// Controls how the model responds to function calls. 
