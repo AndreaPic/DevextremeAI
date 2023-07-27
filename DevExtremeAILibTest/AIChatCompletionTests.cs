@@ -193,13 +193,30 @@ namespace DevExtremeAILibTest
                 createCompletionRequest.Model = modelID;
                 createCompletionRequest.Temperature = 1.4;
                 var function = new ChatCompletionfunction();
-                function.Name = "get_current_weather";
-                function.Description = "Get the current weather in a given location";
-                function.JSONSchemaParameters = "{\r\n    \"type\": \"object\",\r\n    \"properties\": {\r\n        \"location\": {\r\n            \"type\": \"string\",\r\n            \"description\": \"The city and state, e.g. San Francisco, CA\"\r\n        },\r\n        \"unit\": {\"type\": \"string\", \"enum\": [\"celsius\", \"fahrenheit\"]},\r\n    },\r\n    \"required\": [\"location\"]\r\n}";
-                //createCompletionRequest.Functions = "[{\"name\": \"get_current_weather\",\"description\": \"Get the current weather\",\"parameters\": {\"type\": \"object\",\"properties\": {\"location\": {\"type\": \"string\",\"description\": \"The city and state, e.g. San Francisco , CA\"},\"format\": {\"type\": \"string\",\"enum\": [\"celsius\", \"fahrenheit\"],\"description\": \"The temperature unit to use. Infer this from the users location.\"}},\"required\": [\"location\", \"format\"]}}]";
-                createCompletionRequest.Functions = Resources.Resource.FunctionsDefinition;
+                //function.Name = "get_current_weather";
+                //function.Description = "Get the current weather in a given location";
+                //function.JSONSchemaParameters = "{\r\n    \"type\": \"object\",\r\n    \"properties\": {\r\n        \"location\": {\r\n            \"type\": \"string\",\r\n            \"description\": \"The city and state, e.g. San Francisco, CA\"\r\n        },\r\n        \"unit\": {\"type\": \"string\", \"enum\": [\"celsius\", \"fahrenheit\"]},\r\n    },\r\n    \"required\": [\"location\"]\r\n}";
+                ////createCompletionRequest.Functions = "[{\"name\": \"get_current_weather\",\"description\": \"Get the current weather\",\"parameters\": {\"type\": \"object\",\"properties\": {\"location\": {\"type\": \"string\",\"description\": \"The city and state, e.g. San Francisco , CA\"},\"format\": {\"type\": \"string\",\"enum\": [\"celsius\", \"fahrenheit\"],\"description\": \"The temperature unit to use. Infer this from the users location.\"}},\"required\": [\"location\", \"format\"]}}]";
+                var func = new FunctionDefinition()
+                {
+                    Name = "get_current_weather",
+                    Description = "Get the current weather in a given location"
+                };
+                func.Parameters.Properties.Add("location", new PropertyDefinition()
+                {
+                     TypeName = "string",
+                     Description = "The city and state, e.g. San Francisco, CA"
+                });
+                func.Parameters.Properties.Add("format", new PropertyDefinition()
+                {
+                    TypeName = "string",
+                    Description = "The temperature unit to use. Infer this from the users location.",
+                    EnumValues = new []{ "celsius", "fahrenheit" }                    
+                });
+                func.Parameters.AddRequiredProperty("location");
+                func.Parameters.AddRequiredProperty("format");
 
-                //createCompletionRequest.AddFunction(function);
+                createCompletionRequest.AddFunction(func);
 
                 createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
                 {
@@ -213,50 +230,6 @@ namespace DevExtremeAILibTest
                 Assert.NotNull(response?.OpenAIResponse?.Choices);
                 Assert.True(response.OpenAIResponse.Choices.Count > 0);
                 Assert.NotNull(response?.OpenAIResponse?.Usage);
-
-                Debug.WriteLine(response.OpenAIResponse.Choices[0].Message.Content);
-
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
-                {
-                    Role = response.OpenAIResponse.Choices[0].Message.Role,
-                    Content = response.OpenAIResponse.Choices[0].Message.Content
-                });
-
-
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
-                {
-                    Role = ChatCompletionMessageRoleEnum.User,
-                    Content = "Qual'è la capitale d'Italia?"
-                });
-
-                await Task.Delay(22000);
-                response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
-                Assert.NotNull(response?.OpenAIResponse);
-                Assert.NotNull(response?.OpenAIResponse?.Choices);
-                Assert.True(response.OpenAIResponse.Choices.Count > 0);
-                Assert.NotNull(response?.OpenAIResponse?.Usage);
-
-                Debug.WriteLine(response.OpenAIResponse.Choices[0].Message.Content);
-
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
-                {
-                    Role = response.OpenAIResponse.Choices[0].Message.Role,
-                    Content = response.OpenAIResponse.Choices[0].Message.Content
-                });
-
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
-                {
-                    Role = ChatCompletionMessageRoleEnum.User,
-                    Content = "Quali cose potrei visitare li?"
-                });
-
-                await Task.Delay(22000);
-                response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
-                Assert.NotNull(response?.OpenAIResponse);
-                Assert.NotNull(response?.OpenAIResponse?.Choices);
-                Assert.True(response.OpenAIResponse.Choices.Count > 0);
-                Assert.NotNull(response?.OpenAIResponse?.Usage);
-                Debug.WriteLine(response.OpenAIResponse.Choices[0].Message.Content);
 
 
             }
