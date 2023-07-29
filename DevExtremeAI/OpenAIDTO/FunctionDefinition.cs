@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExtremeAI.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -71,6 +72,7 @@ namespace DevExtremeAI.OpenAIDTO
         public string FunctionName { get; set; }
 
         [JsonPropertyName("arguments")]
-        public string Arguments { get; set; }
+        [JsonConverter(typeof(JsonStringArgumentsDictionaryConverter))]
+        public IDictionary<string, object> Arguments { get; set; } = new Dictionary<string, object>();
     }
 }

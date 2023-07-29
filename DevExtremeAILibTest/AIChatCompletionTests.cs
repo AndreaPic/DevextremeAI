@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using DevExtremeAI.OpenAIDTO;
 using DevExtremeAI.OpenAIClient;
+using System.Text.Json;
 
 namespace DevExtremeAILibTest
 {
@@ -193,10 +194,6 @@ namespace DevExtremeAILibTest
                 createCompletionRequest.Model = modelID;
                 createCompletionRequest.Temperature = 1.4;
                 var function = new ChatCompletionfunction();
-                //function.Name = "get_current_weather";
-                //function.Description = "Get the current weather in a given location";
-                //function.JSONSchemaParameters = "{\r\n    \"type\": \"object\",\r\n    \"properties\": {\r\n        \"location\": {\r\n            \"type\": \"string\",\r\n            \"description\": \"The city and state, e.g. San Francisco, CA\"\r\n        },\r\n        \"unit\": {\"type\": \"string\", \"enum\": [\"celsius\", \"fahrenheit\"]},\r\n    },\r\n    \"required\": [\"location\"]\r\n}";
-                ////createCompletionRequest.Functions = "[{\"name\": \"get_current_weather\",\"description\": \"Get the current weather\",\"parameters\": {\"type\": \"object\",\"properties\": {\"location\": {\"type\": \"string\",\"description\": \"The city and state, e.g. San Francisco , CA\"},\"format\": {\"type\": \"string\",\"enum\": [\"celsius\", \"fahrenheit\"],\"description\": \"The temperature unit to use. Infer this from the users location.\"}},\"required\": [\"location\", \"format\"]}}]";
                 var func = new FunctionDefinition()
                 {
                     Name = "get_current_weather",
@@ -229,7 +226,37 @@ namespace DevExtremeAILibTest
                 Assert.NotNull(response?.OpenAIResponse);
                 Assert.NotNull(response?.OpenAIResponse?.Choices);
                 Assert.True(response.OpenAIResponse.Choices.Count > 0);
+                Assert.True(response.OpenAIResponse.Choices[0].FinishReason == "function_call");
+                Assert.NotNull(response.OpenAIResponse.Choices[0].Message.FunctionCall);
+                Assert.True(response.OpenAIResponse.Choices[0].Message.FunctionCall.FunctionName == "get_current_weather");
+                Assert.True(response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments.Keys.Count == 2);
+                Assert.True(response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments.Keys.ElementAt(0) == "location");
+                Assert.True(response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments["location"].ToString().Contains("Venezia"));
+                Assert.True(response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments.Keys.ElementAt(1) == "format");
+                Assert.True(response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments.Values.ElementAt(1).ToString().Contains("celsius"));
                 Assert.NotNull(response?.OpenAIResponse?.Usage);
+
+
+                //"{\n\"location\": \"Venezia, IT\",\n\"format\": \"celsius\"\n}");
+
+                var jsonFunctionArguments = JsonSerializer.Serialize(response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments, response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments.GetType());
+                var args = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonFunctionArguments);
+                Assert.NotNull(args);
+                Assert.True(args.Count == response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments.Count);
+                Assert.True(args["location"].ToString() == response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments["location"].ToString());
+                Assert.True(args["format"].ToString() == response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments["format"].ToString());
+
+
+                var jsonFunctionCall = JsonSerializer.Serialize(response.OpenAIResponse.Choices[0].Message.FunctionCall, response.OpenAIResponse.Choices[0].Message.FunctionCall.GetType());
+                FunctionCallDefinition fc = JsonSerializer.Deserialize<FunctionCallDefinition>(jsonFunctionCall);
+                Assert.NotNull(fc);
+                Assert.True(fc.FunctionName == response.OpenAIResponse.Choices[0].Message.FunctionCall.FunctionName);
+                Assert.True(fc.Arguments.Count == response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments.Count);
+                Assert.True(fc.Arguments["location"].ToString() == response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments["location"].ToString());
+                Assert.True(fc.Arguments["format"].ToString() == response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments["format"].ToString());
+
+
+
 
 
             }

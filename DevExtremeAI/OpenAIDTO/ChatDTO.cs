@@ -295,17 +295,5 @@ namespace DevExtremeAI.OpenAIDTO
         public FunctionCallDefinition? FunctionCall { get; set; }
     }
 
-    //[JsonConverter(typeof(JsonStringEnumConverterEx<ChatCompletionResponseMessageRoleEnum>))]
-
-    //public enum ChatCompletionResponseMessageRoleEnum
-    //{
-    //    [EnumMember(Value = "system")]
-    //    System = 0,
-    //    [EnumMember(Value = "user")]
-    //    User = 1,
-    //    [EnumMember(Value = "assistant")]
-    //    Assistant = 2
-    //}
-
 }
 
