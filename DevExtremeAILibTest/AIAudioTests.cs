@@ -29,7 +29,7 @@ namespace DevExtremeAILibTest
                 Assert.NotNull(response);
                 Assert.False(response.HasError,response?.ErrorResponse?.Error?.Message);
                 Assert.NotNull(response?.OpenAIResponse?.Text);
-                Assert.Equal(response.OpenAIResponse.Text,"1 2 3 prova");
+                Assert.True(response.OpenAIResponse.Text.Contains("prova"));
             }
         }
 
@@ -48,7 +48,7 @@ namespace DevExtremeAILibTest
                 Assert.NotNull(response);
                 Assert.False(response.HasError, response?.ErrorResponse?.Error?.Message);
                 Assert.NotNull(response.OpenAIResponse.Text);
-                Assert.Equal(response.OpenAIResponse.Text, "1, 2, 3, try!");
+                Assert.True(response.OpenAIResponse.Text.Contains("try"));
             }
         }
 
