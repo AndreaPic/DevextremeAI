@@ -23,7 +23,16 @@ namespace DevExtremeAI.OpenAIDTO
         /// </summary>
         [JsonPropertyName("prompt")]
         public object? Prompt => Prompts.Count switch { 0 => null, 1 => Prompts[0], > 1 => Prompts, _ => null };
+        
+        /// <summary>
+        /// Prompt container
+        /// </summary>
         private List<string> Prompts { get; set; } = new List<string>();
+
+        /// <summary>
+        /// Add a propt to the container
+        /// </summary>
+        /// <param name="prompt">The value of the prompt to add</param>
         public void AddCompletionPrompt(string prompt)
         {
             Prompts.Add(prompt);
@@ -94,6 +103,9 @@ namespace DevExtremeAI.OpenAIDTO
         [JsonPropertyName("stop")]
         public object? Stop => stops.Count switch { 0 => null, 1 => stops[0], > 1 => stops, _ => null };
 
+        /// <summary>
+        /// The list of stops
+        /// </summary>
         private List<string> stops { get; set; } = new List<string>();
 
         /// <summary>

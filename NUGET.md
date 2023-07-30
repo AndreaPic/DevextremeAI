@@ -22,6 +22,7 @@ You can find the documentation in the [github repository](https://github.com/And
 
 Are covered all OpenAI's API types:
 
+- Functions
 - Models
 - Completions
 - Chat
