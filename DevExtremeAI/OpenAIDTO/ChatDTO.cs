@@ -29,11 +29,18 @@ namespace DevExtremeAI.OpenAIDTO
         [JsonPropertyName("messages")]
         public List<ChatCompletionRequestMessage> Messages { get; private set; } = new List<ChatCompletionRequestMessage>();
 
+        /// <summary>
+        /// Add a message to the completion
+        /// </summary>
+        /// <param name="message">The message to add</param>
         public void AddMessage(ChatCompletionRequestMessage message)
         {
             Messages.Add(message);
         }
 
+        /// <summary>
+        /// Function definitions for ai
+        /// </summary>
         private IList<FunctionDefinition>? functions;
 
         /// <summary>
@@ -56,6 +63,10 @@ namespace DevExtremeAI.OpenAIDTO
             }
         }
 
+        /// <summary>
+        /// Add a function definition to the completion
+        /// </summary>
+        /// <param name="functionDefinition">The funciton definition</param>
         public void AddFunction(FunctionDefinition functionDefinition)
         {
             if (functions == null)
@@ -112,6 +123,9 @@ namespace DevExtremeAI.OpenAIDTO
         [JsonPropertyName("stop")]
         public object? Stop => stops.Count switch { 0 => null, 1 => stops[0], > 1 => stops, _ => null };
 
+        /// <summary>
+        /// stop list
+        /// </summary>
         private List<string> stops { get; set; } = new List<string>();
 
         /// <summary>
@@ -291,6 +305,9 @@ namespace DevExtremeAI.OpenAIDTO
         [JsonPropertyName("content")]
         public string Content { get; set; }
 
+        /// <summary>
+        /// The function to call
+        /// </summary>
         [JsonPropertyName("function_call")]
         public FunctionCallDefinition? FunctionCall { get; set; }
     }

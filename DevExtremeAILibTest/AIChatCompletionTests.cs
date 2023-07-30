@@ -182,9 +182,19 @@ namespace DevExtremeAILibTest
             }
         }
 
+
+
+
+
+
+        /// <summary>
+        /// This test is looks like the official documentation at https://github.com/openai/openai-cookbook/blob/main/examples/How_to_call_functions_with_chat_models.ipynb
+        /// </summary>
+        /// <param name="modelID"></param>
+        /// <returns></returns>
         [Theory]
         [InlineData("gpt-3.5-turbo-0613")]
-        public async Task CreateChatCompletionFunctionTest(string modelID)
+        public async Task CreateChatCompletionOneFunctionTest(string modelID)
         {
 
             using (var scope = _factory.Services.CreateScope())
@@ -254,11 +264,109 @@ namespace DevExtremeAILibTest
                 Assert.True(fc.Arguments.Count == response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments.Count);
                 Assert.True(fc.Arguments["location"].ToString() == response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments["location"].ToString());
                 Assert.True(fc.Arguments["format"].ToString() == response.OpenAIResponse.Choices[0].Message.FunctionCall.Arguments["format"].ToString());
+            }
+        }
+
+        /// <summary>
+        /// This test is looks like the official documentation at https://github.com/openai/openai-cookbook/blob/main/examples/How_to_call_functions_with_chat_models.ipynb
+        /// </summary>
+        /// <param name="modelID"></param>
+        /// <returns></returns>
+        [Theory]
+        [InlineData("gpt-3.5-turbo-0613")]
+        public async Task CreateChatCompletionMultipleFunctionTest(string modelID)
+        {
+
+            using (var scope = _factory.Services.CreateScope())
+            {
+                var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
+                CreateChatCompletionRequest createCompletionRequest = new CreateChatCompletionRequest();
+                createCompletionRequest.Model = modelID;
+                createCompletionRequest.Temperature = 1.4;
+                var function = new ChatCompletionfunction();
+                var func1 = new FunctionDefinition()
+                {
+                    Name = "get_current_weather",
+                    Description = "Get the current weather in a given location"
+                };
+                func1.Parameters.Properties.Add("location", new PropertyDefinition()
+                {
+                    TypeName = "string",
+                    Description = "The city and state, e.g. San Francisco, CA"
+                });
+                func1.Parameters.Properties.Add("format", new PropertyDefinition()
+                {
+                    TypeName = "string",
+                    Description = "The temperature unit to use. Infer this from the users location.",
+                    EnumValues = new[] { "celsius", "fahrenheit" }
+                });
+                func1.Parameters.AddRequiredProperty("location");
+                func1.Parameters.AddRequiredProperty("format");
+
+                createCompletionRequest.AddFunction(func1);
+
+
+                var func2 = new FunctionDefinition()
+                {
+                    Name = "get_n_day_weather_forecast",
+                    Description = "Get an N-day weather forecast"
+                };
+                func2.Parameters.Properties.Add("location", new PropertyDefinition()
+                {
+                    TypeName = "string",
+                    Description = "The city and state, e.g. San Francisco, CA"
+                });
+                func2.Parameters.Properties.Add("format", new PropertyDefinition()
+                {
+                    TypeName = "string",
+                    Description = "The temperature unit to use. Infer this from the users location.",
+                    EnumValues = new[] { "celsius", "fahrenheit" }
+                });
+                func2.Parameters.Properties.Add("num_days", new PropertyDefinition()
+                {
+                    TypeName = "integer",
+                    Description = "The number of days to forecast"
+                });
+                func2.Parameters.AddRequiredProperty("location");
+                func2.Parameters.AddRequiredProperty("format");
+                func2.Parameters.AddRequiredProperty("num_days");
+
+                createCompletionRequest.AddFunction(func2);
 
 
 
+                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                {
+                    Role = ChatCompletionMessageRoleEnum.User,
+                    Content = "what is the weather going to be like in Glasgow, Scotland over the next x days"
+                });
+
+                var response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
+                Assert.False(response.HasError, response?.ErrorResponse?.Error?.Message);
+                Assert.NotNull(response?.OpenAIResponse);
+                Assert.NotNull(response?.OpenAIResponse?.Choices);
+                Assert.True(response.OpenAIResponse.Choices.Count > 0);
 
 
+                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                {
+                    Role = ChatCompletionMessageRoleEnum.Assistant,
+                    Content = response.OpenAIResponse.Choices[0].Message.Content
+                });
+
+                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                {
+                    Role = ChatCompletionMessageRoleEnum.User,
+                    Content = "5 days"
+                });
+
+                response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
+                Assert.False(response.HasError, response?.ErrorResponse?.Error?.Message);
+                Assert.NotNull(response?.OpenAIResponse);
+                Assert.NotNull(response?.OpenAIResponse?.Choices);
+                Assert.True(response.OpenAIResponse.Choices.Count > 0);
+                Assert.True(response.OpenAIResponse.Choices[0].FinishReason == "function_call");
+                Assert.True(response.OpenAIResponse.Choices[0].Message.FunctionCall.FunctionName == "get_n_day_weather_forecast");
             }
         }
 

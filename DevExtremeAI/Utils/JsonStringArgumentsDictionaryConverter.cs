@@ -12,21 +12,6 @@ namespace DevExtremeAI.Utils
     internal sealed class JsonStringArgumentsDictionaryConverter
         : JsonConverter<IDictionary<string, object>>
     {
-        //public override string? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        //{
-        //    var jsonValue = reader.GetString();
-        //    if (!string.IsNullOrEmpty(jsonValue))
-        //    {
-        //        JsonSerializer.Deserialize<Dictionary<string, object>>()
-        //    }
-        //    var result = !string.IsNullOrWhiteSpace(Arguments) ?  : null;
-        //    return result ?? new();
-        //}
-
-        //public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
-        //{
-        //    throw new NotImplementedException();
-        //}
         public override IDictionary<string, object>? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             Dictionary<string, object> ret = null;
