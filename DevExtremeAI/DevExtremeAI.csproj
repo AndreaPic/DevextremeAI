@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net7.0;net6.0;</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<Title>DevExtremeAI is a full and complete implementation of all OpenAI's APIs</Title>
@@ -12,22 +12,32 @@
 		<RepositoryUrl>https://github.com/AndreaPic/DevExtremeAI</RepositoryUrl>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Version>$(VersionPrefix)$(VersionSuffix)</Version>
-		<VersionPrefix>1.1.0</VersionPrefix>
+		<VersionPrefix>1.8.0</VersionPrefix>
 		<VersionSuffix></VersionSuffix>
 		<PackageTags>openai;dotnet;aspnet;csharp;gpt-4;gpt-3.5-turbo;davinci;DALL·E;Whisper;fine-tunes</PackageTags>
-		<AssemblyVersion>1.1.0.0</AssemblyVersion>
-		<FileVersion>1.1.0.0</FileVersion>
+		<AssemblyVersion>1.8.0.0</AssemblyVersion>
+		<FileVersion>1.8.0.0</FileVersion>
 		<RepositoryType>git</RepositoryType>
 		<Description>This library is full compliant to openAI specs and also implement openAI error response. It's very easy to use with asp.net core, has full support to dependency injection and it's very easy to use in libraries without dependency injection.</Description>
 		<PackageIcon></PackageIcon>
 		<Copyright></Copyright>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReleaseNotes>
-			- (1.1.0 new) *** Full functions implementation ***
+			- (1.8.0 new) *** .net 8 ***
+			- (1.1.0) *** Full functions implementation ***
 			- (1.0.4) Added support for multiple stop sequences in completions
 		</PackageReleaseNotes>
 	</PropertyGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.34" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+	</ItemGroup>
+	
 	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.34" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
@@ -38,7 +48,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.34" />
+		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />

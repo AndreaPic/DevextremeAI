@@ -21,8 +21,6 @@ namespace DevExtremeAI.Utils
                 throw new JsonException();
             }
 
-            var dictionary = new Dictionary<string, object>();
-
             var arguments = reader.GetString();
 
             if (!string.IsNullOrEmpty(arguments))

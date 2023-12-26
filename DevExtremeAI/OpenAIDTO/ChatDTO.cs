@@ -10,6 +10,10 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using DevExtremeAI.Utils;
 using System.Text.Json.Nodes;
+using Microsoft.Extensions.Options;
+//using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.IO;
+using System.Reflection;
 
 namespace DevExtremeAI.OpenAIDTO
 {
@@ -41,11 +45,13 @@ namespace DevExtremeAI.OpenAIDTO
         /// <summary>
         /// Function definitions for ai
         /// </summary>
+        [Obsolete("use tool_choice instead")]
         private IList<FunctionDefinition>? functions;
 
         /// <summary>
         /// A list of functions the model may generate JSON inputs for.
         /// </summary>
+        [Obsolete("use tool_choice instead")]
         [JsonPropertyName("functions")]
         public IList<FunctionDefinition>? Functions 
         { 
@@ -67,6 +73,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// Add a function definition to the completion
         /// </summary>
         /// <param name="functionDefinition">The funciton definition</param>
+        [Obsolete("use tool_choice instead")]
         public void AddFunction(FunctionDefinition functionDefinition)
         {
             if (functions == null)
@@ -86,6 +93,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// "none" is the default when no functions are present. 
         /// "auto" is the default if functions are present
         /// </summary>
+        [Obsolete("use tool_choice instead")]
         [JsonPropertyName("function_call")]
         public string? FunctionCall { get; set; }
 
@@ -181,7 +189,115 @@ namespace DevExtremeAI.OpenAIDTO
         [JsonPropertyName("user")]
         public string? User { get; set; }
 
+        /// <summary>
+        /// Whether to return log probabilities of the output tokens or not. 
+        /// If true, returns the log probabilities of each output token returned in the content of message. 
+        /// This option is currently not available on the gpt-4-vision-preview model.
+        /// </summary>
+        /// <remarks>Default False</remarks>
+        [JsonPropertyName("logprobs")]
+        public bool? LogProbs { get; set; }
+
+        /// <summary>
+        /// An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, 
+        /// each with an associated log probability. 
+        /// logprobs must be set to true if this parameter is used.
+        /// </summary>
+        [JsonPropertyName("top_logprobs")]
+        public int? TopLogProbs { get; set; }
+
+
+        /// <summary>
+        /// An object specifying the format that the model must output.Compatible with gpt-4-1106-preview and gpt-3.5-turbo-1106.
+        /// Setting to { "type": "json_object" }
+        /// enables JSON mode, which guarantees the message the model generates is valid JSON.
+        /// Important: when using JSON mode, you must also instruct the model to produce JSON yourself via a system or user message.Without this, the model may generate an unending stream of whitespace until the generation reaches the token limit, resulting in a long-running and seemingly "stuck" request.Also note that the message content may be partially cut off if finish_reason= "length", which indicates the generation exceeded max_tokens or the conversation exceeded the max context length.
+        /// </summary>
+        [JsonPropertyName("response_format")]
+        public ResponseOutputFormat? ResponseFormat { get; set; }
+
+        /// <summary>
+        /// This feature is in Beta. 
+        /// If specified, our system will make a best effort to sample deterministically, 
+        /// such that repeated requests with the same seed and parameters should return the same result. 
+        /// Determinism is not guaranteed, and you should refer to the system_fingerprint response parameter to monitor changes in the backend.
+        /// </summary>
+        [JsonPropertyName("response_format")]
+        public int? Seed {  get; set; }
+
+        /// <summary>
+        /// A list of tools the model may call. 
+        /// Currently, only functions are supported as a tool. 
+        /// Use this to provide a list of functions the model may generate JSON inputs for.
+        /// </summary>
+        [JsonPropertyName("tools")]
+        public List<ToolDefinition> Tools { get; set; }
+        //TODO: manage hierarchy ^^^
+
+        /// <summary>
+        /// Ad a tool to Tools List
+        /// </summary>
+        /// <param name="tool">Tool To Add</param>
+        public void AddTool(ToolDefinition tool)
+        {
+            if (Tools == null)
+            {
+                Tools = new List<ToolDefinition>();
+            }
+            Tools.Add(tool);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonPropertyName("tools")]
+        public object? ToolChoice { get; set; }
+        //TODO: not object? but new baseclass
+        //TODO: continue form here https://platform.openai.com/docs/api-reference/chat/create#chat-create-tool_choice
+
+
     }
+
+
+    public abstract class ToolDefinition
+    {
+        [JsonPropertyName("type")]
+        public string Type { get; protected set; }
+    }
+
+    public class FunctionTool : ToolDefinition
+    {
+        public FunctionTool()
+        {
+            Type = "function";
+        }
+
+        [JsonPropertyName("function")]
+        public FunctionDefinition Function { get; set; }
+    }
+
+    public abstract class ResponseOutputFormat
+    {
+        [JsonPropertyName("type")]
+        public string Type { get; protected set; }
+    }
+
+    public class ResponseOutputTextFormat : ResponseOutputFormat
+    {
+        public ResponseOutputTextFormat()
+        {
+            Type = "text";
+        }
+    }
+
+    public class ResponseOutputJSONFormat : ResponseOutputFormat
+    {
+        public ResponseOutputJSONFormat()
+        {
+            Type = "json_object";
+        }
+    }
+
 
     public class ChatCompletionRequestMessage
     {

@@ -8,7 +8,12 @@ using DevExtremeAI.OpenAIDTO;
 
 namespace DevExtremeAI.OpenAIClient
 {
-
+    /// <summary>
+    /// Manage Fine Tuning API
+    /// </summary>
+    /// <remarks>
+    /// The Fine-tunes endpoint will be shut off on January 4th, 2024.
+    /// </remarks>
     partial class OpenAIAPIClient 
     {
         /// <summary>
