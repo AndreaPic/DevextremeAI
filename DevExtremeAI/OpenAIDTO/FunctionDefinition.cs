@@ -11,16 +11,24 @@ namespace DevExtremeAI.OpenAIDTO
 
 
     /// <summary>
-    /// This object define a schema for the function's description used by OpenAI
+    /// This object define a function's name (you can use it to specify a function to call)
     /// </summary>
-    public class FunctionDefinition
+    public class FunctionNameDefinition
     {
         /// <summary>
-        /// The name of the funciont
+        /// The name of the function
         /// </summary>
         [JsonPropertyName("name")]
         public string Name { get; set; }
+    }
 
+
+
+    /// <summary>
+    /// This object define a schema for the function's description used by OpenAI
+    /// </summary>
+    public class FunctionDefinition : FunctionNameDefinition
+    {
         /// <summary>
         /// The description of the function behavior
         /// </summary>
@@ -132,4 +140,8 @@ namespace DevExtremeAI.OpenAIDTO
         [JsonConverter(typeof(JsonStringArgumentsDictionaryConverter))]
         public IDictionary<string, object> Arguments { get; set; } = new Dictionary<string, object>();
     }
+
+
+
+
 }
