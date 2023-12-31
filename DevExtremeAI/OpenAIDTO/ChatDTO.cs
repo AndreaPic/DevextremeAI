@@ -18,6 +18,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 #endif
 using System.Threading.Channels;
 using System.Net.Mime;
+using System.Text.Json;
 
 namespace DevExtremeAI.OpenAIDTO
 {
@@ -35,7 +36,8 @@ namespace DevExtremeAI.OpenAIDTO
         /// The messages to generate chat completions for, in the [chat format](/docs/guides/chat/introduction).
         /// </summary>
         [JsonPropertyName("messages")]
-        public List<ChatCompletionRoleRequestMessage> Messages { get; private set; } = new List<ChatCompletionRoleRequestMessage>();
+        [JsonConverter(typeof(MessageListJsonConverter))]
+        public List<ChatCompletionRoleRequestMessage> Messages { get; set; } = new List<ChatCompletionRoleRequestMessage>();
         //TODO: manage hierarchy ^^^
         //TODO: add specialized AddMessage
 
@@ -46,6 +48,10 @@ namespace DevExtremeAI.OpenAIDTO
         /// <param name="message">The message to add</param>
         public void AddMessage(ChatCompletionRequestMessage message)
         {
+            if (Messages == null)
+            {
+                Messages = new List<ChatCompletionRoleRequestMessage>();
+            }
             Messages.Add(message);
         }
 
@@ -55,6 +61,10 @@ namespace DevExtremeAI.OpenAIDTO
         /// <param name="message">The message to add</param>
         public void AddMessage(ChatCompletionRoleRequestMessage message)
         {
+            if (Messages == null)
+            {
+                Messages = new List<ChatCompletionRoleRequestMessage>();
+            }
             Messages.Add(message);
         }
 
@@ -240,7 +250,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// such that repeated requests with the same seed and parameters should return the same result. 
         /// Determinism is not guaranteed, and you should refer to the system_fingerprint response parameter to monitor changes in the backend.
         /// </summary>
-        [JsonPropertyName("response_format")]
+        [JsonPropertyName("seed")]
         public int? Seed { get; set; }
 
         /// <summary>
@@ -382,8 +392,9 @@ namespace DevExtremeAI.OpenAIDTO
 
     //TODO: review as https://platform.openai.com/docs/api-reference/chat/create
 
+    //TODO: stack overflow access violation https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/migrate-from-newtonsoft?pivots=dotnet-6-0#required-properties
     [System.Text.Json.Serialization.JsonConverterAttribute(typeof(MessageJsonConverter))]
-    public abstract class ChatCompletionRoleRequestMessage 
+    public class ChatCompletionRoleRequestMessage 
     {
         /// <summary>
         /// The role of the author of this message. One of system, user, or assistant.
@@ -392,7 +403,7 @@ namespace DevExtremeAI.OpenAIDTO
         public ChatCompletionMessageRoleEnum Role { get; internal protected set; }
     }
 
-    public abstract class ChatCompletionNameRequestMessage : ChatCompletionRoleRequestMessage
+    public class ChatCompletionNameRequestMessage : ChatCompletionRoleRequestMessage
     {
         /// </summary>
         /// The name of the user in a multi-user chat
@@ -401,7 +412,7 @@ namespace DevExtremeAI.OpenAIDTO
         [JsonPropertyName("name")]
         public string? Name { get; set; }
     }
-    public abstract class ChatCompletionStringRequestMessage : ChatCompletionNameRequestMessage
+    public class ChatCompletionStringRequestMessage : ChatCompletionNameRequestMessage
     {
         /// <summary>
         /// The contents of the message.
@@ -580,7 +591,7 @@ namespace DevExtremeAI.OpenAIDTO
     [JsonConverter(typeof(JsonStringEnumConverterEx<ContentItemTypes>))]
     public enum ContentItemTypes
     {
-        [EnumMember(Value = "Text")]
+        [EnumMember(Value = "text")]
         Text = 0,
         [EnumMember(Value = "image_url")]
         ImageUrl = 1,
