@@ -63,7 +63,7 @@ namespace DevExtremeAILibTest
                 imageitem.ImageUrl.Detail = ImageDetailLevel.High;
                 imageitem.ImageUrl.ImageURl = Convert.ToBase64String(Resources.Resource.pink_panther);
                 userContents.Contents.Add(imageitem);
-                //request.AddMessage(userContents);
+                request.AddMessage(userContents);
 
                 var json = JsonSerializer.Serialize(request);
 
@@ -72,23 +72,23 @@ namespace DevExtremeAILibTest
                 var deserializedRequest = JsonSerializer.Deserialize<CreateChatCompletionRequest>(json);
                 Assert.NotNull(deserializedRequest);
                 Assert.IsType<CreateChatCompletionRequest>(deserializedRequest);
-                //Assert.True(deserializedRequest.Messages.Count == 6);
+                Assert.True(deserializedRequest.Messages.Count == 6);
                 Assert.IsType<ChatCompletionFunctionMessage>(deserializedRequest.Messages[0]);
                 Assert.IsType<ChatCompletionSystemMessage>(deserializedRequest.Messages[1]);
                 Assert.IsType<ChatCompletionAssistantMessage>(deserializedRequest.Messages[2]);
                 Assert.IsType<ChatCompletionToolMessage>(deserializedRequest.Messages[3]);
                 Assert.IsType<ChatCompletionUserContentMessage>(deserializedRequest.Messages[4]);
-                //Assert.IsType<ChatCompletionUserContentsMessage>(deserializedRequest.Messages[5]);
+                Assert.IsType<ChatCompletionUserContentsMessage>(deserializedRequest.Messages[5]);
 
-                //ChatCompletionUserContentsMessage userContentsMessage = deserializedRequest.Messages[5] as ChatCompletionUserContentsMessage;
+                ChatCompletionUserContentsMessage userContentsMessage = deserializedRequest.Messages[5] as ChatCompletionUserContentsMessage;
 
-                //Assert.True(userContentsMessage.Contents.Count == 2);
-                //Assert.IsType<ContentTextItem>(userContentsMessage.Contents[0]);
-                //Assert.IsType<ContentImageItem>(userContentsMessage.Contents[1]);
+                Assert.True(userContentsMessage.Contents.Count == 2);
+                Assert.IsType<ContentTextItem>(userContentsMessage.Contents[0]);
+                Assert.IsType<ContentImageItem>(userContentsMessage.Contents[1]);
 
-                //ContentImageItem imageItem = userContentsMessage.Contents[1] as ContentImageItem;
+                ContentImageItem imageItem = userContentsMessage.Contents[1] as ContentImageItem;
 
-                //Assert.True(imageItem.ImageUrl.ImageURl.Length == imageitem.ImageUrl.ImageURl.Length);
+                Assert.True(imageItem.ImageUrl.ImageURl.Length == imageitem.ImageUrl.ImageURl.Length);
 
             }
         }

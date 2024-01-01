@@ -91,6 +91,12 @@ namespace DevExtremeAI.Utils
                         return ret;
                     }
 
+                    if (cloneReader.TokenType == JsonTokenType.StartArray)
+                    {
+                        cloneReader.Skip();
+                    }
+
+
                     if (cloneReader.TokenType == JsonTokenType.PropertyName)
                     {
                         string? propertyName = cloneReader.GetString();

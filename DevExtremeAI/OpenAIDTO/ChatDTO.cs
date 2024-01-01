@@ -538,6 +538,7 @@ namespace DevExtremeAI.OpenAIDTO
     /// <summary>
     /// Base class for content items used in Contents of ChatCompletionUserContentsMessage
     /// </summary>
+    [JsonConverter(typeof(ContentItemConverter))]
     public abstract class ContentItem
     {
         /// <summary>
