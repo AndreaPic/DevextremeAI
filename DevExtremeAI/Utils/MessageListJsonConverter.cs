@@ -14,16 +14,6 @@ namespace DevExtremeAI.Utils
 
         //TODO: https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/converters-how-to?source=recommendations&pivots=dotnet-8-0#support-polymorphic-deserialization
 
-        //public override ChatCompletionRoleRequestMessage ReadAsPropertyName(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        //{
-        //    return base.ReadAsPropertyName(ref reader, typeToConvert, options);
-        //}
-
-        //public override bool Equals(object? obj)
-        //{
-        //    return base.Equals(obj);
-        //}
-
         public override bool CanConvert(Type typeToConvert) => true;
             //typeof(List<ChatCompletionRoleRequestMessage>).IsAssignableFrom(typeToConvert);
 
@@ -37,17 +27,17 @@ namespace DevExtremeAI.Utils
                 Utf8JsonReader readerClone = reader;
                 ret = new List<ChatCompletionRoleRequestMessage>();
 
-                while (readerClone.Read())
+                while (reader.Read())
                 {
 
-                    if (readerClone.TokenType == JsonTokenType.EndArray)
+                    if (reader.TokenType == JsonTokenType.EndArray)
                     {
                         break;
                     }
 
-                    if (readerClone.TokenType == JsonTokenType.StartObject)
+                    if (reader.TokenType == JsonTokenType.StartObject)
                     {
-                        var item = JsonSerializer.Deserialize<ChatCompletionRoleRequestMessage>(ref readerClone);
+                        var item = JsonSerializer.Deserialize<ChatCompletionRoleRequestMessage>(ref reader);
                         if (item != null)
                         {
                             ret.Add(item);
@@ -60,7 +50,7 @@ namespace DevExtremeAI.Utils
             }
             finally
             {
-                reader = originalReader;
+                //reader = originalReader;
             }
 
         }

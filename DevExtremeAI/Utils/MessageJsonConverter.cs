@@ -14,16 +14,6 @@ namespace DevExtremeAI.Utils
 
         //TODO: https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/converters-how-to?source=recommendations&pivots=dotnet-8-0#support-polymorphic-deserialization
 
-        //public override ChatCompletionRoleRequestMessage ReadAsPropertyName(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        //{
-        //    return base.ReadAsPropertyName(ref reader, typeToConvert, options);
-        //}
-
-        //public override bool Equals(object? obj)
-        //{
-        //    return base.Equals(obj);
-        //}
-
         public override bool CanConvert(Type typeToConvert) =>
             typeof(ChatCompletionRoleRequestMessage).IsAssignableFrom(typeToConvert);
 
@@ -42,28 +32,28 @@ namespace DevExtremeAI.Utils
                     {
                         case ChatCompletionMessageRoleEnum.Assistant:
                             {
-                                ret = JsonSerializer.Deserialize<ChatCompletionAssistantMessage>(ref specializedReader);
+                                ret = JsonSerializer.Deserialize<ChatCompletionAssistantMessage>(ref reader);
                             }
                             break;
                         case ChatCompletionMessageRoleEnum.Function:
                             {
-                                ret = JsonSerializer.Deserialize<ChatCompletionFunctionMessage>(ref specializedReader);
+                                ret = JsonSerializer.Deserialize<ChatCompletionFunctionMessage>(ref reader);
                                 
                             }
                             break;
                         case ChatCompletionMessageRoleEnum.System:
                             {
-                                ret = JsonSerializer.Deserialize<ChatCompletionSystemMessage>(ref specializedReader);
+                                ret = JsonSerializer.Deserialize<ChatCompletionSystemMessage>(ref reader);
                             }
                             break;
                         case ChatCompletionMessageRoleEnum.Tool:
                             {
-                                ret = JsonSerializer.Deserialize<ChatCompletionToolMessage>(ref specializedReader);
+                                ret = JsonSerializer.Deserialize<ChatCompletionToolMessage>(ref reader);
                             }
                             break;
                         case ChatCompletionMessageRoleEnum.User:
                             {
-                                ret = DeserializeUserRequestMessage(ref specializedReader, typeToConvert, options);
+                                ret = DeserializeUserRequestMessage(ref reader, typeToConvert, options);
                             }
                             break;
                         default:
@@ -77,7 +67,7 @@ namespace DevExtremeAI.Utils
             }
             finally
             {
-                reader = originalReader;
+                //reader = originalReader;
             }
         }
 
@@ -144,13 +134,15 @@ namespace DevExtremeAI.Utils
                 {
                     throw new JsonException();
                 }
-                cloneReader.Read();
 
                 while (cloneReader.Read())
                 {
                     if (cloneReader.TokenType == JsonTokenType.EndObject)
                     {
-                        ret = JsonSerializer.Deserialize<ChatCompletionUserContentMessage>(ref specializedReader);
+                        if (ret == null)
+                        {
+                            ret = JsonSerializer.Deserialize<ChatCompletionUserContentMessage>(ref reader);
+                        }
                         return ret;
                     }
 
@@ -159,22 +151,26 @@ namespace DevExtremeAI.Utils
                         string? propertyName = cloneReader.GetString();
                         if (propertyName == nameof(ChatCompletionUserContentMessage.Content).ToLower())
                         {
+                            cloneReader.Read();
                             if (cloneReader.TokenType == JsonTokenType.String)
                             {
-                                ret = JsonSerializer.Deserialize<ChatCompletionUserContentMessage>(ref specializedReader);
+                                ret = JsonSerializer.Deserialize<ChatCompletionUserContentMessage>(ref reader);
                             }
-                            else
+                            else if (cloneReader.TokenType == JsonTokenType.StartArray) 
                             {
-                                ret = JsonSerializer.Deserialize<ChatCompletionUserContentsMessage>(ref specializedReader);
+                                ret = JsonSerializer.Deserialize<ChatCompletionUserContentsMessage>(ref reader);
                             }
-                            break;
+                            if (ret != null)
+                            {
+                                break;
+                            }
                         }
                     }
                 }
             }
             finally
             {
-                reader = originalReader;
+                //reader = originalReader;
             }
 
             return ret;
