@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DevExtremeAI.Utils
 {
-    public class ContentItemConverter : JsonConverter<ContentItem>
+    public class ContentItemJsonConverter : JsonConverter<ContentItem>
     {
 
         //TODO: https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/converters-how-to?source=recommendations&pivots=dotnet-8-0#support-polymorphic-deserialization
@@ -68,11 +68,17 @@ namespace DevExtremeAI.Utils
                     throw new JsonException();
                 }
 
+
                 while (cloneReader.Read())
                 {
                     if (cloneReader.TokenType == JsonTokenType.EndObject)
                     {
                         return ret;
+                    }
+
+                    if (cloneReader.TokenType == JsonTokenType.StartObject)
+                    {
+                        cloneReader.Skip();
                     }
 
                     if (cloneReader.TokenType == JsonTokenType.PropertyName)

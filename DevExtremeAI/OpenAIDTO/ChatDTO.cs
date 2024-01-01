@@ -460,7 +460,8 @@ namespace DevExtremeAI.OpenAIDTO
         /// Image input is only supported when using the gpt-4-visual-preview model.
         /// </summary>
         [JsonPropertyName("content")]
-        public List<ContentItem> Contents { get; private set; } = new List<ContentItem>();
+        [JsonConverter(typeof(ContentItemListJsonConverter))]
+        public List<ContentItem> Contents { get; set; } = new List<ContentItem>();
     }
 
     /// <summary>
@@ -538,7 +539,7 @@ namespace DevExtremeAI.OpenAIDTO
     /// <summary>
     /// Base class for content items used in Contents of ChatCompletionUserContentsMessage
     /// </summary>
-    [JsonConverter(typeof(ContentItemConverter))]
+    [JsonConverter(typeof(ContentItemJsonConverter))]
     public abstract class ContentItem
     {
         /// <summary>
@@ -570,7 +571,7 @@ namespace DevExtremeAI.OpenAIDTO
         }
 
         [JsonPropertyName("image_url")]
-        public ImageUrl ImageUrl { get; private set; } = new ImageUrl();
+        public ImageUrl ImageUrl { get; set; } = new ImageUrl();
     }
 
     public class ImageUrl
