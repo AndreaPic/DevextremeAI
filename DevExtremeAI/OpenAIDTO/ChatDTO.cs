@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -22,6 +21,10 @@ using System.Text.Json;
 
 namespace DevExtremeAI.OpenAIDTO
 {
+    /// <summary>
+    /// Creates a model response for the given chat conversation.
+    /// <see cref="https://platform.openai.com/docs/api-reference/chat/create"/>
+    /// </summary>
     public class CreateChatCompletionRequest
     {
         /// <summary>
@@ -38,8 +41,6 @@ namespace DevExtremeAI.OpenAIDTO
         [JsonPropertyName("messages")]
         [JsonConverter(typeof(MessageListJsonConverter))]
         public List<ChatCompletionRoleRequestMessage> Messages { get; set; } = new List<ChatCompletionRoleRequestMessage>();
-        //TODO: manage hierarchy ^^^
-        //TODO: add specialized AddMessage
 
 
         /// <summary>
@@ -281,7 +282,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// none is the default when no functions are present.auto is the default if functions are present.
         /// </summary>
         [JsonPropertyName("tool_choice")]
-        public object? ToolChoice { get; private set; }
+        public object? ToolChoice { get; set; }
 
         /// <summary>
         /// auto is the default if functions are present.
@@ -314,7 +315,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// The type of the tool. Currently, only function is supported.
         /// </summary>
         [JsonPropertyName("type")]
-        public string Type { get; protected set; }
+        public string Type { get; set; }
     }
 
     public class FunctionTool : ToolDefinition
@@ -653,6 +654,7 @@ namespace DevExtremeAI.OpenAIDTO
 
     /// <summary>
     /// Represents a chat completion response returned by model, based on the provided input.
+    /// <see cref="https://platform.openai.com/docs/api-reference/chat/object"/>
     /// </summary>
     public class CreateChatCompletionResponse
     {
@@ -663,10 +665,10 @@ namespace DevExtremeAI.OpenAIDTO
         public string ID { get; set; }
 
         /// <summary>
-        /// The object type, which is always chat.completion.
+        /// A list of chat completion choices. Can be more than one if n is greater than 1.
         /// </summary>
-        [JsonPropertyName("object")]
-        public string Object { get; set; }
+        [JsonPropertyName("choices")]
+        public List<CreateChatCompletionResponseChoicesInner> Choices { get; set; } = new List<CreateChatCompletionResponseChoicesInner>();
 
         /// <summary>
         /// The Unix timestamp (in seconds) of when the chat completion was created.
@@ -681,10 +683,17 @@ namespace DevExtremeAI.OpenAIDTO
         public string Model { get; set; }
 
         /// <summary>
-        /// A list of chat completion choices. Can be more than one if n is greater than 1.
+        /// This fingerprint represents the backend configuration that the model runs with.
+        /// Can be used in conjunction with the seed request parameter to understand when backend changes have been made that might impact determinism.
         /// </summary>
-        [JsonPropertyName("choices")]
-        public List<CreateChatCompletionResponseChoicesInner> Choices { get; set; }
+        [JsonPropertyName("system_fingerprint")]
+        public string SystemFingerprint { get; set; }
+
+        /// <summary>
+        /// The object type, which is always chat.completion.
+        /// </summary>
+        [JsonPropertyName("object")]
+        public string Object { get; set; }
 
         /// <summary>
         /// Usage statistics for the completion request.
@@ -692,16 +701,21 @@ namespace DevExtremeAI.OpenAIDTO
         [JsonPropertyName("usage")]
         public CreateCompletionResponseUsage? Usage { get; set; }
 
-        /// <summary>
-        /// This fingerprint represents the backend configuration that the model runs with.
-        /// Can be used in conjunction with the seed request parameter to understand when backend changes have been made that might impact determinism.
-        /// </summary>
-        [JsonPropertyName("system_fingerprint")]
-        public string SystemFingerprint { get; set; }
     }
 
     public class CreateChatCompletionResponseChoicesInner
     {
+
+        /// <summary>
+        /// The reason the model stopped generating tokens. 
+        /// This will be stop if the model hit a natural stop point or a provided stop sequence, 
+        /// length if the maximum number of tokens specified in the request was reached, 
+        /// content_filter if content was omitted due to a flag from our content filters, 
+        /// tool_calls if the model called a tool, or function_call (deprecated) if the model called a function.
+        /// </summary>
+        [JsonPropertyName("finish_reason")]
+        public string? FinishReason { get; set; }
+
         /// <summary>
         /// The index of the choice in the list of choices.
         /// </summary>
@@ -717,11 +731,6 @@ namespace DevExtremeAI.OpenAIDTO
         [JsonPropertyName("delta")]
         public ChatCompletionResponseMessage? Delta { get; set; }
 
-        /// <summary>
-        /// The reason the model stopped generating tokens. This will be stop if the model hit a natural stop point or a provided stop sequence, length if the maximum number of tokens specified in the request was reached, content_filter if content was omitted due to a flag from our content filters, tool_calls if the model called a tool, or function_call (deprecated) if the model called a function.
-        /// </summary>
-        [JsonPropertyName("finish_reason")]
-        public string? FinishReason { get; set; }
     }
 
     public class ChatCompletionResponseMessage
