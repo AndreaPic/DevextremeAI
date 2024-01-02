@@ -146,5 +146,34 @@ namespace DevExtremeAILibTest.Resources {
                 return ResourceManager.GetString("Trivia_Tune", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;messages&quot;: [
+        ///    {
+        ///      &quot;role&quot;: &quot;user&quot;,
+        ///      &quot;content&quot;: &quot; What does \&quot;www\&quot; stand for in a website browser?\n\n###\n\n&quot;
+        ///    },
+        ///    {
+        ///      &quot;role&quot;: &quot;assistant&quot;,
+        ///      &quot;content&quot;: &quot; World Wide Web###&quot;
+        ///    },
+        ///    {
+        ///      &quot;role&quot;: &quot;user&quot;,
+        ///      &quot;content&quot;: &quot; How long is an Olympic swimming pool (in meters)?\n\n###\n\n&quot;
+        ///    },
+        ///    {
+        ///      &quot;role&quot;: &quot;assistant&quot;,
+        ///      &quot;content&quot;: &quot; 50 meters###&quot;
+        ///    },
+        ///    {
+        ///      &quot;role&quot;: &quot;user&quot;,
+        ///      &quot;content&quot;: &quot;What countries made up the original Axis powe [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Trivia_Tune_Conversational {
+            get {
+                return ResourceManager.GetString("Trivia_Tune_Conversational", resourceCulture);
+            }
+        }
     }
 }

@@ -37,7 +37,7 @@ namespace DevExtremeAILibTest
                     Assert.False(deleteResponse.HasError);
                 }
 
-                var fileContent = Resources.Resource.Trivia_Tune;
+                var fileContent = Resources.Resource.Trivia_Tune_Conversational;
 
 
                 var uploadResponse = await openAiapiClient.UploadFineTuningFileAsync(new UploadFineTuningFileRequest()
@@ -51,8 +51,8 @@ namespace DevExtremeAILibTest
                 var createFineTuneJobResponse = await openAiapiClient.CreateFineTuneJobAsync(new CreateFineTuneRequest()
                 {
                     TrainingFile = uploadResponse.OpenAIResponse.FileId,
-                    Suffix = "andrea-dev-italy-trivia-tune",
-                    Model = "davinci"
+                    Suffix = "Test-trivia-tune",
+                    Model = "gpt-3.5-turbo-1106"
 
                 });
                 Assert.False(createFineTuneJobResponse.HasError, createFineTuneJobResponse?.ErrorResponse?.Error?.Message);
@@ -101,7 +101,7 @@ namespace DevExtremeAILibTest
                     await Task.Delay(22000);
                 }
 
-                var fileContent = Resources.Resource.Trivia_Tune;
+                var fileContent = Resources.Resource.Trivia_Tune_Conversational;
 
 
                 var uploadResponse = await openAiapiClient.UploadFineTuningFileAsync(new UploadFineTuningFileRequest()
@@ -116,7 +116,8 @@ namespace DevExtremeAILibTest
                 var createFineTuneJobResponse = await openAiapiClient.CreateFineTuneJobAsync(new CreateFineTuneRequest()
                 {
                     TrainingFile = uploadResponse.OpenAIResponse.FileId,
-                    Suffix = "andrea-dev-italy-trivia-tune",
+                    Suffix = "Test-trivia-tune",
+                    Model = "gpt-3.5-turbo-1106"
                 });
                 Assert.False(createFineTuneJobResponse.HasError,createFineTuneJobResponse?.ErrorResponse?.Error?.Message);
 

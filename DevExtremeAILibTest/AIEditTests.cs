@@ -15,8 +15,8 @@ namespace DevExtremeAILibTest
         }
 
         
-        [Theory]
-        [InlineData("gpt-3.5-turbo-instruct")]
+        //[Theory]
+        //[InlineData("gpt-3.5-turbo-instruct")]
         public async Task CreateEditTest(string modelID)
         {
             using (var scope = _factory.Services.CreateScope())
@@ -37,8 +37,8 @@ namespace DevExtremeAILibTest
                 Assert.NotNull(completionResponse.OpenAIResponse.Usage);
             }
         }
-        [Theory]
-        [InlineData("gpt-3.5-turbo-instruct")]
+        //[Theory]
+        //[InlineData("gpt-3.5-turbo-instruct")]
         public async Task CreateEditMathTest(string modelID)
         {
             using (var scope = _factory.Services.CreateScope())

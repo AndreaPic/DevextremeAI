@@ -35,7 +35,7 @@ namespace DevExtremeAILibTest
                 var fineTuneList = await openAiapiClient.GetFineTuneJobListAsync();
                 Assert.False(fineTuneList.HasError);
 
-                foreach (var fineTuneData in fineTuneList.OpenAIResponse.Data.Where(ft => ft.TrainingFiles.Any(f => f.FileName.StartsWith("Test-"))))
+                foreach (var fineTuneData in fineTuneList.OpenAIResponse.Data.Where(ft => !string.IsNullOrEmpty(ft?.FineTunedModel) && (ft.FineTunedModel.StartsWith("Test") || ft.FineTunedModel.Contains("trivia")) ))
                 {
 
                     if (fineTuneData.ResultFiles != null)
@@ -43,26 +43,20 @@ namespace DevExtremeAILibTest
                         foreach (var resultFile in fineTuneData.ResultFiles)
                         {
                             var deletedFile = await openAiapiClient.DeleteFileAsync(new DeleteFileRequest()
-                            { FileId = resultFile.FileId });
+                            { FileId = resultFile });
                         }
                     }
 
-                    if (fineTuneData.ValidationFiles != null)
+                    if (fineTuneData.ValidationFile != null)
                     {
-                        foreach (var validationFile in fineTuneData.ValidationFiles)
-                        {
-                            var deletedFile = await openAiapiClient.DeleteFileAsync(new DeleteFileRequest()
-                            { FileId = validationFile.FileId });
-                        }
+                        var deletedFile = await openAiapiClient.DeleteFileAsync(new DeleteFileRequest()
+                        { FileId = fineTuneData.ValidationFile});
                     }
 
-                    if (fineTuneData.TrainingFiles != null)
+                    if (fineTuneData.TrainingFile != null)
                     {
-                        foreach (var trainingFile in fineTuneData.TrainingFiles)
-                        {
-                            var deletedFile = await openAiapiClient.DeleteFileAsync(new DeleteFileRequest()
-                            { FileId = trainingFile.FileId });
-                        }
+                        var deletedFile = await openAiapiClient.DeleteFileAsync(new DeleteFileRequest()
+                        { FileId = fineTuneData.TrainingFile });
                     }
 
                     if (!string.IsNullOrEmpty(fineTuneData.FineTunedModel))
