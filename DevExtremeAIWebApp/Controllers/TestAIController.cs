@@ -22,12 +22,12 @@ namespace DevExtremeAIWebApp.Controllers
         [HttpGet("{id}")]
         public async Task<string> Get(int id)
         {
-            var completion = new CreateCompletionRequest();
-            completion.Model = "gpt-3.5-turbo-instruct";
+            var chat = new CreateChatCompletionRequest();
+            chat.Model = "gpt-3.5-turbo-1106";
             string prompt = $"Is the number {id} even or odd?";
-            completion.AddCompletionPrompt(prompt);
-            var response = await _openAIApiClient.CreateCompletionAsync(completion);
-            return $"{prompt} -> {response?.OpenAIResponse?.Choices[0]?.Text}";
+            chat.AddMessage(new ChatCompletionUserContentMessage() { Content = prompt });
+            var response = await _openAIApiClient.CreateChatCompletionAsync(chat);
+            return $"{prompt} -> {response?.OpenAIResponse?.Choices[0]?.Message?.Content}";
         }
 
     }
