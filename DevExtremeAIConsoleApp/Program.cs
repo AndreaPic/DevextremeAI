@@ -34,7 +34,7 @@ namespace DevExtremeAIConsoleApp
             var openAIClient = OpenAIClientFactory.CreateInstance();
 
             CreateChatCompletionRequest createCompletionRequest = new CreateChatCompletionRequest();
-            createCompletionRequest.Model = "gpt-3.5-turbo";
+            createCompletionRequest.Model = "gpt-3.5-turbo-1106";
             createCompletionRequest.Temperature = temp;
 
             while (true)

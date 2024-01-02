@@ -11,7 +11,7 @@ namespace DevExtremeAI.OpenAIDTO
     {
         /// <summary>
         /// ID of the model to use.
-        /// You can use the `text-davinci-edit-001` or `code-davinci-edit-001` model with this endpoint.
+        /// You can use the `gpt-4` or `code-davinci-edit-001` model with this endpoint.
         /// </summary>
         [JsonPropertyName("model")]
         public string Model { get; set; }

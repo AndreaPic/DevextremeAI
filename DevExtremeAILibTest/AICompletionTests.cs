@@ -17,8 +17,7 @@ namespace DevExtremeAILibTest
 
         
         [Theory]
-        [InlineData("text-davinci-003")]
-        //[InlineData("gpt-3.5-turbo")]
+        [InlineData("gpt-3.5-turbo-instruct")]
         public async Task CreateCompletionTest(string modelID)
         {
 
@@ -46,8 +45,7 @@ namespace DevExtremeAILibTest
         }
 
         [Theory]
-        [InlineData("text-davinci-003")]
-        //[InlineData("gpt-3.5-turbo")]
+        [InlineData("gpt-3.5-turbo-instruct")]
         public async Task CreateCompletionArrayTest(string modelID)
         {
 
@@ -113,8 +111,7 @@ namespace DevExtremeAILibTest
 
 
         [Theory]
-        [InlineData("text-davinci-003")]
-        //[InlineData("gpt-3.5-turbo")]
+        [InlineData("gpt-3.5-turbo-instruct")]
         public async Task CreateCompletionStreamTest(string modelID)
         {
 

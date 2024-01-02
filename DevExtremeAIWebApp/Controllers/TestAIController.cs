@@ -23,7 +23,7 @@ namespace DevExtremeAIWebApp.Controllers
         public async Task<string> Get(int id)
         {
             var completion = new CreateCompletionRequest();
-            completion.Model = "text-davinci-003";
+            completion.Model = "gpt-3.5-turbo-instruct";
             string prompt = $"Is the number {id} even or odd?";
             completion.AddCompletionPrompt(prompt);
             var response = await _openAIApiClient.CreateCompletionAsync(completion);

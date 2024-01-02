@@ -217,6 +217,11 @@ namespace DevExtremeAI.Utils
                         JsonSerializer.Serialize(writer, t, options);
                     }
                     break;
+                case ChatCompletionRoleStringContentMessage t:
+                    {
+                        JsonSerializer.Serialize(writer, t, options);
+                    }
+                    break;
             }
         }
     }

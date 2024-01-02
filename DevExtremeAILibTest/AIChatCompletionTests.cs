@@ -17,8 +17,7 @@ namespace DevExtremeAILibTest
 
 
         [Theory]
-        //[InlineData("text-davinci-003")]
-        [InlineData("gpt-3.5-turbo")]
+        [InlineData("gpt-3.5-turbo-1106")]
         public async Task CreateChatCompletionStreamTest(string modelID)
         {
 
@@ -29,9 +28,8 @@ namespace DevExtremeAILibTest
                 createCompletionRequest.Model = modelID;
                 createCompletionRequest.Temperature = 0.9;
 
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                createCompletionRequest.Messages.Add(new ChatCompletionUserContentMessage()
                 {
-                    Role = ChatCompletionMessageRoleEnum.User,
                     Content = "I'm getting bored, what can you do for me?"
                 });
                 await Task.Delay(22000);
@@ -59,8 +57,7 @@ namespace DevExtremeAILibTest
 
 
         [Theory]
-        //[InlineData("text-davinci-003")]
-        [InlineData("gpt-3.5-turbo")]
+        [InlineData("gpt-3.5-turbo-1106")]
         public async Task CreateChatCompletionTest(string modelID)
         {
             
@@ -71,9 +68,8 @@ namespace DevExtremeAILibTest
                 createCompletionRequest.Model = modelID;
                 createCompletionRequest.Temperature = 0.9;
 
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                createCompletionRequest.Messages.Add(new ChatCompletionUserContentMessage ()
                 {
-                    Role = ChatCompletionMessageRoleEnum.User,
                     Content = "Hi there!"
                 });
                 await Task.Delay(22000);
@@ -85,14 +81,19 @@ namespace DevExtremeAILibTest
                 Assert.True(response?.OpenAIResponse.Choices.Count > 0);
                 Assert.NotNull(response?.OpenAIResponse.Usage);
 
-
-                createCompletionRequest = new CreateChatCompletionRequest();
-                createCompletionRequest.Model = modelID;
-                createCompletionRequest.Temperature = 0.9;
-
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                ChatCompletionAssistantMessage assistantMessage = new ChatCompletionAssistantMessage()
                 {
-                    Role = ChatCompletionMessageRoleEnum.User,
+                    Content = response?.OpenAIResponse.Choices[0].Message.Content
+                };
+
+                createCompletionRequest.AddMessage(assistantMessage);
+
+                //createCompletionRequest = new CreateChatCompletionRequest();
+                //createCompletionRequest.Model = modelID;
+                //createCompletionRequest.Temperature = 0.9;
+
+                createCompletionRequest.Messages.Add(new ChatCompletionUserContentMessage()
+                {
                     Content = "I'm getting bored, what can you do for me?"
                 });
 
@@ -110,7 +111,7 @@ namespace DevExtremeAILibTest
 
 
         [Theory]
-        [InlineData("gpt-3.5-turbo")]
+        [InlineData("gpt-3.5-turbo-1106")]
         public async Task CreateChatCompletionITATest(string modelID)
         {
 
@@ -121,9 +122,8 @@ namespace DevExtremeAILibTest
                 createCompletionRequest.Model = modelID;
                 createCompletionRequest.Temperature = 1.4;
 
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                createCompletionRequest.Messages.Add(new ChatCompletionUserContentMessage()
                 {
-                    Role = ChatCompletionMessageRoleEnum.User,
                     Content = "Ciao, sai parlare Italiano?"
                 });
 
@@ -136,16 +136,15 @@ namespace DevExtremeAILibTest
                 
                 Debug.WriteLine(response.OpenAIResponse.Choices[0].Message.Content);
 
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                createCompletionRequest.Messages.Add(new ChatCompletionRoleStringContentMessage()
                 {
                     Role = response.OpenAIResponse.Choices[0].Message.Role,
                     Content = response.OpenAIResponse.Choices[0].Message.Content
                 });
 
 
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                createCompletionRequest.Messages.Add(new ChatCompletionUserContentMessage()
                 {
-                    Role = ChatCompletionMessageRoleEnum.User,
                     Content = "Qual'è la capitale d'Italia?"
                 });
 
@@ -158,15 +157,14 @@ namespace DevExtremeAILibTest
 
                 Debug.WriteLine(response.OpenAIResponse.Choices[0].Message.Content);
 
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                createCompletionRequest.Messages.Add(new ChatCompletionRoleStringContentMessage()
                 {
                     Role = response.OpenAIResponse.Choices[0].Message.Role,
                     Content = response.OpenAIResponse.Choices[0].Message.Content
                 });
 
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                createCompletionRequest.Messages.Add(new ChatCompletionUserContentMessage()
                 {
-                    Role = ChatCompletionMessageRoleEnum.User,
                     Content = "Quali cose potrei visitare li?"
                 });
 
@@ -193,7 +191,7 @@ namespace DevExtremeAILibTest
         /// <param name="modelID"></param>
         /// <returns></returns>
         [Theory]
-        [InlineData("gpt-3.5-turbo-0613")]
+        [InlineData("gpt-3.5-turbo-1106")]
         public async Task CreateChatCompletionOneFunctionTest(string modelID)
         {
 
@@ -225,7 +223,7 @@ namespace DevExtremeAILibTest
 
                 createCompletionRequest.AddFunction(func);
 
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                createCompletionRequest.Messages.Add(new ChatCompletionRoleStringContentMessage()
                 {
                     Role = ChatCompletionMessageRoleEnum.User,
                     Content = "Come sarà il tempo a Venezia, Italia oggi?"
@@ -273,7 +271,7 @@ namespace DevExtremeAILibTest
         /// <param name="modelID"></param>
         /// <returns></returns>
         [Theory]
-        [InlineData("gpt-3.5-turbo-0613")]
+        [InlineData("gpt-3.5-turbo-1106")]
         public async Task CreateChatCompletionMultipleFunctionTest(string modelID)
         {
 
@@ -335,7 +333,7 @@ namespace DevExtremeAILibTest
 
 
 
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                createCompletionRequest.Messages.Add(new ChatCompletionRoleStringContentMessage()
                 {
                     Role = ChatCompletionMessageRoleEnum.User,
                     Content = "what is the weather going to be like in Glasgow, Scotland over the next x days"
@@ -348,13 +346,13 @@ namespace DevExtremeAILibTest
                 Assert.True(response.OpenAIResponse.Choices.Count > 0);
 
 
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                createCompletionRequest.Messages.Add(new ChatCompletionRoleStringContentMessage()
                 {
                     Role = ChatCompletionMessageRoleEnum.Assistant,
                     Content = response.OpenAIResponse.Choices[0].Message.Content
                 });
 
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                createCompletionRequest.Messages.Add(new ChatCompletionRoleStringContentMessage()
                 {
                     Role = ChatCompletionMessageRoleEnum.User,
                     Content = "5 days"

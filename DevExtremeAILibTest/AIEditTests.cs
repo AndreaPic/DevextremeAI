@@ -15,7 +15,7 @@ namespace DevExtremeAILibTest
 
         
         [Theory]
-        [InlineData("text-davinci-edit-001")]
+        [InlineData("gpt-4")]
         public async Task CreateEditTest(string modelID)
         {
             using (var scope = _factory.Services.CreateScope())
@@ -37,7 +37,7 @@ namespace DevExtremeAILibTest
             }
         }
         [Theory]
-        [InlineData("text-davinci-edit-001")]
+        [InlineData("gpt-4")]
         public async Task CreateEditMathTest(string modelID)
         {
             using (var scope = _factory.Services.CreateScope())
