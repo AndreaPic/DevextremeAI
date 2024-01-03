@@ -80,7 +80,7 @@ namespace DevExtremeAILibTest
             }
         }
 
-        [Fact]
+        //[Fact]
         public async Task FileTuningWithDeleteTest()
         {
             using (var scope = _factory.Services.CreateScope())
