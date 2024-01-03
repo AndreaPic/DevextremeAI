@@ -363,3 +363,6 @@ MigrationBackup/
 FodyWeavers.xsd
 *.Development.json
 **/launchSettings.json
+
+#Draw.io backup
+*.bkp

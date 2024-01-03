@@ -391,11 +391,8 @@ namespace DevExtremeAI.OpenAIDTO
 
     }
 
-    //TODO: review as https://platform.openai.com/docs/api-reference/chat/create
-
-    //TODO: stack overflow access violation https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/migrate-from-newtonsoft?pivots=dotnet-6-0#required-properties
     [System.Text.Json.Serialization.JsonConverterAttribute(typeof(MessageJsonConverter))]
-    public class ChatCompletionRoleRequestMessage 
+    public abstract class ChatCompletionRoleRequestMessage 
     {
         /// <summary>
         /// The role of the author of this message. One of system, user, or assistant.
@@ -404,7 +401,7 @@ namespace DevExtremeAI.OpenAIDTO
         public ChatCompletionMessageRoleEnum Role { get; internal protected set; }
     }
 
-    public class ChatCompletionNameRequestMessage : ChatCompletionRoleRequestMessage
+    public abstract class ChatCompletionNameRequestMessage : ChatCompletionRoleRequestMessage
     {
         /// </summary>
         /// The name of the user in a multi-user chat
