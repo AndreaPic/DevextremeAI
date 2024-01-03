@@ -103,12 +103,12 @@ an example of use of IOpenAIAPIClient in controller or apicontroller could be:
   [HttpGet("{id}")]
   public async Task<string> Get(int id)
   {
-    var completion = new CreateCompletionRequest();
-    completion.Model = "text-davinci-003";
-    string prompt = $"Is the number {id} even or odd?";
-    completion.AddCompletionPrompt(prompt);
-    var response = await _openAIApiClient.CreateCompletionAsync(completion);
-    return $"{prompt} -> {response?.OpenAIResponse?.Choices[0]?.Text}";
+      var chat = new CreateChatCompletionRequest();
+      chat.Model = "gpt-3.5-turbo-1106";
+      string prompt = $"Is the number {id} even or odd?";
+      chat.AddMessage(new ChatCompletionUserContentMessage() { Content = prompt });
+      var response = await _openAIApiClient.CreateChatCompletionAsync(chat);
+      return $"{prompt} -> {response?.OpenAIResponse?.Choices[0]?.Message?.Content}";
   }
 ```
 
@@ -143,8 +143,8 @@ Inside your Library or Main method of the console application you can create an 
             var openAIClient = OpenAIClientFactory.CreateInstance(); //create an instance o IOpenAIAPIClient
 
             CreateChatCompletionRequest createCompletionRequest = new CreateChatCompletionRequest();
-            createCompletionRequest.Model = "gpt-3.5-turbo";
-            createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+            createCompletionRequest.Model = "gpt-3.5-turbo-1106";
+            createCompletionRequest.Messages.Add(new ChatCompletionRoleStringContentMessage()
             {
                 Role = ChatCompletionMessageRoleEnum.User,
                 Content = "Hello!",
@@ -205,20 +205,93 @@ This type has three properties:
 - `OpenAIResponse` that is the same of the OpenAI response.
   - Every DTO has the standard .net documentation so you can find documentation in intellisense and because are the same of OpenAI you can find documentation in the [official OpenAI  API Reference](https://platform.openai.com/docs/api-reference) also you can look at the integration tests in DevExtremeAILibTest directory.
 
+## OpenAI API object models
+
+### Create Chat Completion
+
+![Create Chat Completion UML](./UML/Chat-CreateChatCompletion.svg)
+
+### Chat Completion Response
+
+![Chat Completion Response UML](./UML/Chat-ChatCompletion.svg)
+
+### Chat Completion Chunk Response
+
+![Chat Completion Chunk Response UML](./UML/Chat-ChatCompletionChunk.svg)
+
+## How to upgrade to release 8.0.0
+
+This release support openai api and object models complaint to gpt-4 and gpt-3.5-turbo.
+In this openai api version some api has been deprecated and some object model has changed.
+You can see the updated object model in the UML schema.
+For chat api now you can use objects that inherits from the base class 'ChatCompletionRoleRequestMessage'.
+
+Object ChatCompletionRoleStringContentMessage is for backward compatibility only. With this object you can set the Role property like old object model version.
+
+for example old code like this:
+
+```csharp
+CreateChatCompletionRequest createCompletionRequest = new CreateChatCompletionRequest();
+createCompletionRequest.Model = "gpt-3.5-turbo";
+createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+{
+    Role = ChatCompletionMessageRoleEnum.User,
+    Content = "Who are you?"
+});
+```
+
+Can be update in this way:
+
+```csharp
+CreateChatCompletionRequest createCompletionRequest = new CreateChatCompletionRequest();
+createCompletionRequest.Model = "gpt-3.5-turbo-1106";
+createCompletionRequest.Messages.Add(new ChatCompletionRoleStringContentMessage()
+{
+    Role = ChatCompletionMessageRoleEnum.User,
+    Content = "Who are you?"
+});
+```
+
+Changes are:
+
+- Model updated from 'gpt-3.5-turbo' to 'gpt-3.5-turbo-1106'
+- 'new ChatCompletionRequestMessage()' updated with 'new ChatCompletionRoleStringContentMessage()'
+
+To fully update to latest version update must be done in this way:
+
+```csharp
+CreateChatCompletionRequest createCompletionRequest = new CreateChatCompletionRequest();
+createCompletionRequest.Model = "gpt-3.5-turbo-1106";
+createCompletionRequest.Messages.Add(new ChatCompletionUserContentMessage()
+{
+    Content = "Who are you?"
+});
+```
+
+Changes are:
+
+- Model updated from 'gpt-3.5-turbo' to 'gpt-3.5-turbo-1106'
+- 'new ChatCompletionRequestMessage()' updated with 'new ChatCompletionUserContentMessage()'
+- Role property is not used (is intrinsic in its type)
+
 ## API Types
 
 Are covered all OpenAI API types:
 
-- Models
-- Completions
-- Chat
-- Edits
-- Images
-- Embeddings
 - Audio
+- Chat
+- Embeddings
+- Fine-tuning
 - Files
-- Fine-tunes
+- Images
+- Models
 - Moderations
+
+## Legacy API Deprecated Types
+
+- Completions
+- Edits
+- Fine-tunes
 
 ## Examples
 

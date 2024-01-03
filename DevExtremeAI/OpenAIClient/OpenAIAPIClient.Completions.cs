@@ -9,6 +9,12 @@ using DevExtremeAI.OpenAIDTO;
 namespace DevExtremeAI.OpenAIClient
 {
 
+    /// <summary>
+    /// Create Completions
+    /// </summary>
+    /// <remarks>
+    /// These now are Legacy API
+    /// </remarks>
     partial class OpenAIAPIClient 
     {
         /// <summary>

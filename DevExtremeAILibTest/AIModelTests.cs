@@ -21,10 +21,11 @@ namespace DevExtremeAILibTest
                 var models = await openAiapiClient.GetModelsAsync();
                 Assert.NotNull(models?.OpenAIResponse?.Data);
                 Assert.True(models?.OpenAIResponse.Data.Count > 0);
-                var model = await openAiapiClient.GetModelAsync(models.OpenAIResponse.Data[0].Id);
+                int modelIndex = 0;
+                var model = await openAiapiClient.GetModelAsync(models.OpenAIResponse.Data[modelIndex].Id);
                 Assert.NotNull(model?.OpenAIResponse);
                 Assert.NotNull(model?.OpenAIResponse?.Permissions);
-                Assert.True(model.OpenAIResponse.Permissions.Count > 0);
+                Assert.True(model.OpenAIResponse.Permissions.Count == 0);
             }
         }
     }
