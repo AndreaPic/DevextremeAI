@@ -4,7 +4,8 @@ using DevExtremeAI.OpenAIClient;
 
 namespace DevExtremeAILibTest
 {
-    public class AIEditTests : IClassFixture<TestApplication>
+    [Obsolete]
+    public class AIEditTests //: IClassFixture<TestApplication>
     {
         private readonly TestApplication _factory;
 
@@ -14,8 +15,8 @@ namespace DevExtremeAILibTest
         }
 
         
-        [Theory]
-        [InlineData("text-davinci-edit-001")]
+        //[Theory]
+        //[InlineData("gpt-3.5-turbo-instruct")]
         public async Task CreateEditTest(string modelID)
         {
             using (var scope = _factory.Services.CreateScope())
@@ -36,8 +37,8 @@ namespace DevExtremeAILibTest
                 Assert.NotNull(completionResponse.OpenAIResponse.Usage);
             }
         }
-        [Theory]
-        [InlineData("text-davinci-edit-001")]
+        //[Theory]
+        //[InlineData("gpt-3.5-turbo-instruct")]
         public async Task CreateEditMathTest(string modelID)
         {
             using (var scope = _factory.Services.CreateScope())

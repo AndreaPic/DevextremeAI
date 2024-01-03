@@ -122,52 +122,149 @@ namespace DevExtremeAI.OpenAIDTO
         /// </summary>
         [JsonPropertyName("suffix")]
         public string? Suffix { get; set; }
+
+        [JsonPropertyName("hyperparameters")]
+        public HyperParameters HyperParameters { get; set; }
+
     }
 
+    /// <summary>
+    /// The hyperparameters used for the fine-tuning job.
+    /// </summary>
+    public class HyperParameters
+    {
+        /// <summary>
+        /// Number of examples in each batch. 
+        /// A larger batch size means that model parameters are updated less frequently, but with lower variance.
+        /// </summary>
+        public object? BatchSize { get; set;}
+        public void SetAutoBatchSize()
+        {
+            BatchSize = "auto";
+        }
+        public void SetBatchSizeValue(int value)
+        {
+            BatchSize = value;
+        }
+
+        [JsonPropertyName("learning_rate_multiplier")]
+        public object? LearningRateMultiplier { get; set; }
+        public void SetAutoLearningRateMultiplier()
+        {
+            LearningRateMultiplier = "auto";
+        }
+        public void SetLearningRateMultiplierValue(int value)
+        {
+            LearningRateMultiplier = value;
+        }
+
+        [JsonPropertyName("n_epochs")]
+        public object? NEpochs { get; set; }
+        public void SetAutoNEpochs()
+        {
+            NEpochs = "auto";
+        }
+        public void SetNEpochsValue(int value)
+        {
+            NEpochs = value;
+        }
+
+
+    }
+
+    /// <summary>
+    /// The fine_tuning.job object represents a fine-tuning job that has been created through the API.
+    /// </summary>
     public class FineTuneData
+    {
+        /// <summary>
+        /// The object identifier, which can be referenced in the API endpoints.
+        /// </summary>
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// The Unix timestamp (in seconds) for when the fine-tuning job was created.
+        /// </summary>
+        [JsonPropertyName("created_at")]
+        public long CreatedAt { get; set; }
+
+        [JsonPropertyName("error")]
+        public object? Error { get; set; }
+
+        /// <summary>
+        /// The name of the fine-tuned model that is being created. The value will be null if the fine-tuning job is still running.
+        /// </summary>
+        [JsonPropertyName("fine_tuned_model")]
+        public string? FineTunedModel { get; set; }
+
+        /// <summary>
+        /// The Unix timestamp (in seconds) for when the fine-tuning job was finished. The value will be null if the fine-tuning job is still running.
+        /// </summary>
+        [JsonPropertyName("finished_at")]
+        public long? FinishedAt { get; set; }
+
+        /// <summary>
+        /// The hyperparameters used for the fine-tuning job. See the fine-tuning guide for more details
+        /// </summary>
+        [JsonPropertyName("hyperparameters")]
+        public HyperParameters HyperParameters { get; set; }
+
+        /// <summary>
+        /// The base model that is being fine-tuned.
+        /// </summary>
+        [JsonPropertyName("model")]
+        public string Model { get; set; }
+
+        /// <summary>
+        /// The object type, which is always "fine_tuning.job".
+        /// </summary>
+        [JsonPropertyName("object")]
+        public string Object { get; set; }
+
+        /// <summary>
+        /// The organization that owns the fine-tuning job.
+        /// </summary>
+        [JsonPropertyName("organization_id")]
+        public string OrganizationId { get; set; }
+
+        /// <summary>
+        /// The compiled results file ID(s) for the fine-tuning job. You can retrieve the results with the Files API.
+        /// </summary>
+        [JsonPropertyName("result_files")]
+        public List<string>? ResultFiles { get; set; }
+
+        /// <summary>
+        /// The current status of the fine-tuning job, which can be either validating_files, queued, running, succeeded, failed, or cancelled.
+        /// </summary>
+        [JsonPropertyName("status")]
+        public string Status { get; set; }
+
+        /// <summary>
+        /// The total number of billable tokens processed by this fine-tuning job. The value will be null if the fine-tuning job is still running.
+        /// </summary>
+        [JsonPropertyName("trained_tokens")]
+        public long? TrainedTokens { get; set; }
+
+        /// <summary>
+        /// The file ID used for training. You can retrieve the training data with the Files API.
+        /// </summary>
+        [JsonPropertyName("training_file")]
+        public string TrainingFile {  get; set; }
+
+        [JsonPropertyName("validation_file")]
+        public string? ValidationFile {  get; set; }
+
+    }
+
+    /// <summary>
+    /// Fine-tuning job event object
+    /// </summary>
+    public class Event
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        [JsonPropertyName("object")]
-        public string Object { get; set; }
-
-        [JsonPropertyName("model")]
-        public string Model { get; set; }
-
-        [JsonPropertyName("created_at")]
-        public long CreatedAt { get; set; }
-
-        [JsonPropertyName("events")]
-        public List<Event> Events { get; set; }
-
-        [JsonPropertyName("fine_tuned_model")]
-        public string FineTunedModel { get; set; }
-
-        [JsonPropertyName("hyperparams")]
-        public HyperParam? HyperParams { get; set; }
-
-        [JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
-
-        [JsonPropertyName("result_files")]
-        public List<FileData>? ResultFiles { get; set; }
-
-        [JsonPropertyName("status")]
-        public string Status { get; set; }
-
-        [JsonPropertyName("validation_files")]
-        public List<FileData>? ValidationFiles { get; set; }
-
-        [JsonPropertyName("training_files")]
-        public List<FileData>? TrainingFiles { get; set; }
-
-        [JsonPropertyName("updated_at")]
-        public long UpdatedAt { get; set; }
-    }
-
-    public class Event
-    {
         [JsonPropertyName("object")]
         public string Object { get; set; }
 
@@ -205,6 +302,9 @@ namespace DevExtremeAI.OpenAIDTO
 
         [JsonPropertyName("data")]
         public List<FineTuneData> Data { get; set; }
+
+        [JsonPropertyName("has_more")]
+        public bool HasMore { get; set; }
     }
 
     public class FineTuneRequest

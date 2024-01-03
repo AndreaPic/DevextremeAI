@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -10,9 +9,22 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using DevExtremeAI.Utils;
 using System.Text.Json.Nodes;
+using Microsoft.Extensions.Options;
+using System.IO;
+using System.Reflection;
+#if NET7_0_OR_GREATER
+using static System.Runtime.InteropServices.JavaScript.JSType;
+#endif
+using System.Threading.Channels;
+using System.Net.Mime;
+using System.Text.Json;
 
 namespace DevExtremeAI.OpenAIDTO
 {
+    /// <summary>
+    /// Creates a model response for the given chat conversation.
+    /// <see cref="https://platform.openai.com/docs/api-reference/chat/create"/>
+    /// </summary>
     public class CreateChatCompletionRequest
     {
         /// <summary>
@@ -27,7 +39,9 @@ namespace DevExtremeAI.OpenAIDTO
         /// The messages to generate chat completions for, in the [chat format](/docs/guides/chat/introduction).
         /// </summary>
         [JsonPropertyName("messages")]
-        public List<ChatCompletionRequestMessage> Messages { get; private set; } = new List<ChatCompletionRequestMessage>();
+        [JsonConverter(typeof(MessageListJsonConverter))]
+        public List<ChatCompletionRoleRequestMessage> Messages { get; set; } = new List<ChatCompletionRoleRequestMessage>();
+
 
         /// <summary>
         /// Add a message to the completion
@@ -35,23 +49,44 @@ namespace DevExtremeAI.OpenAIDTO
         /// <param name="message">The message to add</param>
         public void AddMessage(ChatCompletionRequestMessage message)
         {
+            if (Messages == null)
+            {
+                Messages = new List<ChatCompletionRoleRequestMessage>();
+            }
             Messages.Add(message);
         }
 
         /// <summary>
+        /// Add a message to the completion
+        /// </summary>
+        /// <param name="message">The message to add</param>
+        public void AddMessage(ChatCompletionRoleRequestMessage message)
+        {
+            if (Messages == null)
+            {
+                Messages = new List<ChatCompletionRoleRequestMessage>();
+            }
+            Messages.Add(message);
+        }
+
+        
+
+        /// <summary>
         /// Function definitions for ai
         /// </summary>
+        [Obsolete("use tool_choice instead")]
         private IList<FunctionDefinition>? functions;
 
         /// <summary>
         /// A list of functions the model may generate JSON inputs for.
         /// </summary>
+        [Obsolete("use tool_choice instead")]
         [JsonPropertyName("functions")]
-        public IList<FunctionDefinition>? Functions 
-        { 
+        public IList<FunctionDefinition>? Functions
+        {
             get
             {
-                if ( (functions == null) || (functions.Count == 0))
+                if ((functions == null) || (functions.Count == 0))
                 {
                     return null;
                 }
@@ -67,6 +102,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// Add a function definition to the completion
         /// </summary>
         /// <param name="functionDefinition">The funciton definition</param>
+        [Obsolete("use tool_choice instead")]
         public void AddFunction(FunctionDefinition functionDefinition)
         {
             if (functions == null)
@@ -86,6 +122,7 @@ namespace DevExtremeAI.OpenAIDTO
         /// "none" is the default when no functions are present. 
         /// "auto" is the default if functions are present
         /// </summary>
+        [Obsolete("use tool_choice instead")]
         [JsonPropertyName("function_call")]
         public string? FunctionCall { get; set; }
 
@@ -181,36 +218,408 @@ namespace DevExtremeAI.OpenAIDTO
         [JsonPropertyName("user")]
         public string? User { get; set; }
 
+        /// <summary>
+        /// Whether to return log probabilities of the output tokens or not. 
+        /// If true, returns the log probabilities of each output token returned in the content of message. 
+        /// This option is currently not available on the gpt-4-vision-preview model.
+        /// </summary>
+        /// <remarks>Default False</remarks>
+        [JsonPropertyName("logprobs")]
+        public bool? LogProbs { get; set; }
+
+        /// <summary>
+        /// An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, 
+        /// each with an associated log probability. 
+        /// logprobs must be set to true if this parameter is used.
+        /// </summary>
+        [JsonPropertyName("top_logprobs")]
+        public int? TopLogProbs { get; set; }
+
+
+        /// <summary>
+        /// An object specifying the format that the model must output.Compatible with gpt-4-1106-preview and gpt-3.5-turbo-1106.
+        /// Setting to { "type": "json_object" }
+        /// enables JSON mode, which guarantees the message the model generates is valid JSON.
+        /// Important: when using JSON mode, you must also instruct the model to produce JSON yourself via a system or user message.Without this, the model may generate an unending stream of whitespace until the generation reaches the token limit, resulting in a long-running and seemingly "stuck" request.Also note that the message content may be partially cut off if finish_reason= "length", which indicates the generation exceeded max_tokens or the conversation exceeded the max context length.
+        /// </summary>
+        [JsonPropertyName("response_format")]
+        public ResponseOutputFormat? ResponseFormat { get; set; }
+
+        /// <summary>
+        /// This feature is in Beta. 
+        /// If specified, our system will make a best effort to sample deterministically, 
+        /// such that repeated requests with the same seed and parameters should return the same result. 
+        /// Determinism is not guaranteed, and you should refer to the system_fingerprint response parameter to monitor changes in the backend.
+        /// </summary>
+        [JsonPropertyName("seed")]
+        public int? Seed { get; set; }
+
+        /// <summary>
+        /// A list of tools the model may call. 
+        /// Currently, only functions are supported as a tool. 
+        /// Use this to provide a list of functions the model may generate JSON inputs for.
+        /// </summary>
+        [JsonPropertyName("tools")]
+        public List<ToolDefinition> Tools { get; set; }
+        //TODO: manage hierarchy ^^^
+
+        /// <summary>
+        /// Ad a tool to Tools List
+        /// </summary>
+        /// <param name="tool">Tool To Add</param>
+        public void AddTool(ToolDefinition tool)
+        {
+            if (Tools == null)
+            {
+                Tools = new List<ToolDefinition>();
+            }
+            Tools.Add(tool);
+        }
+
+
+        /// <summary>
+        /// Controls which (if any) function is called by the model. none means the model will not call a function and instead generates a message. auto means the model can pick between generating a message or calling a function. Specifying a particular function via {"type": "function", "function": {"name": "my_function"}} forces the model to call that function.
+        /// none is the default when no functions are present.auto is the default if functions are present.
+        /// </summary>
+        [JsonPropertyName("tool_choice")]
+        public object? ToolChoice { get; set; }
+
+        /// <summary>
+        /// auto is the default if functions are present.
+        /// </summary>
+        public void SetAutoToolChoice()
+        {
+            ToolChoice = "auto";
+        }
+        /// <summary>
+        /// none is the default when no functions are present.
+        /// </summary>
+        public void SetNoneToolChoice()
+        {
+            ToolChoice = "none";
+        }
+
+        public void SetFunctionNameToolChoice(FunctionNameTool functionNameTool)
+        {
+            ToolChoice = functionNameTool;
+        }
+
+
     }
 
-    public class ChatCompletionRequestMessage
+    //TODO: continue form here https://platform.openai.com/docs/api-reference/chat/streaming
+
+    public abstract class ToolDefinition
+    {
+        /// <summary>
+        /// The type of the tool. Currently, only function is supported.
+        /// </summary>
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
+    }
+
+    public class FunctionTool : ToolDefinition
+    {
+        public FunctionTool()
+        {
+            Type = "function";
+        }
+
+        [JsonPropertyName("function")]
+        public FunctionDefinition Function { get; set; }
+    }
+
+    public class FunctionNameTool : ToolDefinition
+    {
+        public FunctionNameTool()
+        {
+            Type = "function";
+        }
+
+        [JsonPropertyName("function")]
+        public FunctionNameDefinition Function { get; set; }
+    }
+
+
+    public abstract class ResponseOutputFormat
+    {
+        [JsonPropertyName("type")]
+        public string Type { get; protected set; }
+    }
+
+    public class ResponseOutputTextFormat : ResponseOutputFormat
+    {
+        public ResponseOutputTextFormat()
+        {
+            Type = "text";
+        }
+    }
+
+    public class ResponseOutputJSONFormat : ResponseOutputFormat
+    {
+        public ResponseOutputJSONFormat()
+        {
+            Type = "json_object";
+        }
+    }
+
+    [Obsolete("use descendant of ChatCompletionRoleRequestMessage or ChatCompletionRoleStringContentMessage")]
+    public class ChatCompletionRequestMessage : ChatCompletionStringRequestMessage
     {
         /// <summary>
         /// The role of the author of this message. One of system, user, or assistant.
         /// </summary>
         [JsonPropertyName("role")]
-
-        public ChatCompletionMessageRoleEnum Role { get; set; }
+        new public ChatCompletionMessageRoleEnum Role
+        {
+            get
+            {
+                return base.Role;
+            }
+            set
+            {
+                base.Role = value;
+            }
+        }
 
         /// <summary>
-        /// The contents of the message.
+        /// The name and arguments of a function that should be called, as generated by the model.
         /// </summary>
-        [JsonPropertyName("content")]
-        public string Content { get; set; }
+        [Obsolete("Instead use ToolCalls")]
+        [JsonPropertyName("function_call")]
+        public FunctionCallDefinition? FunctionCall { get; set; }
 
+    }
+
+    [System.Text.Json.Serialization.JsonConverterAttribute(typeof(MessageJsonConverter))]
+    public abstract class ChatCompletionRoleRequestMessage 
+    {
         /// <summary>
+        /// The role of the author of this message. One of system, user, or assistant.
+        /// </summary>
+        [JsonPropertyName("role")]
+        public ChatCompletionMessageRoleEnum Role { get; internal protected set; }
+    }
+
+    public abstract class ChatCompletionNameRequestMessage : ChatCompletionRoleRequestMessage
+    {
+        /// </summary>
         /// The name of the user in a multi-user chat
         /// The name of the author of this message. May contain a-z, A-Z, 0-9, and underscores, with a maximum length of 64 characters.
         /// </summary>
         [JsonPropertyName("name")]
         public string? Name { get; set; }
+    }
+    public class ChatCompletionStringRequestMessage : ChatCompletionNameRequestMessage
+    {
+        /// <summary>
+        /// The contents of the message.
+        /// </summary>
+        [JsonPropertyName("content")]
+        public string Content { get; set; }
+    }
+
+    /// <summary>
+    /// System Message
+    /// </summary>
+    public class ChatCompletionSystemMessage : ChatCompletionStringRequestMessage
+    {
+
+        public ChatCompletionSystemMessage()
+        {
+            Role = ChatCompletionMessageRoleEnum.System;
+        }
+    }
+
+    /// <summary>
+    /// Message with text contents of the message
+    /// </summary>
+    public class ChatCompletionRoleStringContentMessage : ChatCompletionStringRequestMessage
+    {
+        public ChatCompletionRoleStringContentMessage()
+        {
+        }
+
+        [JsonPropertyName("role")]
+        public ChatCompletionMessageRoleEnum Role { get { return base.Role;  } set { base.Role = value; } }
+    }
+
+
+    /// <summary>
+    /// User Message with text contents of the message
+    /// </summary>
+    public class ChatCompletionUserContentMessage : ChatCompletionStringRequestMessage
+    {
+        public ChatCompletionUserContentMessage()
+        {
+            Role = ChatCompletionMessageRoleEnum.User;
+        }
+    }
+
+    /// <summary>
+    /// User Message with Array of content parts
+    /// </summary>
+    public class ChatCompletionUserContentsMessage : ChatCompletionNameRequestMessage
+    {
+        public ChatCompletionUserContentsMessage()
+        {
+            Role = ChatCompletionMessageRoleEnum.User;
+        }
 
         /// <summary>
-        /// The name and arguments of a function that should be called, as generated by the model.
+        /// An array of content parts with a defined type, each can be of type text or image_url when passing in images. 
+        /// You can pass multiple images by adding multiple image_url content parts. 
+        /// Image input is only supported when using the gpt-4-visual-preview model.
         /// </summary>
-        [JsonPropertyName("function_call")]
-        public FunctionCallDefinition? FunctionCall { get; set; }
+        [JsonPropertyName("content")]
+        [JsonConverter(typeof(ContentItemListJsonConverter))]
+        public List<ContentItem> Contents { get; set; } = new List<ContentItem>();
+    }
 
+    /// <summary>
+    /// Assistant message
+    /// </summary>
+    public class ChatCompletionAssistantMessage : ChatCompletionStringRequestMessage
+    {
+        public ChatCompletionAssistantMessage()
+        {
+            Role = ChatCompletionMessageRoleEnum.Assistant;
+        }
+
+        /// <summary>
+        /// The tool calls generated by the model, such as function calls.
+        /// </summary>
+        [JsonPropertyName("tool_calls")]
+        public List<ToolCall> ToolCalls { get; set; }
+    }
+
+    /// <summary>
+    /// Tool message
+    /// </summary>
+    public class ChatCompletionToolMessage : ChatCompletionRoleRequestMessage
+    {
+        public ChatCompletionToolMessage()
+        {
+            Role = ChatCompletionMessageRoleEnum.Tool;
+        }
+
+        /// <summary>
+        /// The contents of the tool message.
+        /// </summary>
+        [JsonPropertyName("content")]
+        public string Content { get; set; }
+
+        /// <summary>
+        /// Tool call that this message is responding to.
+        /// </summary>
+        [JsonPropertyName("tool_call_id")]
+        public string ToolCallId { get; set; }
+    }
+
+
+    [Obsolete("use tools instead")]
+    public class ChatCompletionFunctionMessage : ChatCompletionStringRequestMessage
+    {
+        public ChatCompletionFunctionMessage()
+        {
+            Role = ChatCompletionMessageRoleEnum.Function;
+        }
+    }
+
+    public class ToolCall
+    {
+        /// <summary>
+        /// The ID of the tool call.
+        /// </summary>
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// The type of the tool. Currently, only function is supported.
+        /// </summary>
+        [JsonPropertyName("type")]
+        public string Type { get => "function"; /*set;*/ }
+
+        /// <summary>
+        /// The function that the model called.
+        /// </summary>
+        [JsonPropertyName("function")]
+        public FunctionDefinition FunctionCall { get; set; }
+    }
+
+
+    /// <summary>
+    /// Base class for content items used in Contents of ChatCompletionUserContentsMessage
+    /// </summary>
+    [JsonConverter(typeof(ContentItemJsonConverter))]
+    public abstract class ContentItem
+    {
+        /// <summary>
+        /// The type of the content part.
+        /// </summary>
+        [JsonPropertyName("type")]
+        public ContentItemTypes ContentType { get; internal protected set; }
+    }
+
+    public class ContentTextItem : ContentItem
+    {
+        public ContentTextItem()
+        {
+            ContentType = ContentItemTypes.Text;
+        }
+
+        /// <summary>
+        /// The text content.
+        /// </summary>
+        [JsonPropertyName("text")]
+        public string Text { get; set; }
+    }
+
+    public class ContentImageItem : ContentItem
+    {
+        public ContentImageItem()
+        {
+            ContentType = ContentItemTypes.ImageUrl;
+        }
+
+        [JsonPropertyName("image_url")]
+        public ImageUrl ImageUrl { get; set; } = new ImageUrl();
+    }
+
+    public class ImageUrl
+    {
+        /// <summary>
+        /// Either a URL of the image or the base64 encoded image data.
+        /// </summary>
+        [JsonPropertyName("url")]
+        public string ImageURl { get; set; }
+
+        /// <summary>
+        /// Specifies the detail level of the image.
+        /// </summary>
+        [JsonPropertyName("detail")]
+        public ImageDetailLevel? Detail { get; set; }
+    }
+
+
+    [JsonConverter(typeof(JsonStringEnumConverterEx<ContentItemTypes>))]
+    public enum ContentItemTypes
+    {
+        [EnumMember(Value = "text")]
+        Text = 0,
+        [EnumMember(Value = "image_url")]
+        ImageUrl = 1,
+    }
+
+    [JsonConverter(typeof(JsonStringEnumConverterEx<ImageDetailLevel>))]
+    public enum ImageDetailLevel
+    {
+        [EnumMember(Value = "auto")]
+        Auto = 0,
+        [EnumMember(Value = "low")]
+        Low = 1,
+        [EnumMember(Value = "high")]
+        High = 2,
     }
 
 
@@ -249,46 +658,90 @@ namespace DevExtremeAI.OpenAIDTO
         [EnumMember(Value = "assistant")]
         Assistant = 2,
         [EnumMember(Value = "function")]
-        Function = 3
+        Function = 3,
+        [EnumMember(Value = "tool")]
+        Tool = 4
     }
 
-
+    /// <summary>
+    /// Represents a chat completion response returned by model, based on the provided input.
+    /// <see cref="https://platform.openai.com/docs/api-reference/chat/object"/>
+    /// </summary>
     public class CreateChatCompletionResponse
     {
+        /// <summary>
+        /// A unique identifier for the chat completion.
+        /// </summary>
         [JsonPropertyName("id")]
         public string ID { get; set; }
 
-        [JsonPropertyName("object")]
-        public string Object { get; set; }
+        /// <summary>
+        /// A list of chat completion choices. Can be more than one if n is greater than 1.
+        /// </summary>
+        [JsonPropertyName("choices")]
+        public List<CreateChatCompletionResponseChoicesInner> Choices { get; set; } = new List<CreateChatCompletionResponseChoicesInner>();
 
+        /// <summary>
+        /// The Unix timestamp (in seconds) of when the chat completion was created.
+        /// </summary>
         [JsonPropertyName("created")]
         public double Created { get; set; }
 
+        /// <summary>
+        /// The model used for the chat completion.
+        /// </summary>
         [JsonPropertyName("model")]
         public string Model { get; set; }
 
-        [JsonPropertyName("choices")]
-        public List<CreateChatCompletionResponseChoicesInner> Choices { get; set; }
+        /// <summary>
+        /// This fingerprint represents the backend configuration that the model runs with.
+        /// Can be used in conjunction with the seed request parameter to understand when backend changes have been made that might impact determinism.
+        /// </summary>
+        [JsonPropertyName("system_fingerprint")]
+        public string SystemFingerprint { get; set; }
 
+        /// <summary>
+        /// The object type, which is always chat.completion.
+        /// </summary>
+        [JsonPropertyName("object")]
+        public string Object { get; set; }
+
+        /// <summary>
+        /// Usage statistics for the completion request.
+        /// </summary>
         [JsonPropertyName("usage")]
         public CreateCompletionResponseUsage? Usage { get; set; }
+
     }
 
     public class CreateChatCompletionResponseChoicesInner
     {
 
+        /// <summary>
+        /// The reason the model stopped generating tokens. 
+        /// This will be stop if the model hit a natural stop point or a provided stop sequence, 
+        /// length if the maximum number of tokens specified in the request was reached, 
+        /// content_filter if content was omitted due to a flag from our content filters, 
+        /// tool_calls if the model called a tool, or function_call (deprecated) if the model called a function.
+        /// </summary>
+        [JsonPropertyName("finish_reason")]
+        public string? FinishReason { get; set; }
+
+        /// <summary>
+        /// The index of the choice in the list of choices.
+        /// </summary>
         [JsonPropertyName("index")]
         public double? Index { get; set; }
 
+        /// <summary>
+        /// A chat completion message generated by the model.
+        /// </summary>
         [JsonPropertyName("message")]
         public ChatCompletionResponseMessage? Message { get; set; }
 
         [JsonPropertyName("delta")]
         public ChatCompletionResponseMessage? Delta { get; set; }
 
-
-        [JsonPropertyName("finish_reason")]
-        public string? FinishReason { get; set; }
     }
 
     public class ChatCompletionResponseMessage

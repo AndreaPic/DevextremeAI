@@ -34,7 +34,7 @@ namespace DevExtremeAIConsoleApp
             var openAIClient = OpenAIClientFactory.CreateInstance();
 
             CreateChatCompletionRequest createCompletionRequest = new CreateChatCompletionRequest();
-            createCompletionRequest.Model = "gpt-3.5-turbo";
+            createCompletionRequest.Model = "gpt-3.5-turbo-1106";
             createCompletionRequest.Temperature = temp;
 
             while (true)
@@ -48,7 +48,7 @@ namespace DevExtremeAIConsoleApp
                     chat = chat.Substring("YOU:".Length);
                 }
 
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                createCompletionRequest.Messages.Add(new ChatCompletionRoleStringContentMessage()
                 {
                     Role = ChatCompletionMessageRoleEnum.User,
                     Content = chat,
@@ -60,7 +60,7 @@ namespace DevExtremeAIConsoleApp
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(response.OpenAIResponse.Choices[0].Message.Content);
 
-                createCompletionRequest.Messages.Add(new ChatCompletionRequestMessage()
+                createCompletionRequest.Messages.Add(new ChatCompletionRoleStringContentMessage()
                 {
                     Role = response.OpenAIResponse.Choices[0].Message.Role,
                     Content = response.OpenAIResponse.Choices[0].Message.Content

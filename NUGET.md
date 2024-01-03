@@ -5,7 +5,7 @@
 DevextremeAI is a library with full and complete implementation of all OpenAI's APIs.
 This library is fully compliant to openAI specs and also implement openAI error response.
 It's very easy to use with asp.net core and has full support to dependency injection (with a single line of code as asp.net standard pattern).
-It's easy to use also in libraries without dependency injection (see samples below).
+It's easy to use also in libraries without dependency injection (see samples on github).
 
 *Please note that this is **unofficial** OpenAPI library* (It's not mantained by OpenAI Company).
 
@@ -22,14 +22,11 @@ You can find the documentation in the [github repository](https://github.com/And
 
 Are covered all OpenAI's API types:
 
-- Functions
-- Models
-- Completions
-- Chat
-- Edits
-- Imnages
-- Embeddings
 - Audio
+- Chat
+- Embeddings
+- Fine-tuning
 - Files
-- Fine-tunes
+- Images
+- Models
 - Moderations

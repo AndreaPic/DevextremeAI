@@ -8,7 +8,12 @@ using DevExtremeAI.OpenAIDTO;
 
 namespace DevExtremeAI.OpenAIClient
 {
-
+    /// <summary>
+    /// Manage Fine Tuning API
+    /// </summary>
+    /// <remarks>
+    /// The Fine-tunes endpoint will be shut off on January 4th, 2024.
+    /// </remarks>
     partial class OpenAIAPIClient 
     {
         /// <summary>
@@ -28,7 +33,7 @@ namespace DevExtremeAI.OpenAIClient
 
                 var jsonContent = CreateJsonStringContent(request);
 
-                var httpResponse = await httpClient.PostAsync($"fine-tunes", jsonContent);
+                var httpResponse = await httpClient.PostAsync($"fine_tuning/jobs", jsonContent);
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FineTuneData>();
@@ -51,9 +56,19 @@ namespace DevExtremeAI.OpenAIClient
         /// <summary>
         /// List your organization's fine-tuning jobs
         /// </summary>
-        /// <param name="request">DTO with request specs.</param>
         /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
         public async Task<ResponseDTO<GetFineTuneListResponse>> GetFineTuneJobListAsync()
+        {
+            return await GetFineTuneJobListAsync(null, null);
+        }
+
+        /// <summary>
+        /// List your organization's fine-tuning jobs
+        /// </summary>
+        /// <param name="after">Identifier for the last job from the previous pagination request.(Optional)</param>
+        /// <param name="limit">Number of fine-tuning jobs to retrieve.(Optional Default 20)</param>
+        /// <returns>OpenAIResponse property contains the AI response, if an error occurs HasError is true and the Error property contains the complete error details.</returns>
+        public async Task<ResponseDTO<GetFineTuneListResponse>> GetFineTuneJobListAsync(string after, int? limit)
         {
             ResponseDTO<GetFineTuneListResponse> ret = new ResponseDTO<GetFineTuneListResponse>();
             HttpClient httpClient = CreateHttpClient(out bool doDispose);
@@ -62,7 +77,25 @@ namespace DevExtremeAI.OpenAIClient
                 FillBaseAddress(httpClient);
                 FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-                var httpResponse = await httpClient.GetAsync($"fine-tunes");
+                string request = "fine_tuning/jobs";
+                if (!string.IsNullOrEmpty(after) || limit.HasValue)
+                {
+                    request += "?" ;
+                    if (!string.IsNullOrEmpty(after))
+                    {
+                        request += $"after={after}" ;
+                    }
+                    if (!string.IsNullOrEmpty(after) && limit.HasValue)
+                    {
+                        request += "&";
+                    }
+                    if (limit.HasValue)
+                    {
+                        request += $"limit={limit}";
+                    }
+                }
+
+                var httpResponse = await httpClient.GetAsync(request);
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<GetFineTuneListResponse>();
@@ -82,6 +115,7 @@ namespace DevExtremeAI.OpenAIClient
             }
         }
 
+
         /// <summary>
         /// Gets info about the fine-tune job.
         /// </summary>
@@ -96,7 +130,7 @@ namespace DevExtremeAI.OpenAIClient
                 FillBaseAddress(httpClient);
                 FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-                var httpResponse = await httpClient.GetAsync($"fine-tunes/{request.FineTuneId}");
+                var httpResponse = await httpClient.GetAsync($"fine_tuning/jobs/{request.FineTuneId}");
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FineTuneData>();
@@ -130,7 +164,7 @@ namespace DevExtremeAI.OpenAIClient
                 FillBaseAddress(httpClient);
                 FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-                var httpResponse = await httpClient.PostAsync($"fine-tunes/{request.FineTuneId}/cancel",null);
+                var httpResponse = await httpClient.PostAsync($"fine_tuning/jobs/{request.FineTuneId}/cancel",null);
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<FineTuneData>();
@@ -165,7 +199,7 @@ namespace DevExtremeAI.OpenAIClient
                 FillBaseAddress(httpClient);
                 FillAuthRequestHeaders(httpClient.DefaultRequestHeaders);
 
-                var httpResponse = await httpClient.GetAsync($"fine-tunes/{request.FineTuneId}/events");
+                var httpResponse = await httpClient.GetAsync($"fine_tuning/jobs/{request.FineTuneId}/events");
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     ret.OpenAIResponse = await httpResponse.Content.ReadFromJsonAsync<GetFineTuneEventListResponse>();
