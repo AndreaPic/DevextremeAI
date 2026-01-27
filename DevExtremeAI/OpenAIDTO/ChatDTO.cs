@@ -186,6 +186,10 @@ namespace DevExtremeAI.OpenAIDTO
         [JsonPropertyName("max_tokens")]
         public int? MaxTokens { get; set; }
 
+
+        [JsonPropertyName("max_completion_tokens")]
+        public int? MaxCompletionTokens { get; set; }
+
         /// <summary>
         /// Number between -2.0 and 2.0.
         /// Positive values penalize new tokens based on whether they appear in the text so far, increasing the model\'s likelihood to talk about new topics.  [See more information about frequency and presence penalties.](/docs/api-reference/parameter-details)
