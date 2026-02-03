@@ -57,7 +57,65 @@ namespace DevExtremeAILibTest
 
 
         [Theory]
-        [InlineData("gpt-3.5-turbo-1106")]
+        [InlineData("gpt-5.2")]
+        public async Task CreateChatCompletionSystemMessageTest(string modelID)
+        {
+            using (var scope = _factory.Services.CreateScope())
+            {
+                var openAiapiClient = scope.ServiceProvider.GetService<IOpenAIAPIClient>();
+                CreateChatCompletionRequest createCompletionRequest = new CreateChatCompletionRequest();
+                createCompletionRequest.Model = modelID;
+                createCompletionRequest.Temperature = 0.9;
+
+                createCompletionRequest.Messages.Add(new ChatCompletionSystemMessage()
+                {
+                    Content = "You're a helpful person with a great sense of humor. You always respond in a friendly way."
+                });
+
+
+                createCompletionRequest.Messages.Add(new ChatCompletionUserContentMessage()
+                {
+                    Content = "Good Morning!"
+                });
+                //await Task.Delay(22000);
+
+                var response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
+                Assert.False(response.HasError, response?.ErrorResponse?.Error?.Message);
+                Assert.NotNull(response?.OpenAIResponse);
+                Assert.NotNull(response?.OpenAIResponse.Choices);
+                Assert.True(response?.OpenAIResponse.Choices.Count > 0);
+                Assert.NotNull(response?.OpenAIResponse.Usage);
+
+                ChatCompletionAssistantMessage assistantMessage = new ChatCompletionAssistantMessage()
+                {
+                    Content = response?.OpenAIResponse.Choices[0].Message.Content
+                };
+
+                createCompletionRequest.AddMessage(assistantMessage);
+
+                //createCompletionRequest = new CreateChatCompletionRequest();
+                //createCompletionRequest.Model = modelID;
+                //createCompletionRequest.Temperature = 0.9;
+
+                createCompletionRequest.Messages.Add(new ChatCompletionUserContentMessage()
+                {
+                    Content = "I'm getting bored, what can you do for me?"
+                });
+
+                await Task.Delay(22000);
+
+                response = await openAiapiClient.CreateChatCompletionAsync(createCompletionRequest);
+                Assert.NotNull(response);
+                Assert.NotNull(response?.OpenAIResponse?.Choices);
+                Assert.True(response.OpenAIResponse.Choices.Count > 0);
+                Assert.NotNull(response?.OpenAIResponse?.Usage);
+
+            }
+        }
+
+        [Theory]
+        //[InlineData("gpt-3.5-turbo-1106")]
+        [InlineData("gpt-5.2")]
         public async Task CreateChatCompletionTest(string modelID)
         {
             

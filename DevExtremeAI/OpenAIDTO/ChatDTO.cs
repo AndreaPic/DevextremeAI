@@ -187,6 +187,13 @@ namespace DevExtremeAI.OpenAIDTO
         public int? MaxTokens { get; set; }
 
         /// <summary>
+        /// An upper bound for the number of tokens that can be generated for a completion, including visible output tokens and reasoning tokens.
+        /// This differs from max_tokens in that it counts all tokens generated, not just the visible completion tokens.
+        /// </summary>
+        [JsonPropertyName("max_completion_tokens")]
+        public int? MaxCompletionTokens { get; set; }
+
+        /// <summary>
         /// Number between -2.0 and 2.0.
         /// Positive values penalize new tokens based on whether they appear in the text so far, increasing the model\'s likelihood to talk about new topics.  [See more information about frequency and presence penalties.](/docs/api-reference/parameter-details)
         /// </summary>
