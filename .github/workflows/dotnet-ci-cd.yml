@@ -1,4 +1,3 @@
-
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
@@ -36,9 +35,6 @@ jobs:
         echo "BUILD_VERSION=$version" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
       shell: pwsh
   
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.2.0
-
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
@@ -57,4 +53,4 @@ jobs:
 
     - name: Publish
       if: startsWith(github.ref, 'refs/tags/')
-      run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}      
+      run: dotnet nuget push **/*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{secrets.NUGET_API_KEY}} --skip-duplicate
